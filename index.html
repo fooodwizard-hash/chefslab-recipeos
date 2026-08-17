@@ -1129,7 +1129,7 @@ async function callClaude(prompt, system) {
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 4000,
+        max_tokens: 8000,
         system: system || "You are a professional culinary AI assistant. Return ONLY valid JSON. No markdown fences, no explanation, no preamble.",
         messages: [{role:"user", content: prompt}],
       }),
@@ -1161,10 +1161,84 @@ async function callClaude(prompt, system) {
   const text = (data.content || []).map(b => b.text || "").join("").trim();
   if (!text) throw new Error("Empty content. Full response: " + JSON.stringify(data).slice(0,300));
 
-  const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+  const stopReason = data.stop_reason || "";
+  return parseModelJSON(text, stopReason);
+}
 
-  try { return JSON.parse(cleaned); }
-  catch(e) { throw new Error("JSON parse failed. Model said: " + cleaned.slice(0, 400)); }
+// Models wrap JSON in fences, add a sentence before or after it, or get cut
+// off mid-object. Handle all three rather than failing on the first.
+function parseModelJSON(text, stopReason) {
+  let s = String(text)
+    .replace(/```json\s*/gi, "")
+    .replace(/```/g, "")
+    .trim();
+
+  // Straight parse
+  try { return JSON.parse(s); } catch(e) {}
+
+  // Take only what lies between the first brace and the last
+  const first = s.indexOf("{");
+  const last  = s.lastIndexOf("}");
+  if (first !== -1 && last > first) {
+    const slice = s.slice(first, last + 1);
+    try { return JSON.parse(slice); } catch(e) {}
+  }
+
+  // Cut off mid-object — close whatever is still open and salvage it
+  if (first !== -1) {
+    const repaired = repairTruncatedJSON(s.slice(first));
+    if (repaired) {
+      try {
+        const obj = JSON.parse(repaired);
+        obj._truncated = true;
+        return obj;
+      } catch(e) {}
+    }
+  }
+
+  const why = stopReason === "max_tokens"
+    ? "The reply was cut off before it finished — the recipe was too long for one response. Try again, or ask for something a little simpler."
+    : "The reply was not valid JSON.";
+
+  throw new Error(why + "\n\nStart of reply: " + s.slice(0, 200) +
+                  "\n\nEnd of reply: " + s.slice(-200));
+}
+
+// Walk the string tracking strings, escapes and nesting, then close
+// everything still open. Drops any half-written final property.
+function repairTruncatedJSON(s) {
+  const stack = [];
+  let inString = false, escaped = false;
+  let lastSafe = -1;      // index to cut at: just before a comma, or after a closed value
+  let safeStack = null;   // what was still open at that point
+
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (escaped) { escaped = false; continue; }
+    if (ch === "\\") { escaped = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+
+    if (ch === "{" || ch === "[") {
+      stack.push(ch);
+    } else if (ch === "}" || ch === "]") {
+      stack.pop();
+      if (!stack.length) return s.slice(0, i + 1); // complete object after all
+      lastSafe = i + 1; safeStack = stack.slice();
+    } else if (ch === ",") {
+      lastSafe = i; safeStack = stack.slice();     // cut before the comma
+    }
+  }
+
+  if (!stack.length || lastSafe < 1 || !safeStack) return null;
+
+  // Everything after lastSafe is a half-written value — discard it, then close
+  // whatever was genuinely open at that point.
+  let out = s.slice(0, lastSafe);
+  for (let i = safeStack.length - 1; i >= 0; i--) {
+    out += safeStack[i] === "{" ? "}" : "]";
+  }
+  return out;
 }
 
 function showDebug(msg) {
@@ -2435,10 +2509,14 @@ async function aiCreate() {
       '\nFLAVOUR BALANCE — build across the eight pillars:\n' +
       'Savoury, Sweet, Salty, Sour, Bitter, Sensation (texture contrast and mouthfeel), Spice (chilli, pepper, mustard, ginger heat), Smell (aromatics read while chewing).\n' +
       'A dish without acidity tastes flat. A dish of one texture tires the palate. Give the dish a source for as many pillars as it honestly allows — never force one that does not belong.\n' +
+      'Keep description under 40 words, plating notes under 30, and each method action under 25. Be a chef writing a spec, not prose.\n' +
       'Return ONLY this JSON structure (no markdown, no extra text):\n' +
       '{"title":"","cuisine":"","description":"","ingredients":[{"name":"","quantity":100,"unit":"g","note":""}],"method":[{"step":1,"action":"","time":"","temp":""}],"productionSchedule":[{"phase":"Mise en Place","tasks":["task1"],"timeAllocation":"30 min"}],"platingNotes":"","dna":{"cuisineTag":"","flavourProfile":["flavour1"],"flavourScore":7,"nutritionScore":7,"skillScore":5,"sustainabilityScore":6,"costScore":7,"dietaryTags":[],"skillLevel":"Intermediate","bulkSuitable":false}}'
     );
     const id = "r_" + Date.now();
+    if (result._truncated) {
+      showToast("The reply was cut short — part of the recipe is missing. Check it and use the AI panel to fill the gaps.", "error");
+    }
     state.recipes.unshift({
       id, title: result.title||"New Recipe", cuisine: result.cuisine||"", description: result.description||"",
       type: "ai",
@@ -2518,6 +2596,7 @@ async function aiBalanceRecipe() {
       '"platingNotes":"","changeNote":""}'
     );
 
+    if (result._truncated) showToast("The reply was cut short — check the recipe for gaps.", "error");
     const updated = Object.assign({}, v, result);
     const versions = Object.assign({}, r.versions, { [state.activeVersion]: updated });
     updateRecipe(r.id, { versions });
