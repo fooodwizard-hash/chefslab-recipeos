@@ -400,14 +400,14 @@ const ALLERGEN_IDS = ALLERGENS.map(a => a.id);
 // Scored 0-3 per ingredient: none / slight / moderate / dominant.
 // ══════════════════════════════════════════════════════════════════════
 const PILLARS = [
-  { id:"savoury",   label:"Savoury",   icon:"\u25C6", colour:"#6B4423", note:"Umami depth — meat, cheese, mushroom, fermented" },
-  { id:"sweet",     label:"Sweet",     icon:"\u25CF", colour:"#C4501A", note:"Sugars and caramelisation" },
-  { id:"salty",     label:"Salty",     icon:"\u25A0", colour:"#4A6FA5", note:"Salt and cured or brined elements" },
-  { id:"sour",      label:"Sour",      icon:"\u25B2", colour:"#8B9F3C", note:"Acidity — citrus, vinegar, fermented dairy" },
-  { id:"bitter",    label:"Bitter",    icon:"\u25BC", colour:"#2C4A3E", note:"Chicory, brassica, cocoa, char, tannin" },
-  { id:"sensation", label:"Sensation", icon:"\u25C8", colour:"#8B5E00", note:"Mouthfeel — crunch, chew, fat, astringency" },
-  { id:"spice",     label:"Spice",     icon:"\u2739", colour:"#A62C2C", note:"Trigeminal heat — chilli, pepper, mustard, ginger" },
-  { id:"smell",     label:"Smell",     icon:"\u2735", colour:"#7B5EA7", note:"Aromatics read retro-nasally while eating" },
+  { id:"savoury",   label:"Savoury",   icon:"◆", colour:"#6B4423", note:"Umami depth — meat, cheese, mushroom, fermented" },
+  { id:"sweet",     label:"Sweet",     icon:"●", colour:"#C4501A", note:"Sugars and caramelisation" },
+  { id:"salty",     label:"Salty",     icon:"■", colour:"#4A6FA5", note:"Salt and cured or brined elements" },
+  { id:"sour",      label:"Sour",      icon:"▲", colour:"#8B9F3C", note:"Acidity — citrus, vinegar, fermented dairy" },
+  { id:"bitter",    label:"Bitter",    icon:"▼", colour:"#2C4A3E", note:"Chicory, brassica, cocoa, char, tannin" },
+  { id:"sensation", label:"Sensation", icon:"◈", colour:"#8B5E00", note:"Mouthfeel — crunch, chew, fat, astringency" },
+  { id:"spice",     label:"Spice",     icon:"✹", colour:"#A62C2C", note:"Trigeminal heat — chilli, pepper, mustard, ginger" },
+  { id:"smell",     label:"Smell",     icon:"✵", colour:"#7B5EA7", note:"Aromatics read retro-nasally while eating" },
 ];
 const PILLAR_IDS = PILLARS.map(p => p.id);
 const PILLAR_LEVELS = ["none","slight","moderate","dominant"];
@@ -553,6 +553,20 @@ let state = {
 
 // Ingredients saved before the pillars feature need a blank profile added,
 // and any that match a default ingredient inherit its authored profile.
+// A saved database replaces the built-in one wholesale, so anyone who used an
+// earlier build keeps its ingredient list for ever and never receives later
+// additions. Add back anything missing by name, without touching the user's
+// own edits, prices or custom entries.
+function topUpDefaults() {
+  const have = new Set((state.pantry || []).map(p => (p.name || "").toLowerCase()));
+  const missing = SA_PANTRY_DEFAULT.filter(d => !have.has(d.name.toLowerCase()));
+  if (!missing.length) return 0;
+  state.pantry = state.pantry.concat(missing.map(d => ({ ...d })));
+  state.pantry.sort((a,b) => a.name.localeCompare(b.name));
+  saveState();
+  return missing.length;
+}
+
 function migratePillars() {
   let changed = 0;
   state.pantry = (state.pantry || []).map(p => {
@@ -602,7 +616,7 @@ function getApiKey() {
 function cleanKey(raw) {
   if (!raw) return "";
   return String(raw)
-    .replace(/[\u200B-\u200D\uFEFF]/g, "")   // zero-width chars
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")   // zero-width characters
     .replace(/[\u2018\u2019\u201C\u201D]/g, "") // smart quotes from copy/paste
     .replace(/\s+/g, "")                       // every space, tab, newline
     .trim();
@@ -635,6 +649,17 @@ function showKeyModal() {
       <label style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333;display:block;margin-bottom:6px">API Key</label>
       <input type="password" id="api-key-input" value="${existing}" placeholder="sk-ant-api03-..." 
         style="width:100%;padding:10px;border:1px solid #E8E0D0;border-radius:3px;font-size:13px;font-family:monospace;margin-bottom:16px;box-sizing:border-box">
+      ${originWarning()}
+      <div style="background:#F5F0E8;border-radius:3px;padding:10px 12px;margin-bottom:12px">
+        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:5px">Backup</div>
+        <div style="font-size:10px;color:#555;font-weight:600;line-height:1.5;margin-bottom:8px">
+          Everything lives in this browser only. If it is ever cleared, a backup file is the only way back.
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn btn-default btn-sm" onclick="exportBackup(true)">↓ Export everything</button>
+          <button class="btn btn-default btn-sm" onclick="triggerRestore()">↑ Restore from file</button>
+        </div>
+      </div>
       <div id="key-test-result" style="display:none;font-size:12px;font-weight:700;padding:10px 12px;border-radius:3px;margin-bottom:12px;line-height:1.5"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button onclick="testApiKey()" class="btn btn-default" id="test-key-btn">⚡ Test Key</button>
@@ -663,6 +688,119 @@ function submitApiKey() {
   showToast("API key saved — you\'re ready to generate recipes");
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// BACKUP & RESTORE
+// localStorage is tied to one exact origin in one browser. Anything that
+// clears it — privacy settings, a different URL for the same site, a new
+// device — takes everything with it. A file you hold is the only real answer.
+// ══════════════════════════════════════════════════════════════════════
+
+function exportBackup(includeKey) {
+  const payload = {
+    app: "Chefs Lab — Recipe OS Development",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    origin: location.origin,
+    recipes: state.recipes,
+    pantry: state.pantry,
+    apiKey: includeKey ? getApiKey() : ""
+  };
+  const stamp = new Date().toISOString().slice(0,10);
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "chefslab-backup-" + stamp + ".json";
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 100);
+  showToast("Backup saved — " + state.recipes.length + " recipes, " + state.pantry.length + " ingredients");
+}
+
+function triggerRestore() {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json,.json";
+  input.onchange = e => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      let data;
+      try { data = JSON.parse(ev.target.result); }
+      catch(err) { showToast("That file is not a valid backup", "error"); return; }
+      if (!data || (!Array.isArray(data.recipes) && !Array.isArray(data.pantry))) {
+        showToast("That file does not contain Chefs Lab data", "error"); return;
+      }
+      confirmRestore(data);
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function confirmRestore(data) {
+  const nR = Array.isArray(data.recipes) ? data.recipes.length : 0;
+  const nP = Array.isArray(data.pantry) ? data.pantry.length : 0;
+  const when = data.exportedAt ? new Date(data.exportedAt).toLocaleString("en-ZA") : "unknown date";
+
+  const modal = document.createElement("div");
+  modal.id = "restore-modal";
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:10500;display:flex;align-items:center;justify-content:center;padding:16px";
+  modal.addEventListener("click", e => { if (e.target === modal) modal.remove(); });
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:4px;width:460px;max-width:95vw">
+      <div style="background:#111;color:#fff;padding:16px 20px;border-radius:4px 4px 0 0">
+        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Restore backup</div>
+        <div style="font-family:'Playfair Display',serif;font-size:19px">Replace everything in this browser?</div>
+      </div>
+      <div style="padding:18px 20px">
+        <div style="font-size:12px;line-height:1.7;color:#333;font-weight:600;margin-bottom:14px">
+          The backup was made on <strong>${escHtml(when)}</strong> and holds
+          <strong>${nR} recipe${nR===1?'':'s'}</strong> and <strong>${nP} ingredient${nP===1?'':'s'}</strong>.
+          ${data.apiKey ? "It also carries an API key." : ""}
+        </div>
+        <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:10px 12px;font-size:11px;color:#C4501A;font-weight:700;margin-bottom:16px;line-height:1.6">
+          This replaces your current ${state.recipes.length} recipes and ${state.pantry.length} ingredients. It cannot be undone.
+          Export a backup of what you have now first if you are unsure.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" style="flex:1;justify-content:center" onclick='doRestore(${JSON.stringify(JSON.stringify(data))})'>Replace everything</button>
+          <button class="btn btn-default" onclick="document.getElementById('restore-modal').remove()">✕ Cancel</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function doRestore(json) {
+  let data;
+  try { data = JSON.parse(json); } catch(e) { showToast("Restore failed", "error"); return; }
+  if (Array.isArray(data.recipes)) state.recipes = data.recipes;
+  if (Array.isArray(data.pantry))  state.pantry  = data.pantry;
+  if (data.apiKey) saveApiKey(data.apiKey);
+  migratePillars();
+  saveState();
+  const m = document.getElementById("restore-modal"); if (m) m.remove();
+  updateKeyStatus();
+  render();
+  showToast("Restored — " + state.recipes.length + " recipes, " + state.pantry.length + " ingredients");
+}
+
+// A deployment-specific Vercel URL is a different origin from the production
+// domain, so it gets its own separate localStorage. That alone will look
+// exactly like data being wiped.
+function originWarning() {
+  const h = location.hostname || "";
+  const looksLikeDeployUrl = /-[a-z0-9]{8,}-.*\.vercel\.app$/.test(h);
+  if (!looksLikeDeployUrl) return "";
+  const short = h.split("-")[0] + ".vercel.app";
+  return `<div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:10px 12px;font-size:11px;color:#C4501A;font-weight:700;line-height:1.6;margin-bottom:12px">
+    ⚠ You are on a deployment-specific address:<br>
+    <span style="font-family:monospace;font-size:10px;word-break:break-all">${escHtml(h)}</span><br>
+    Browsers store data per exact address, so anything saved here will not appear on your normal one.
+    Use <strong style="font-family:monospace">${escHtml(short)}</strong> instead and bookmark it.
+  </div>`;
+}
+
 function showKeyResult(msg, ok) {
   const el = document.getElementById("key-test-result");
   if (!el) { showToast(msg, ok ? "success" : "error"); return; }
@@ -670,7 +808,7 @@ function showKeyResult(msg, ok) {
   el.style.background = ok ? "#F0F7F0" : "#FFF0EB";
   el.style.border = "1px solid " + (ok ? "#2C7A4B" : "#C4501A");
   el.style.color = ok ? "#2C4A3E" : "#C4501A";
-  el.textContent = (ok ? "\u2713 " : "\u26A0 ") + msg;
+  el.textContent = (ok ? "✓ " : "⚠ ") + msg;
 }
 
 async function testApiKey() {
@@ -720,7 +858,7 @@ async function testApiKey() {
   } catch (e) {
     showKeyResult("Could not reach Anthropic: " + e.message + ". Check your connection.", false);
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = "\u26A1 Test Key"; }
+    if (btn) { btn.disabled = false; btn.textContent = "⚡ Test Key"; }
   }
 }
 
@@ -767,7 +905,7 @@ async function callClaude(prompt, system) {
 
   if (!res.ok) {
     if (res.status === 401) {
-      throw new Error("Your API key was rejected by Anthropic (401). Open \u2699 in the sidebar and click Test Key to check it. Common causes: the key was only partly copied, it has been revoked, or it belongs to a different Anthropic account.");
+      throw new Error("Your API key was rejected by Anthropic (401). Open ⚙ in the sidebar and click Test Key to check it. Common causes: the key was only partly copied, it has been revoked, or it belongs to a different Anthropic account.");
     }
     if (res.status === 429) {
       throw new Error("Rate limit reached (429). Wait a moment and try again.");
@@ -900,7 +1038,7 @@ function renderTopbar() {
               <div onclick="printAllRecipes();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">📚 All Recipes by Category</div>
               <div id="costing-print-item" onclick="printCostingCard();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid #E8E0D0" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">💰 Recipe Costing Card</div>
               <div onclick="printPurchasingList();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">🛒 Purchasing List</div>
-              <div onclick="printFlavourAudit();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">\u2696 Flavour Audit</div>
+              <div onclick="printFlavourAudit();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">⚖ Flavour Audit</div>
               <div onclick="printNutritionSummary();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">🥗 Nutritional Summary</div>
               <div onclick="printRecipeIndex();togglePrintMenu()" style="padding:10px 16px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid #E8E0D0" onmouseover="this.style.background='#F9F6F0'" onmouseout="this.style.background='#fff'">📑 Recipe Index (All Recipes)</div>
             </div>
@@ -1108,10 +1246,10 @@ function renderEditor() {
   } else {
     const ingsHtml = (v.ingredients||[]).map((ing,i)=>`
       <div class="ing-grid">
-        <input class="small-input" type="text" value="${escHtml(ing.name)}" placeholder="Ingredient…" list="pantry-list" onchange="updateIng(${i},'name',this.value)">
-        <input class="small-input" type="number" value="${ing.quantity}" onchange="updateIng(${i},'quantity',this.value)">
-        <input class="small-input" type="text" value="${escHtml(ing.unit)}" placeholder="g" onchange="updateIng(${i},'unit',this.value)">
-        <input class="small-input" type="text" value="${escHtml(ing.note||'')}" placeholder="prep note…" onchange="updateIng(${i},'note',this.value)">
+        <input class="small-input" type="text" value="${escHtml(ing.name)}" placeholder="Ingredient…" list="pantry-list" data-fk="ing-${i}-name" onchange="updateIng(${i},'name',this.value)">
+        <input class="small-input" type="number" value="${ing.quantity}" data-fk="ing-${i}-qty" onchange="updateIng(${i},'quantity',this.value)">
+        <input class="small-input" type="text" value="${escHtml(ing.unit)}" placeholder="g" data-fk="ing-${i}-unit" onchange="updateIng(${i},'unit',this.value)">
+        <input class="small-input" type="text" value="${escHtml(ing.note||'')}" placeholder="prep note…" data-fk="ing-${i}-note" onchange="updateIng(${i},'note',this.value)">
         <button onclick="removeIng(${i})" style="background:none;border:none;cursor:pointer;color:#C4501A;font-size:16px;padding:0;line-height:1">×</button>
       </div>`).join("");
 
@@ -1238,7 +1376,7 @@ function renderEditor() {
           <button class="btn btn-dark" style="justify-content:center" onclick="exportMagazine()">📰 Magazine PDF</button>
           <button class="btn btn-dark" style="justify-content:center" onclick="exportManual()">📋 Training Manual PDF</button>
           <button class="btn btn-default" style="justify-content:center" onclick="printPurchasingList()">🛒 Purchasing List</button>
-          <button class="btn btn-default" style="justify-content:center" onclick="printFlavourAudit()">\u2696 Flavour Audit</button>
+          <button class="btn btn-default" style="justify-content:center" onclick="printFlavourAudit()">⚖ Flavour Audit</button>
           <button class="btn btn-default" style="justify-content:center" onclick="printNutritionSummary()">🥗 Nutritional Summary</button>
           <button class="btn btn-default" style="justify-content:center" onclick="printEditSheet()">✏️ Edit Sheet</button>
           <button class="btn btn-default" style="justify-content:center" onclick="printAllRecipes()">📚 All Recipes by Category</button>
@@ -1313,6 +1451,9 @@ function renderPantry() {
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" onclick="syncFromStorage()" title="Reload ingredients from saved data">⟳ Sync DB</button>
+          <button class="btn btn-ghost btn-sm" onclick="manualTopUp()" title="Add any built-in ingredients missing from your database">+ Restore defaults</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportBackup(false)" title="Save recipes and ingredients to a file">↓ Backup</button>
+          <button class="btn btn-ghost btn-sm" onclick="triggerRestore()" title="Load a backup file">↑ Restore</button>
           <button class="btn btn-primary" onclick="showAddIngredient()">+ Add Ingredient</button>
         </div>
       </div>
@@ -1602,11 +1743,19 @@ function showAddIngredient(existing) {
         <div style="background:#FAF7F2;border:1px solid #D8CFC0;border-radius:3px;padding:14px;margin-bottom:14px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;gap:6px">
             <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B4423;font-weight:800">Flavour Pillars</span>
-            <button type="button" onclick="clearPillars()" style="background:none;border:none;color:#C4501A;font-size:10px;font-weight:700;cursor:pointer;padding:0">Clear all</button>
+            <span style="display:flex;gap:10px;align-items:center">
+              <button type="button" id="ai-fill-btn" onclick="aiFillIngredient()"
+                title="Ask Claude for the pillar profile, nutrition and allergens"
+                style="background:#6B4423;border:none;color:#fff;font-size:10px;font-weight:800;cursor:pointer;padding:4px 9px;border-radius:2px">✨ AI fill</button>
+              <button type="button" onclick="clearPillars()" style="background:none;border:none;color:#C4501A;font-size:10px;font-weight:700;cursor:pointer;padding:0">Clear all</button>
+            </span>
           </div>
-          <div style="font-size:10px;color:#555;margin-bottom:10px;font-weight:600;line-height:1.5">
+          <div style="font-size:10px;color:#555;margin-bottom:8px;font-weight:600;line-height:1.5">
             How strongly does this ingredient deliver each pillar? Judge it as you would actually use it, not by weight.
+            <em>AI fill</em> suggests pillars, nutrition, allergens and yield from the name — always worth checking.
           </div>
+          <div id="ai-fill-status" style="display:none;font-size:10px;font-weight:700;line-height:1.5;
+            background:#fff;border:1px solid #D8CFC0;border-radius:2px;padding:6px 8px;margin-bottom:8px"></div>
           <div id="pillar-editor">
             ${PILLARS.map(pl => {
               const val = Number(pillarVals[pl.id]) || 0;
@@ -1667,6 +1816,92 @@ function showAddIngredient(existing) {
   if (ingModal) ingModal.dataset.editId = isEdit ? (ing.id || '') : '';
 
   updateYieldPreview();
+}
+
+// Ask Claude for the nutrition and pillar profile of a new ingredient.
+// Everything it returns is written into the form for the user to check and
+// amend before saving — nothing is committed on their behalf.
+async function aiFillIngredient() {
+  const nameEl = document.getElementById('ni-name');
+  const name = (nameEl ? nameEl.value : '').trim();
+  if (!name) { showToast('Enter the ingredient name first', 'error'); return; }
+  if (!getApiKey()) { showToast('Set your API key first — click ⚙ in the sidebar', 'error'); return; }
+
+  const btn = document.getElementById('ai-fill-btn');
+  const status = document.getElementById('ai-fill-status');
+  if (btn) { btn.disabled = true; btn.textContent = 'Thinking…'; }
+  if (status) { status.style.display = 'block'; status.textContent = 'Asking Claude about ' + name + '…'; status.style.color = '#6B4423'; }
+
+  try {
+    const catEl = document.getElementById('ni-cat');
+    const cat = catEl ? catEl.value : '';
+
+    const result = await callClaude(
+      'You are a professional chef and food scientist. Profile this ingredient for a recipe costing system.\n\n' +
+      'Ingredient: ' + name + (cat && cat !== '__new__' ? '\nCategory: ' + cat : '') + '\n\n' +
+      'Give nutrition per 100g of the edible portion, as whole numbers.\n\n' +
+      'Then score it 0-3 on each of the eight pillars of flavour, judging it as a cook would actually use it:\n' +
+      'savoury  — umami depth\n' +
+      'sweet    — sugars, caramelisation\n' +
+      'salty    — salt content, cured or brined character\n' +
+      'sour     — acidity\n' +
+      'bitter   — bitterness, tannin, char\n' +
+      'sensation— mouthfeel: crunch, chew, fat coating, astringency, cooling\n' +
+      'spice    — trigeminal pungency: chilli, pepper, mustard, ginger heat\n' +
+      'smell    — aromatic volatiles read retro-nasally while chewing\n\n' +
+      '0 none, 1 slight, 2 moderate, 3 dominant. Score by potency, not by quantity used — ' +
+      'a chilli is Spice 3 even though it goes in by the gram. Most ingredients score 0 on most pillars; ' +
+      'do not spread small numbers across all eight.\n\n' +
+      'Also list which of these 14 allergens it contains, using exactly these ids: ' +
+      ALLERGEN_IDS.join(', ') + '. Empty array if none.\n\n' +
+      'Suggest a realistic yield percentage after normal preparation trim, peel, bone or drain (100 if nothing is lost).\n\n' +
+      'Return ONLY JSON, no markdown:\n' +
+      '{"cal":0,"prot":0,"carb":0,"fat":0,' +
+      '"pillars":{"savoury":0,"sweet":0,"salty":0,"sour":0,"bitter":0,"sensation":0,"spice":0,"smell":0},' +
+      '"allergens":[],"yield_pct":100,"note":"one short sentence on the pillar reasoning"}'
+    );
+
+    // Nutrition
+    ['cal','prot','carb','fat'].forEach(k => {
+      const el = document.getElementById('ni-' + k);
+      if (el && result[k] !== undefined) el.value = Math.round(Number(result[k]) || 0);
+    });
+
+    // Pillars
+    if (result.pillars) {
+      const vals = emptyPillars();
+      PILLAR_IDS.forEach(id => {
+        vals[id] = Math.max(0, Math.min(3, Math.round(Number(result.pillars[id]) || 0)));
+      });
+      window.pillarVals = vals;
+      repaintPillarButtons();
+    }
+
+    // Allergens
+    if (Array.isArray(result.allergens)) {
+      document.querySelectorAll('#add-ing-modal .allergen-pill').forEach(el => {
+        el.classList.toggle('active', result.allergens.indexOf(el.dataset.allergen) !== -1);
+      });
+    }
+
+    // Yield — only fill if the user has left it at the default
+    const yEl = document.getElementById('ni-yield');
+    if (yEl && result.yield_pct && Number(yEl.value) === 100) {
+      yEl.value = Math.max(1, Math.min(100, Math.round(Number(result.yield_pct))));
+      updateYieldPreview();
+    }
+
+    if (status) {
+      status.style.color = '#2C4A3E';
+      status.innerHTML = '✓ Filled in. ' + (result.note ? escHtml(result.note) + ' ' : '') +
+        '<strong>Check it before saving — cost and pack size are still yours to enter.</strong>';
+    }
+    showToast('Profile suggested — review it');
+  } catch(e) {
+    if (status) { status.style.color = '#C4501A'; status.textContent = '⚠ ' + e.message; }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '✨ AI fill'; }
+  }
 }
 
 function setPillar(id, val) {
@@ -1843,15 +2078,32 @@ function updateVersionField(field, value) {
   updateRecipe(r.id, {versions});
 }
 
+// onchange fires on blur, so the active element at this moment is wherever the
+// user is heading next. Capture it, re-render, then put them back.
+function renderPreservingFocus() {
+  const el = document.activeElement;
+  const fk = (el && el.dataset) ? el.dataset.fk : null;
+  let pos = null;
+  try { pos = el ? el.selectionStart : null; } catch(e) {}
+  render();
+  if (!fk) return;
+  const next = document.querySelector('[data-fk="' + fk + '"]');
+  if (next) {
+    next.focus();
+    if (pos !== null) { try { next.setSelectionRange(pos, pos); } catch(e) {} }
+  }
+}
+
 function updateIng(idx, field, value) {
   const r = getActiveRecipe(); if (!r) return;
   const v = r.versions[state.activeVersion];
   const ings = [...(v.ingredients||[])];
   let val = value;
   if (field === "quantity") val = Number(value);
-  else if (field === "yieldOverride") val = (value === "" || value === null) ? "" : Number(value);
+  else if (field === "yieldOverride" || field === "costOverride") val = (value === "" || value === null) ? "" : Number(value);
   ings[idx] = Object.assign({}, ings[idx], {[field]: val});
   updateVersionField("ingredients", ings);
+  renderPreservingFocus();
 }
 
 function removeIng(idx) {
@@ -1971,7 +2223,7 @@ async function aiCreate() {
 // specific ingredients from the user's own database would close them,
 // and the dish must remain recognisably itself.
 async function aiBalanceRecipe() {
-  if (!getApiKey()) { showToast("Set your API key first — click \u2699 in the sidebar", "error"); return; }
+  if (!getApiKey()) { showToast("Set your API key first — click ⚙ in the sidebar", "error"); return; }
   const r = getActiveRecipe(); if (!r) return;
   const v = r.versions[state.activeVersion]; if (!v) return;
   if (state.aiLoading) return;
@@ -2035,8 +2287,8 @@ async function aiBalanceRecipe() {
     const closed = need.filter(id => after.scores[id] >= 2);
     const stillOpen = PILLAR_IDS.filter(id => after.scores[id] === 0);
     let note = result.changeNote || "Recipe balanced.";
-    if (closed.length) note += "\n\n\u2713 Closed: " + closed.map(label).join(", ") + ".";
-    if (stillOpen.length) note += "\n\u26A0 Still open: " + stillOpen.map(label).join(", ") + ".";
+    if (closed.length) note += "\n\n✓ Closed: " + closed.map(label).join(", ") + ".";
+    if (stillOpen.length) note += "\n⚠ Still open: " + stillOpen.map(label).join(", ") + ".";
 
     state.aiChat.push({ role: "assistant", content: note });
     showToast(closed.length ? "Closed " + closed.length + " gap" + (closed.length>1?"s":"") : "Recipe updated");
@@ -2838,7 +3090,7 @@ function applyScale(originalPortions) {
 function showHelp() {
   if (document.getElementById("help-modal")) return;
 
-  const guides = {"dashboard": {"title": "Dashboard Guide", "sections": [["AI Recipe Generation", ["Type a brief description of the recipe you want in the AI Co-Creation field and press Enter or click Generate.", "Be specific — include cuisine, key ingredients, cooking style, occasion, dietary requirements, or service context. Example: A Cape Malay braised lamb shoulder with samp, peri-peri butter and pickled red onion for a winter banquet menu.", "The AI creates a full recipe with ingredients in metric units, method, production schedule, plating notes and a DNA profile.", "AI recipes are marked with a red AI badge in the sidebar. They are for inspiration and refinement — they do not interact with the Ingredients Database and cannot be costed until promoted.", "To cost an AI recipe, open it in the editor and click the green Promote to Costed Recipe button."]], ["Write New Recipe", ["Creates a blank Costed Recipe marked with a green COSTED badge in the sidebar.", "This is where your actual master recipes live. Ingredients are linked to the Ingredients Database for dynamic costing.", "As you enter ingredients they are matched to the database automatically using fuzzy matching — so Portobello mushrooms will match Mushrooms (portobello) in the database.", "Costs update automatically whenever database prices are changed.", "Click the Costing tab in the editor to see the full cost breakdown, food cost percentage, ideal selling price, and margin per portion."]], ["Recipe Library and Search", ["All recipes appear as cards sorted alphabetically. AI recipes show a red AI badge, Costed recipes show a green COSTED badge.", "Search by flavour profile, dietary tag, cuisine type, or ingredient name.", "Click any card to open it in the editor.", "Recipes show allergen warnings and flavour tags at a glance."]], ["Dashboard Stats", ["Total Recipes — your full library count including both AI and Costed recipes.", "With DNA — recipes that have been AI-generated with a full flavour and nutrition profile.", "Ingredients — total items in your Ingredients Database.", "Allergen Scanned — recipes that have been checked for the 14 declarable allergens."]]]}, "editor": {"title": "Recipe Editor Guide", "sections": [["AI vs Costed Recipes", ["AI Recipes (red AI badge) are generated from the dashboard. They show a green Promote to Costed Recipe button at the top of the editor.", "Costed Recipes (green COSTED badge) are created via Write New Recipe or promoted from AI. They have two tabs — Recipe and Costing.", "Only Costed recipes interact with the Ingredients Database and can produce a costing card, purchasing list, or nutritional summary."]], ["Reviewing an AI recipe before you cost it", ["A newly generated recipe is a draft. Read it through and correct it before promoting — the AI can get quantities, cuts and preparation wrong.", "Everything in the Recipe tab is editable: ingredient names, quantities, units and prep notes are all live fields. Click any of them and type.", "The readiness strip under the AI badge tells you what still needs attention: missing quantities, non-metric units, and ingredients not yet in your database.", "It turns green when the recipe is clean and ready to cost.", "Fix units opens the unit converter. Open database takes you to the Ingredients Database.", "Preview opens the recipe as a clean formatted document so you can read it the way a chef would, rather than as a form. Back to Edit returns you to the editor.", "Only promote to costed once the recipe reads correctly — promoting is not permanent, but costing a wrong recipe wastes your time."]], ["Promoting an AI Recipe to Costed", ["Click the green Promote to Costed Recipe button in the editor.", "The system first checks for non-metric units. If any are found it shows a conversion modal with what each ingredient will convert to — click Auto-convert to Metric then Promote to fix them all at once.", "The system then tries to match every ingredient name to the Ingredients Database using fuzzy matching.", "Matched ingredients are confirmed in green. Unmatched ingredients are listed by name in orange — each has an Add to DB button.", "Click Add to DB next to any unmatched ingredient to open the database form pre-filled with that name. After saving, the promote modal reopens with refreshed match counts.", "If all ingredients are now matched, the recipe promotes automatically. You can also promote with unmatched items and cost them later.", "Click the X, Cancel, or tap outside the modal to dismiss and return to your recipe."]], ["Flavour Audit", ["The Flavour Audit panel on the right scores the current version across all eight pillars and tells you in plain language what is missing.", "Scoring is by strength, not by weight — the strongest contributor sets the score, because two grams of chilli delivers more Spice than two hundred grams of potato delivers anything. Three or more ingredients contributing the same pillar earns a bonus, since several moderate sources read as one confident one.", "Each pillar lands in one of three states: present, thin, or absent. The radar shows gaps as hollow red points and the row list names which ingredients are carrying each pillar.", "The verdict explains what the gap will actually feel like to eat. No Sour in a rich dish means nothing cuts the richness; no Sensation means the texture is uniform and the palate will tire by the fourth mouthful.", "Suggested fixes come only from ingredients you actually stock. A filled chip with a number means that one ingredient closes that many gaps at once — worth taking, since one addition beats three.", "Click any suggestion to drop it straight into the recipe at zero quantity, then set the amount yourself.", "If ingredients are not in your database the audit says so and reports how many it could read. An audit of six out of eleven ingredients is not an audit.", "Treat it as a second opinion, not a verdict. It cannot taste the dish and it does not know your intent — a deliberately austere dish will show gaps and be correct as it stands.", "Balance this recipe with AI hands Claude a precise brief: which pillars are missing, and which ingredients from your own database would close them. It is told to make the smallest change that works and to keep the dish recognisably itself.", "It will refuse a gap if closing it would harm the dish, and say so. When it finishes it reports which gaps closed and which stayed open, checked against a fresh audit rather than taken on trust.", "Newly generated recipes are now built with the pillars in mind from the start, so there should be fewer gaps to close."]], ["Recipe Versions", ["Every recipe has a Master version — your base recipe at standard yield.", "From the Master you can generate Home Cook, Restaurant, Banqueting, and Food Truck versions by clicking the star button next to each version tab.", "Each version is independent and has its own costing — a 50-portion banqueting version costs differently to a 10-portion restaurant version.", "Use the Clone button in the topbar to duplicate an entire recipe as a starting point for a variation."]], ["Scaling Recipes", ["Click the Scale button in the topbar to scale ingredient quantities to a new portion count.", "A live preview shows new quantities before you apply. Scaling works on the current version only.", "After scaling, the costing tab automatically recalculates with the new quantities.", "Use the Check Units button next to the ingredient list to scan for non-metric units and auto-convert them.", "Check Units now converts kitchen shorthand as well: sprigs, bunches, cloves, pinches, handfuls, knobs, dashes, splashes, sticks, leaves and slices all convert to grams or millilitres using professional standards."]], ["AI Panel", ["Click the AI Panel button in the topbar to expand the right panel to full width — useful on smaller screens or when refining with AI.", "The AI panel contains the co-creation chat, DNA radar, nutrition per portion, allergen profile, and all export options.", "Click Recipe in the topbar to return to the recipe editor.", "Use the refinement chat to adjust the recipe with natural language: Make it spicier, Replace cream with coconut milk, Simplify for a junior chef."]], ["Yield Override — costing what you actually bought", ["The Yield % column in the Costing tab is editable. It starts at the database value but you can override it for this recipe only.", "Why this matters: the database stores Chicken Whole at 65% yield, which assumes you debone it for breast meat. If your recipe joints the bird and uses every piece, the yield for that recipe is 100%.", "Worked example: a 1.6kg chicken at 98.00. At the database 65% the recipe is charged 150.77. Set the override to 100% and it is charged 98.00 — exactly what you paid.", "Overridden cells are highlighted and show a reset arrow. Click the arrow to return that line to the database value.", "The override is stored on the recipe line, not the database, so other recipes are unaffected.", "Overridden lines are marked with an asterisk on the printed Costing Card."]], ["Costing Tab", ["Only available on Costed recipes. Click the orange Costing tab to open it.", "Shows Total Recipe Cost, Cost per Portion, and Ideal Selling Price at the top.", "Enter your Target Food Cost percentage and your Actual Menu Price. The system calculates Actual Food Cost percentage, Margin per Portion, and Total Margin.", "The ingredient table shows Recipe Qty, Purchase Cost, Pack Size, Yield percentage from the database, Yield Cost per 100, Recipe Cost, and percentage of Recipe.", "The percentage of Recipe column shows each ingredient as a percentage of total recipe cost — green under 25 percent, amber 25 to 40 percent, red over 40 percent. Use this to identify cost drivers.", "Costs reprice automatically whenever you update ingredient prices in the Ingredients Database.", "Unmatched ingredients show a NOT IN DB badge with an Add to DB button inline."]], ["Allergen Scanning", ["Click the Allergens button in the topbar to scan the current recipe against the 14 declarable allergens.", "The scan cross-references ingredient names against the Ingredients Database allergen flags using fuzzy matching.", "Always check prepared sauces, spice blends, and unlisted items manually — the scan only detects allergens for ingredients it can match."]], ["Printing and Exporting", ["Click the Print button in the topbar for all print options.", "Magazine PDF and Training Manual PDF — recipe content only, no costing data. Suitable for publications, menus, and training.", "Purchasing List — shows every ingredient with recipe quantity, pack size, units to buy, unit cost, and total cost. Includes tick boxes and sign-off lines for ordering.", "Nutritional Summary — calculates actual calories, protein, carbs and fat per portion from the Ingredients Database with a macronutrient bar chart.", "Flavour Audit — the full audit as a document: pillar strength bars, which ingredient delivers each pillar, suggested fixes from your database, and sign-off lines for tasting approval.", "Edit Sheet — working copy with blank columns for handwritten changes and sign-off fields.", "Recipe Costing Card — full costing breakdown with food cost percentage, margin, and ingredient cost table. Only available on Costed recipes.", "All Recipes by Category — prints the entire collection in a selected version format.", "Recipe Index — a single landscape page listing all recipes with cuisine, type, portions, cost per portion, menu price, food cost percentage, margin, and allergens.", "Clone — duplicates the current recipe as a starting point for a variation. Find it next to the Delete button in the topbar.", "The Magazine and Training Manual now carry a flavour pillar line, and the Recipe Index gains a Pillars column showing coverage out of eight — anything under five prints in orange so a one-dimensional dish stands out when you scan a whole menu."]], ["Preview before printing", ["Every export now opens in a preview window first. Nothing goes to the printer until you ask.", "Print / Save PDF sends the document to your printer dialogue, where you can also choose Save as PDF.", "New Tab opens the document in its own browser tab if you would rather work with it there.", "Back to Edit closes the preview so you can correct the recipe and preview again.", "Check quantities, yields and costs in the preview before committing anything to paper."]]]}, "pantry": {"title": "Ingredients Database Guide", "sections": [["The Ingredients Database", ["153 pre-loaded ingredients across 13 categories sorted alphabetically — Baking, Condiments, Dairy, Fish and Seafood, Fruit, Indigenous, Meat and Poultry, Nuts and Seeds, Oils and Fats, Spices and Herbs, Starches and Grains, Stock and Liquids, and Vegetables.", "Every ingredient stores nutritional data (calories, protein, carbs, fat per 100g), cost per pack, yield percentage, and allergen flags.", "This data powers allergen scanning, recipe costing, purchasing lists, and nutritional summaries.", "Click the Sync DB button to reload the database if you have made changes in another tab or session.", "Click any column header to sort the table by that field. Click again to reverse."]], ["Yield Calculation", ["Purchase Quantity is the pack size you buy — for example anchovies 425g tin.", "Purchase Cost is what you pay for that pack, exclusive of VAT or Tax.", "Yield percentage accounts for trimming, draining, peeling, bones, and other waste. Default is 100 percent.", "Example: Anchovies 425g tin at 70.25, yield 80 percent. Yield Cost = (70.25 / 425) / 0.80 = 0.2065 per gram, or 20.65 per 100g. This is what the system uses for recipe costing.", "For ingredients sold by each — eggs, avocados, lemons — the yield cost is calculated per each unit after yield. A 1 each avocado at 18.00 with 75 percent yield = 24.00 per each.", "Ingredients entered in kg are automatically converted to per 100g for costing. 1kg at 380.00 = 38.00 per 100g.", "The yield stored here is the default for that ingredient. Individual recipes can override it in their Costing tab when the preparation differs — for example a whole chicken jointed rather than deboned."]], ["Flavour Pillars", ["Every ingredient carries a profile across eight pillars: Savoury, Sweet, Salty, Sour, Bitter, Sensation, Spice and Smell.", "The five basic tastes are joined by three inputs that are not tastes at all — Sensation is mouthfeel (crunch, chew, fat, astringency), Spice is trigeminal heat (chilli, pepper, mustard, ginger) registering on the nerve rather than the tongue, and Smell is the aroma read retro-nasally as you chew, which is where most of what we call flavour actually comes from.", "Each pillar is scored none, slight, moderate or dominant. Score by how the ingredient behaves in use, not by how much of it goes in — two grams of chilli delivers more Spice than two hundred grams of potato delivers anything.", "All 153 default ingredients arrive already profiled. Edit any of them, or profile your own, in the Flavour Pillars block of the ingredient form.", "The Pillars column shows each ingredient's profile as coloured marks, strongest first. Solid marks are dominant, faded ones slight.", "Filter by any single pillar to answer questions like which of my ingredients bring acidity, or use Not yet profiled to find gaps in your own additions.", "This is a development aid rather than a scientific instrument. Use it to catch a dish that has no acidity or no crunch — not as a substitute for tasting."]], ["Adding and Editing Ingredients", ["Click Add Ingredient to add a new item. All costs must be entered exclusive of VAT or Tax — a prominent warning appears on the form.", "Fill in the name, category, purchase quantity, unit (g, kg, ml, lt, each), purchase cost, and yield percentage.", "The live yield preview updates as you type so you can see the exact recipe costing price before saving.", "Tick all applicable allergens — these are used by the allergen scanner in the Recipe Editor.", "The category auto-detects from the ingredient name when adding from a recipe promotion.", "Click Edit on any row to update any field. All inputs select on focus so you can type immediately without backspacing.", "Custom ingredients are marked with a green CUSTOM badge."]], ["Deleting Ingredients", ["Click Delete on any row. A confirmation prompt appears before removal.", "Deleting an ingredient does not remove it from existing recipes — only from future allergen scans, costing, and autocomplete.", "Pre-loaded ingredients can be deleted if not relevant to your operation."]], ["Filtering and Searching", ["Use the search field to find ingredients by name across all categories.", "Filter by Category to see one ingredient type at a time.", "Filter by Allergen to see all ingredients containing a specific allergen — useful for menu planning.", "Tick Custom Only to see only ingredients you have added yourself.", "The ingredient autocomplete in the recipe editor shows all ingredients sorted alphabetically ignoring category."]]]}, "allergens": {"title": "Allergen Guide", "sections": [["The 14 Declarable Allergens", ["EU and UK Food Information Regulations require all 14 allergens to be declared whenever they are used as ingredients.", "This applies to restaurant menus, packaged foods, catering, and recipe cards supplied to clients.", "South African food labelling regulations are aligned with Codex Alimentarius standards which cover the major allergens.", "When in doubt, declare — it is always safer to over-declare than to miss an allergen.", "Each allergen card shows how many of your recipes contain that allergen, updated automatically when you run a scan."]], ["Hidden Allergens", ["Many ingredients contain allergens that are not obvious from the name alone.", "Worcestershire sauce contains fish (anchovies). Soy sauce contains both soy and gluten. Caesar dressing contains fish and eggs.", "Spice blends may contain celery, mustard, or gluten from anti-caking agents.", "Stock cubes and bouillons often contain gluten, celery, and sulphites.", "Braai spice blends commonly contain mustard and celery — always check the label.", "Always read labels on every prepared ingredient — even products you have used before, as manufacturers change formulations."]], ["Using the Allergen Scanner", ["Open any recipe in the editor and click Allergens in the topbar.", "The scanner checks every ingredient in the current version against your Ingredients Database allergen flags using fuzzy name matching.", "Detected allergens appear highlighted in orange in the Allergen Profile panel on the right.", "The scan result is saved with the recipe and shown on the Dashboard recipe cards.", "Limitation: the scanner only detects allergens for ingredients it can match in the database. Always verify manually for unlisted or custom ingredients.", "A reminder to check hidden allergens in sauces and condiments appears in the scan toast message."]], ["Declaring Allergens", ["On menus: list allergens in bold within the ingredient description, or use a separate allergen key.", "On recipe cards for clients: use the Training Manual export — it includes an allergen column in the ingredients table.", "For banqueting: provide a full allergen matrix to the front-of-house team before service.", "Keep a signed allergen declaration on file for each recipe — use the Edit Sheet which includes sign-off fields.", "The Recipe Index print includes allergen information for every recipe in a single reference document."]]]}};
+  const guides = {"dashboard": {"title": "Dashboard Guide", "sections": [["AI Recipe Generation", ["Type a brief description of the recipe you want in the AI Co-Creation field and press Enter or click Generate.", "Be specific — include cuisine, key ingredients, cooking style, occasion, dietary requirements, or service context. Example: A Cape Malay braised lamb shoulder with samp, peri-peri butter and pickled red onion for a winter banquet menu.", "The AI creates a full recipe with ingredients in metric units, method, production schedule, plating notes and a DNA profile.", "AI recipes are marked with a red AI badge in the sidebar. They are for inspiration and refinement — they do not interact with the Ingredients Database and cannot be costed until promoted.", "To cost an AI recipe, open it in the editor and click the green Promote to Costed Recipe button."]], ["Write New Recipe", ["Creates a blank Costed Recipe marked with a green COSTED badge in the sidebar.", "This is where your actual master recipes live. Ingredients are linked to the Ingredients Database for dynamic costing.", "As you enter ingredients they are matched to the database automatically using fuzzy matching — so Portobello mushrooms will match Mushrooms (portobello) in the database.", "Costs update automatically whenever database prices are changed.", "Click the Costing tab in the editor to see the full cost breakdown, food cost percentage, ideal selling price, and margin per portion."]], ["Recipe Library and Search", ["All recipes appear as cards sorted alphabetically. AI recipes show a red AI badge, Costed recipes show a green COSTED badge.", "Search by flavour profile, dietary tag, cuisine type, or ingredient name.", "Click any card to open it in the editor.", "Recipes show allergen warnings and flavour tags at a glance."]], ["Dashboard Stats", ["Total Recipes — your full library count including both AI and Costed recipes.", "With DNA — recipes that have been AI-generated with a full flavour and nutrition profile.", "Ingredients — total items in your Ingredients Database.", "Allergen Scanned — recipes that have been checked for the 14 declarable allergens."]]]}, "editor": {"title": "Recipe Editor Guide", "sections": [["AI vs Costed Recipes", ["AI Recipes (red AI badge) are generated from the dashboard. They show a green Promote to Costed Recipe button at the top of the editor.", "Costed Recipes (green COSTED badge) are created via Write New Recipe or promoted from AI. They have two tabs — Recipe and Costing.", "Only Costed recipes interact with the Ingredients Database and can produce a costing card, purchasing list, or nutritional summary."]], ["Reviewing an AI recipe before you cost it", ["A newly generated recipe is a draft. Read it through and correct it before promoting — the AI can get quantities, cuts and preparation wrong.", "Everything in the Recipe tab is editable: ingredient names, quantities, units and prep notes are all live fields. Click any of them and type.", "The readiness strip under the AI badge tells you what still needs attention: missing quantities, non-metric units, and ingredients not yet in your database.", "It turns green when the recipe is clean and ready to cost.", "Fix units opens the unit converter. Open database takes you to the Ingredients Database.", "Preview opens the recipe as a clean formatted document so you can read it the way a chef would, rather than as a form. Back to Edit returns you to the editor.", "Only promote to costed once the recipe reads correctly — promoting is not permanent, but costing a wrong recipe wastes your time."]], ["Promoting an AI Recipe to Costed", ["Click the green Promote to Costed Recipe button in the editor.", "The system first checks for non-metric units. If any are found it shows a conversion modal with what each ingredient will convert to — click Auto-convert to Metric then Promote to fix them all at once.", "The system then tries to match every ingredient name to the Ingredients Database using fuzzy matching.", "Matched ingredients are confirmed in green. Unmatched ingredients are listed by name in orange — each has an Add to DB button.", "Click Add to DB next to any unmatched ingredient to open the database form pre-filled with that name. After saving, the promote modal reopens with refreshed match counts.", "If all ingredients are now matched, the recipe promotes automatically. You can also promote with unmatched items and cost them later.", "Click the X, Cancel, or tap outside the modal to dismiss and return to your recipe."]], ["Flavour Audit", ["The Flavour Audit panel on the right scores the current version across all eight pillars and tells you in plain language what is missing.", "Scoring is by strength, not by weight — the strongest contributor sets the score, because two grams of chilli delivers more Spice than two hundred grams of potato delivers anything. Three or more ingredients contributing the same pillar earns a bonus, since several moderate sources read as one confident one.", "Each pillar lands in one of three states: present, thin, or absent. The radar shows gaps as hollow red points and the row list names which ingredients are carrying each pillar.", "The verdict explains what the gap will actually feel like to eat. No Sour in a rich dish means nothing cuts the richness; no Sensation means the texture is uniform and the palate will tire by the fourth mouthful.", "Suggested fixes come only from ingredients you actually stock. A filled chip with a number means that one ingredient closes that many gaps at once — worth taking, since one addition beats three.", "Click any suggestion to drop it straight into the recipe at zero quantity, then set the amount yourself.", "If ingredients are not in your database the audit says so and reports how many it could read. An audit of six out of eleven ingredients is not an audit.", "Treat it as a second opinion, not a verdict. It cannot taste the dish and it does not know your intent — a deliberately austere dish will show gaps and be correct as it stands.", "Balance this recipe with AI hands Claude a precise brief: which pillars are missing, and which ingredients from your own database would close them. It is told to make the smallest change that works and to keep the dish recognisably itself.", "It will refuse a gap if closing it would harm the dish, and say so. When it finishes it reports which gaps closed and which stayed open, checked against a fresh audit rather than taken on trust.", "Newly generated recipes are now built with the pillars in mind from the start, so there should be fewer gaps to close."]], ["Recipe Versions", ["Every recipe has a Master version — your base recipe at standard yield.", "From the Master you can generate Home Cook, Restaurant, Banqueting, and Food Truck versions by clicking the star button next to each version tab.", "Each version is independent and has its own costing — a 50-portion banqueting version costs differently to a 10-portion restaurant version.", "Use the Clone button in the topbar to duplicate an entire recipe as a starting point for a variation."]], ["Scaling Recipes", ["Click the Scale button in the topbar to scale ingredient quantities to a new portion count.", "A live preview shows new quantities before you apply. Scaling works on the current version only.", "After scaling, the costing tab automatically recalculates with the new quantities.", "Use the Check Units button next to the ingredient list to scan for non-metric units and auto-convert them.", "Check Units now converts kitchen shorthand as well: sprigs, bunches, cloves, pinches, handfuls, knobs, dashes, splashes, sticks, leaves and slices all convert to grams or millilitres using professional standards."]], ["AI Panel", ["Click the AI Panel button in the topbar to expand the right panel to full width — useful on smaller screens or when refining with AI.", "The AI panel contains the co-creation chat, DNA radar, nutrition per portion, allergen profile, and all export options.", "Click Recipe in the topbar to return to the recipe editor.", "Use the refinement chat to adjust the recipe with natural language: Make it spicier, Replace cream with coconut milk, Simplify for a junior chef."]], ["Yield Override — costing what you actually bought", ["The Yield % column in the Costing tab is editable. It starts at the database value but you can override it for this recipe only.", "Why this matters: the database stores Chicken Whole at 65% yield, which assumes you debone it for breast meat. If your recipe joints the bird and uses every piece, the yield for that recipe is 100%.", "Worked example: a 1.6kg chicken at 98.00. At the database 65% the recipe is charged 150.77. Set the override to 100% and it is charged 98.00 — exactly what you paid.", "Overridden cells are highlighted and show a reset arrow. Click the arrow to return that line to the database value.", "The override is stored on the recipe line, not the database, so other recipes are unaffected.", "Overridden lines are marked with an asterisk on the printed Costing Card."]], ["Costing Tab", ["Only available on Costed recipes. Click the orange Costing tab to open it.", "Shows Total Recipe Cost, Cost per Portion, and Ideal Selling Price at the top.", "Enter your Target Food Cost percentage and your Actual Menu Price. The system calculates Actual Food Cost percentage, Margin per Portion, and Total Margin.", "The ingredient table shows Recipe Qty, Purchase Cost, Pack Size, Yield percentage from the database, Yield Cost per 100, Recipe Cost, and percentage of Recipe.", "The percentage of Recipe column shows each ingredient as a percentage of total recipe cost — green under 25 percent, amber 25 to 40 percent, red over 40 percent. Use this to identify cost drivers.", "Costs reprice automatically whenever you update ingredient prices in the Ingredients Database.", "Unmatched ingredients show a NOT IN DB badge with an Add to DB button inline.", "The Recipe Cost column is editable. Type any figure straight over the calculated one and that line is costed by hand — the cell outlines in orange and a reset arrow appears to return to the calculated figure.", "Manual costs are marked on the printed Costing Card with a double dagger, so anyone reading it knows the figure was entered rather than derived.", "Some lines cannot be costed automatically and will say UNIT MISMATCH. This happens when the recipe measures an ingredient differently from the way it is bought — 30 ml of lemon juice against a lemon priced per item. Weight, volume and count are not interchangeable, so the app refuses to guess and asks you to type the real cost. Thirty millilitres of juice from a five rand lemon is roughly 3.75.", "Lines that are unresolved are excluded from the recipe total rather than counted as zero, and the banner above the table names them so the total is never quietly wrong."]], ["Allergen Scanning", ["Click the Allergens button in the topbar to scan the current recipe against the 14 declarable allergens.", "The scan cross-references ingredient names against the Ingredients Database allergen flags using fuzzy matching.", "Always check prepared sauces, spice blends, and unlisted items manually — the scan only detects allergens for ingredients it can match."]], ["Printing and Exporting", ["Click the Print button in the topbar for all print options.", "Magazine PDF and Training Manual PDF — recipe content only, no costing data. Suitable for publications, menus, and training.", "Purchasing List — shows every ingredient with recipe quantity, pack size, units to buy, unit cost, and total cost. Includes tick boxes and sign-off lines for ordering.", "Nutritional Summary — calculates actual calories, protein, carbs and fat per portion from the Ingredients Database with a macronutrient bar chart.", "Flavour Audit — the full audit as a document: pillar strength bars, which ingredient delivers each pillar, suggested fixes from your database, and sign-off lines for tasting approval.", "Edit Sheet — working copy with blank columns for handwritten changes and sign-off fields.", "Recipe Costing Card — full costing breakdown with food cost percentage, margin, and ingredient cost table. Only available on Costed recipes.", "All Recipes by Category — prints the entire collection in a selected version format.", "Recipe Index — a single landscape page listing all recipes with cuisine, type, portions, cost per portion, menu price, food cost percentage, margin, and allergens.", "Clone — duplicates the current recipe as a starting point for a variation. Find it next to the Delete button in the topbar.", "The Magazine and Training Manual now carry a flavour pillar line, and the Recipe Index gains a Pillars column showing coverage out of eight — anything under five prints in orange so a one-dimensional dish stands out when you scan a whole menu."]], ["Preview before printing", ["Every export now opens in a preview window first. Nothing goes to the printer until you ask.", "Print / Save PDF sends the document to your printer dialogue, where you can also choose Save as PDF.", "New Tab opens the document in its own browser tab if you would rather work with it there.", "Back to Edit closes the preview so you can correct the recipe and preview again.", "Check quantities, yields and costs in the preview before committing anything to paper."]]]}, "pantry": {"title": "Ingredients Database Guide", "sections": [["The Ingredients Database", ["153 pre-loaded ingredients across 13 categories sorted alphabetically — Baking, Condiments, Dairy, Fish and Seafood, Fruit, Indigenous, Meat and Poultry, Nuts and Seeds, Oils and Fats, Spices and Herbs, Starches and Grains, Stock and Liquids, and Vegetables.", "Every ingredient stores nutritional data (calories, protein, carbs, fat per 100g), cost per pack, yield percentage, and allergen flags.", "This data powers allergen scanning, recipe costing, purchasing lists, and nutritional summaries.", "Click the Sync DB button to reload the database if you have made changes in another tab or session.", "Click any column header to sort the table by that field. Click again to reverse.", "Your database is saved in this browser, and the saved copy is what loads each time. That means an app update on its own will not add new built-in ingredients. The app now tops them up automatically on startup and tells you how many arrived. Restore defaults does the same on demand. Neither touches your prices, your yields or anything you added yourself."]], ["Yield Calculation", ["Purchase Quantity is the pack size you buy — for example anchovies 425g tin.", "Purchase Cost is what you pay for that pack, exclusive of VAT or Tax.", "Yield percentage accounts for trimming, draining, peeling, bones, and other waste. Default is 100 percent.", "Example: Anchovies 425g tin at 70.25, yield 80 percent. Yield Cost = (70.25 / 425) / 0.80 = 0.2065 per gram, or 20.65 per 100g. This is what the system uses for recipe costing.", "For ingredients sold by each — eggs, avocados, lemons — the yield cost is calculated per each unit after yield. A 1 each avocado at 18.00 with 75 percent yield = 24.00 per each.", "Ingredients entered in kg are automatically converted to per 100g for costing. 1kg at 380.00 = 38.00 per 100g.", "The yield stored here is the default for that ingredient. Individual recipes can override it in their Costing tab when the preparation differs — for example a whole chicken jointed rather than deboned."]], ["Flavour Pillars", ["Every ingredient carries a profile across eight pillars: Savoury, Sweet, Salty, Sour, Bitter, Sensation, Spice and Smell.", "The five basic tastes are joined by three inputs that are not tastes at all — Sensation is mouthfeel (crunch, chew, fat, astringency), Spice is trigeminal heat (chilli, pepper, mustard, ginger) registering on the nerve rather than the tongue, and Smell is the aroma read retro-nasally as you chew, which is where most of what we call flavour actually comes from.", "Each pillar is scored none, slight, moderate or dominant. Score by how the ingredient behaves in use, not by how much of it goes in — two grams of chilli delivers more Spice than two hundred grams of potato delivers anything.", "All 153 default ingredients arrive already profiled. Edit any of them, or profile your own, in the Flavour Pillars block of the ingredient form.", "The Pillars column shows each ingredient's profile as coloured marks, strongest first. Solid marks are dominant, faded ones slight.", "Filter by any single pillar to answer questions like which of my ingredients bring acidity, or use Not yet profiled to find gaps in your own additions.", "This is a development aid rather than a scientific instrument. Use it to catch a dish that has no acidity or no crunch — not as a substitute for tasting."]], ["Adding and Editing Ingredients", ["Click Add Ingredient to add a new item. All costs must be entered exclusive of VAT or Tax — a prominent warning appears on the form.", "Fill in the name, category, purchase quantity, unit (g, kg, ml, lt, each), purchase cost, and yield percentage.", "The live yield preview updates as you type so you can see the exact recipe costing price before saving.", "AI fill asks Claude for the nutrition, pillar profile, allergens and a sensible yield from the ingredient name. It writes them into the form for you to check — nothing is saved until you press save, and cost and pack size remain yours to enter because no model can know what your supplier charges.", "Tick all applicable allergens — these are used by the allergen scanner in the Recipe Editor.", "The category auto-detects from the ingredient name when adding from a recipe promotion.", "Click Edit on any row to update any field. All inputs select on focus so you can type immediately without backspacing.", "Custom ingredients are marked with a green CUSTOM badge."]], ["Deleting Ingredients", ["Click Delete on any row. A confirmation prompt appears before removal.", "Deleting an ingredient does not remove it from existing recipes — only from future allergen scans, costing, and autocomplete.", "Pre-loaded ingredients can be deleted if not relevant to your operation."]], ["Filtering and Searching", ["Use the search field to find ingredients by name across all categories.", "Filter by Category to see one ingredient type at a time.", "Filter by Allergen to see all ingredients containing a specific allergen — useful for menu planning.", "Tick Custom Only to see only ingredients you have added yourself.", "The ingredient autocomplete in the recipe editor shows all ingredients sorted alphabetically ignoring category."]], ["Backup and Restore", ["Everything lives in this browser's local storage. Clear the browser, switch device, or open the site on a different address and it is gone.", "Backup writes your recipes and ingredients to a JSON file you keep. Restore loads one back, replacing what is in the browser.", "The version inside the API key window also carries the key, so restoring on a new machine brings everything across in one step.", "Do this before any browser cleanup, before switching machines, and periodically once you have work worth losing.", "If your API key or data keeps vanishing, check the address bar. A Vercel deployment address such as chefslab-recipeos-a1b2c3-yourname.vercel.app is a different origin from chefslab-recipeos.vercel.app and gets its own separate storage. The key window warns you when you are on one."]]]}, "allergens": {"title": "Allergen Guide", "sections": [["The 14 Declarable Allergens", ["EU and UK Food Information Regulations require all 14 allergens to be declared whenever they are used as ingredients.", "This applies to restaurant menus, packaged foods, catering, and recipe cards supplied to clients.", "South African food labelling regulations are aligned with Codex Alimentarius standards which cover the major allergens.", "When in doubt, declare — it is always safer to over-declare than to miss an allergen.", "Each allergen card shows how many of your recipes contain that allergen, updated automatically when you run a scan."]], ["Hidden Allergens", ["Many ingredients contain allergens that are not obvious from the name alone.", "Worcestershire sauce contains fish (anchovies). Soy sauce contains both soy and gluten. Caesar dressing contains fish and eggs.", "Spice blends may contain celery, mustard, or gluten from anti-caking agents.", "Stock cubes and bouillons often contain gluten, celery, and sulphites.", "Braai spice blends commonly contain mustard and celery — always check the label.", "Always read labels on every prepared ingredient — even products you have used before, as manufacturers change formulations."]], ["Using the Allergen Scanner", ["Open any recipe in the editor and click Allergens in the topbar.", "The scanner checks every ingredient in the current version against your Ingredients Database allergen flags using fuzzy name matching.", "Detected allergens appear highlighted in orange in the Allergen Profile panel on the right.", "The scan result is saved with the recipe and shown on the Dashboard recipe cards.", "Limitation: the scanner only detects allergens for ingredients it can match in the database. Always verify manually for unlisted or custom ingredients.", "A reminder to check hidden allergens in sauces and condiments appears in the scan toast message."]], ["Declaring Allergens", ["On menus: list allergens in bold within the ingredient description, or use a separate allergen key.", "On recipe cards for clients: use the Training Manual export — it includes an allergen column in the ingredients table.", "For banqueting: provide a full allergen matrix to the front-of-house team before service.", "Keep a signed allergen declaration on file for each recipe — use the Edit Sheet which includes sign-off fields.", "The Recipe Index print includes allergen information for every recipe in a single reference document."]]]}};
 
   const view = state.activeView;
   const guide = guides[view] || guides["dashboard"];
@@ -3030,6 +3282,49 @@ function hasYieldOverride(ing) {
   return ing && ing.yieldOverride !== undefined && ing.yieldOverride !== null && ing.yieldOverride !== "";
 }
 
+// Weight, volume and count are not interchangeable. Multiplying 30 ml by a
+// per-each price treats 30 ml as 30 lemons, so we refuse rather than guess.
+function unitClass(u) {
+  const x = (u || "").toLowerCase().trim();
+  if (x === "g" || x === "kg") return "weight";
+  if (x === "ml" || x === "lt" || x === "l") return "volume";
+  if (x === "each") return "count";
+  return "unknown";
+}
+
+function hasCostOverride(ing) {
+  return ing && ing.costOverride !== undefined && ing.costOverride !== null && ing.costOverride !== "";
+}
+
+// Everything the costing table and the print outputs need for one line
+function lineCost(ing) {
+  const db = findInPantry(ing ? ing.name : "");
+  const manual = hasCostOverride(ing) ? (parseFloat(ing.costOverride) || 0) : null;
+
+  if (!db) {
+    return { db: null, cost: manual, manual: manual !== null,
+             status: manual !== null ? "manual" : "nodb", perUnit: null };
+  }
+
+  const effItem = { ...db, yield_pct: effectiveYield(ing) };
+  const perUnit = calcYieldCost(effItem);
+
+  if (manual !== null) {
+    return { db, effItem, perUnit, cost: manual, manual: true, status: "manual" };
+  }
+
+  const rc = unitClass(ing.unit || "g");
+  const pc = unitClass(db.purchaseUnit || "g");
+  if (rc !== pc || rc === "unknown") {
+    // e.g. recipe in ml, ingredient priced per each
+    return { db, effItem, perUnit, cost: null, manual: false,
+             status: "mismatch", recipeClass: rc, dbClass: pc };
+  }
+
+  return { db, effItem, perUnit, cost: perUnit * (ing.quantity || 0),
+           manual: false, status: "ok" };
+}
+
 function calcIngredientCost(ingName, qty, yieldOverride) {
   const costPerUnit = getYieldCostPerUnit(ingName, yieldOverride);
   if (costPerUnit === null) return null;
@@ -3040,12 +3335,14 @@ function calcVersionCost(version) {
   if (!version || !version.ingredients || !version.ingredients.length) return null;
   let total = 0;
   let unmatched = [];
+  const mismatched = [];
   version.ingredients.forEach(ing => {
-    const cost = calcIngredientCost(ing.name, ing.quantity, ing.yieldOverride);
-    if (cost === null) unmatched.push(ing.name);
-    else total += cost;
+    const lc = lineCost(ing);
+    if (lc.status === "nodb") { unmatched.push(ing.name); return; }
+    if (lc.status === "mismatch") { mismatched.push(ing.name); return; }
+    total += lc.cost || 0;
   });
-  return { total: parseFloat(total.toFixed(2)), unmatched };
+  return { total: parseFloat(total.toFixed(2)), unmatched, mismatched };
 }
 
 
@@ -3284,13 +3581,16 @@ function renderCostingTab(r, versionKey) {
   const marginPerPortion = actualSP > 0 ? actualSP - costPerPortion : 0;
 
   const ingRows = (v.ingredients||[]).map((ing, idx) => {
-    const dbItem = findInPantry(ing.name);
+    const lc = lineCost(ing);
+    const dbItem = lc.db;
     const effYield = effectiveYield(ing);
     const overridden = hasYieldOverride(ing);
-    const effItem = dbItem ? { ...dbItem, yield_pct: effYield } : null;
-    const yieldCostPerUnit = effItem ? calcYieldCost(effItem) : null;
+    const effItem = lc.effItem || null;
+    const yieldCostPerUnit = lc.perUnit;
     const yd = effItem ? getYieldDisplay(effItem) : null;
-    const recipeCost = yieldCostPerUnit !== null ? yieldCostPerUnit * ing.quantity : null;
+    const recipeCost = lc.cost;
+    const mismatch = lc.status === "mismatch";
+    const manualCost = lc.manual;
     const pctOfRecipe = (recipeCost !== null && totalCost > 0) ? (recipeCost / totalCost * 100) : null;
     const pctColor = pctOfRecipe !== null ? (pctOfRecipe > 40 ? '#C4501A' : pctOfRecipe > 25 ? '#8B5E00' : '#2C7A4B') : '#333';
     const matched = !!dbItem;
@@ -3306,14 +3606,34 @@ function renderCostingTab(r, versionKey) {
         <td style="padding:5px 6px;text-align:center;background:${overridden?'#FFF8F0':'transparent'}">
           ${dbItem ? `<div style="display:flex;align-items:center;justify-content:center;gap:2px">
             <input type="number" min="1" max="100" step="1" value="${effYield}" title="${overridden?'Overridden for this recipe — clear to use database value ('+(dbItem.yield_pct||100)+'%)':'Database yield. Change it to override for this recipe only.'}"
-              onchange="updateIng(${idx},'yieldOverride',this.value)"
+              data-fk="yield-${idx}" onchange="updateIng(${idx},'yieldOverride',this.value)"
               style="width:46px;padding:3px 2px;text-align:center;font-size:11px;font-weight:700;border:1px solid ${overridden?'#C4501A':'#ddd'};border-radius:2px;color:${effYield<100?'#C4501A':'#333'};background:#fff">
             <span style="font-size:10px;font-weight:700;color:#666">%</span>
             ${overridden?`<button onclick="updateIng(${idx},'yieldOverride','')" title="Reset to database yield" style="background:none;border:none;cursor:pointer;color:#C4501A;font-size:12px;padding:0 2px;line-height:1">↺</button>`:''}
           </div>` : '—'}
         </td>
         <td style="padding:7px 10px;font-size:11px;text-align:right;font-family:monospace;color:#C4501A;font-weight:700" title="${yd?yd.label:''}">${yd?yd.value:'—'}</td>
-        <td style="padding:7px 10px;font-size:12px;text-align:right;font-family:monospace;font-weight:900;color:${recipeCost!==null?'#111':'#C4501A'};background:${recipeCost!==null?'#F0F7F0':'#FFF0EB'}">${recipeCost!==null?recipeCost.toFixed(2):'—'}</td>
+        <td style="padding:5px 6px;text-align:right;background:${manualCost?'#FFF8F0':mismatch?'#FFECE4':recipeCost!==null?'#F0F7F0':'#FFF0EB'}">
+          ${mismatch && !manualCost ? `
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+              <span style="font-size:9px;font-weight:800;color:#C4501A;letter-spacing:0.5px">UNIT MISMATCH</span>
+              <span style="font-size:9px;color:#8B5E00;font-weight:700">recipe in ${escHtml(ing.unit||'g')}, priced per ${escHtml(dbItem.purchaseUnit)}</span>
+              <input type="number" min="0" step="0.01" placeholder="type cost"
+                data-fk="cost-${idx}" onchange="updateIng(${idx},'costOverride',this.value)"
+                style="width:76px;padding:3px;text-align:right;font-size:11px;font-weight:800;font-family:monospace;border:1px solid #C4501A;border-radius:2px;background:#fff">
+            </div>` : `
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:3px">
+              <input type="number" min="0" step="0.01"
+                value="${recipeCost !== null ? recipeCost.toFixed(2) : ''}"
+                placeholder="${dbItem ? '0.00' : 'type cost'}"
+                title="${manualCost ? 'Manually costed — click the arrow to return to the calculated figure' : 'Calculated from the database. Type over it to set the cost by hand.'}"
+                data-fk="cost-${idx}" onchange="updateIng(${idx},'costOverride',this.value)"
+                style="width:76px;padding:3px;text-align:right;font-size:12px;font-weight:900;font-family:monospace;
+                  border:1px solid ${manualCost?'#C4501A':'transparent'};border-radius:2px;
+                  background:${manualCost?'#fff':'transparent'};color:${recipeCost!==null?'#111':'#C4501A'}">
+              ${manualCost?`<button onclick="updateIng(${idx},'costOverride','')" title="Use the calculated figure again" style="background:none;border:none;cursor:pointer;color:#C4501A;font-size:12px;padding:0;line-height:1">↺</button>`:''}
+            </div>`}
+        </td>
         <td style="padding:7px 10px;font-size:12px;text-align:right;font-family:monospace;font-weight:900;color:${pctColor};background:#F9F6F0">${pctOfRecipe!==null?pctOfRecipe.toFixed(1)+'%':'—'}</td>
         ${!matched?`<td style="padding:7px 10px"><button onclick="openAddIngForPromotion('${escHtml(ing.name)}')" style="background:#C4501A;color:#fff;border:none;padding:3px 8px;border-radius:2px;font-size:9px;cursor:pointer;font-weight:700;white-space:nowrap">+ Add to DB</button></td>`:'<td></td>'}
       </tr>`;
@@ -3324,8 +3644,13 @@ function renderCostingTab(r, versionKey) {
   return `
     <div style="padding:20px">
       ${unmatched.length ? `
-        <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:#C4501A;font-weight:700">
-          ⚠ ${unmatched.length} ingredient${unmatched.length>1?'s':''} not in database — add them to complete costing: ${unmatched.join(', ')}
+        <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:10px 14px;margin-bottom:10px;font-size:11px;color:#C4501A;font-weight:700">
+          ⚠ ${unmatched.length} ingredient${unmatched.length>1?'s':''} not in database — add them, or type a cost directly into the Recipe Cost column: ${unmatched.join(', ')}
+        </div>` : ''}
+      ${(result && result.mismatched && result.mismatched.length) ? `
+        <div style="background:#FFECE4;border:1px solid #C4501A;border-radius:3px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:#8B3A1A;font-weight:700;line-height:1.6">
+          ⚠ ${result.mismatched.length} line${result.mismatched.length>1?'s':''} cannot be costed automatically: <strong>${result.mismatched.join(', ')}</strong><br>
+          <span style="font-weight:600">The recipe measures these in a different kind of unit from the way they are bought — a volume against a per-item price, for instance. Rather than print a false figure, type the real cost into the Recipe Cost column. Thirty millilitres of juice from a five rand lemon is about 3.75.</span>
         </div>` : ''}
 
       <!-- Summary cards -->
@@ -3520,11 +3845,12 @@ tfoot td{font-weight:800;border-top:2px solid #000}
   <tbody>
     ${(v.ingredients||[]).map((ing,idx) => {
       const dbItem = findInPantry(ing.name);
+      const lcp = lineCost(ing);
       const effY = effectiveYield(ing);
-      const effI = dbItem ? { ...dbItem, yield_pct: effY } : null;
-      const yc = effI ? calcYieldCost(effI) : null;
+      const effI = lcp.effItem || null;
+      const yc = lcp.perUnit;
       const ydp = effI ? getYieldDisplay(effI) : null;
-      const rc = yc !== null ? yc * ing.quantity : null;
+      const rc = lcp.cost;
       return `<tr style="background:${idx%2===0?'#fff':'#f9f9f9'}">
         <td${!dbItem?' class="unmatched"':''}>${escHtml(ing.name)}${!dbItem?' *':''}</td>
         <td class="r">${formatQty(ing.quantity,ing.unit||'g')}</td>
@@ -3533,7 +3859,7 @@ tfoot td{font-weight:800;border-top:2px solid #000}
         <td class="c">${dbItem?formatQty(dbItem.purchaseQty,dbItem.purchaseUnit):'—'}</td>
         <td class="c">${dbItem?effY+'%'+(hasYieldOverride(ing)?' *':''):'—'}</td>
         <td class="r">${ydp?ydp.value:'—'}</td>
-        <td class="r">${rc!==null?rc.toFixed(2):'—'}</td>
+        <td class="r">${rc!==null?rc.toFixed(2)+(lcp.manual?' ‡':''):(lcp.status==='mismatch'?'unit mismatch':'—')}</td>
         <td class="r" style="color:${rc!==null&&totalCost>0?(rc/totalCost*100)>40?'#000':'#000':'#000'}">${rc!==null&&totalCost>0?(rc/totalCost*100).toFixed(1)+'%':'—'}</td>
       </tr>`;
     }).join('')}
@@ -3551,7 +3877,7 @@ tfoot td{font-weight:800;border-top:2px solid #000}
   <div class="sig-item"><div class="sig-line"></div><div class="sig-label">Date</div></div>
 </div>
 
-<div class="note">* Yield overridden for this recipe. Ingredient not in database — cost not included in total. All costs exclusive of VAT/Tax. Yield costs pulled from Ingredients Database.</div>
+<div class="note">‡ cost entered by hand. * Yield overridden for this recipe. Ingredient not in database — cost not included in total. All costs exclusive of VAT/Tax. Yield costs pulled from Ingredients Database.</div>
 </div></body></html>`;
 
   openAndPrint(html, r.title + " — Costing Card");
@@ -3597,6 +3923,14 @@ function showUnitCheck() {
       </div>
     </div>`;
   document.body.appendChild(modal);
+}
+
+function manualTopUp() {
+  const n = topUpDefaults();
+  if (!n) { showToast("Your database already has all " + SA_PANTRY_DEFAULT.length + " built-in ingredients"); return; }
+  render();
+  setTimeout(renderDBTable, 100);
+  showToast(n + " ingredient" + (n === 1 ? "" : "s") + " restored — nothing of yours was changed");
 }
 
 function syncFromStorage() {
@@ -3720,7 +4054,7 @@ function renderPillarAudit(r) {
         ${sug.map(s => `<button onclick="addSuggestedIngredient('${escHtml(s.name).replace(/'/g,"\\'")}')"
           title="Add ${escHtml(s.name)} to this recipe"
           style="background:${s._alsoFixes ? pl.colour : '#fff'};border:1px solid ${pl.colour};color:${s._alsoFixes ? '#fff' : pl.colour};font-size:10px;font-weight:700;
-          padding:3px 7px;border-radius:2px;cursor:pointer">+ ${escHtml(s.name)}${s._alsoFixes ? ' \u00B7' + (s._alsoFixes+1) : ''}</button>`).join('')}
+          padding:3px 7px;border-radius:2px;cursor:pointer">+ ${escHtml(s.name)}${s._alsoFixes ? ' ·' + (s._alsoFixes+1) : ''}</button>`).join('')}
       </div>
     </div>`;
   }).filter(Boolean).join('');
@@ -3737,7 +4071,7 @@ function renderPillarAudit(r) {
       ${PILLAR_IDS.some(id => prof.scores[id] <= 1) && prof.ready ? `
         <button class="btn btn-primary" onclick="aiBalanceRecipe()" ${state.aiLoading ? 'disabled' : ''}
           style="width:100%;justify-content:center;background:#6B4423;margin-bottom:8px">
-          ${state.aiLoading ? 'Working…' : '\u2696 Balance this recipe with AI'}
+          ${state.aiLoading ? 'Working…' : '⚖ Balance this recipe with AI'}
         </button>` : ''}
 
       <div style="background:${toneBg[verdict.tone]};border:1px solid ${toneBd[verdict.tone]};border-radius:3px;
@@ -3746,7 +4080,7 @@ function renderPillarAudit(r) {
       </div>
 
       ${prof.unmatched.length ? `<div style="font-size:10px;color:#C4501A;font-weight:700;margin-bottom:8px">
-        \u26A0 Audit is partial — ${prof.unmatched.length} ingredient${prof.unmatched.length>1?'s are':' is'} not in your database and could not be read.
+        ⚠ Audit is partial — ${prof.unmatched.length} ingredient${prof.unmatched.length>1?'s are':' is'} not in your database and could not be read.
       </div>` : ''}
 
       <div style="margin-bottom:8px">${rows}</div>
@@ -3842,10 +4176,10 @@ function printPurchasingList() {
   const portions = v.portions || cfg.portions;
 
   const rows = (v.ingredients || []).map(ing => {
-    const dbItem = findInPantry(ing.name);
-    const effI = dbItem ? { ...dbItem, yield_pct: effectiveYield(ing) } : null;
-    const yc = effI ? calcYieldCost(effI) : null;
-    const recipeCost = yc !== null ? yc * ing.quantity : null;
+    const lcp = lineCost(ing);
+    const dbItem = lcp.db;
+    const yc = lcp.perUnit;
+    const recipeCost = lcp.cost;
     return { ing, dbItem, yc, recipeCost };
   });
 
@@ -4100,7 +4434,7 @@ function pillarPrintLine(version) {
   const gaps = PILLARS.filter(p => prof.scores[p.id] === 0);
   return `<div style="border:1px solid #000;padding:8px 11px;margin:10px 0;font-size:10px;line-height:1.6">
     <span style="font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:9px">Flavour pillars</span>
-    &nbsp; ${present.map(p=>escHtml(p.label)).join(' \u00B7 ') || 'none registered'}
+    &nbsp; ${present.map(p=>escHtml(p.label)).join(' · ') || 'none registered'}
     ${gaps.length ? `<br><span style="font-weight:700">Absent:</span> ${gaps.map(p=>escHtml(p.label)).join(', ')}` : `<br><span style="font-weight:700">All eight pillars covered.</span>`}
   </div>`;
 }
@@ -4127,7 +4461,7 @@ function printFlavourAudit() {
       </td>
       <td style="padding:7px 8px;font-size:10px;font-weight:800;width:70px;text-transform:uppercase">${sc===0?'ABSENT':sc===1?'THIN':'PRESENT'}</td>
       <td style="padding:7px 8px;font-size:10px;font-weight:600">${
-        contribs.length ? contribs.map(x=>escHtml(x.name)+(x.level===3?' \u25CF':x.level===2?' \u25D0':' \u25CB')).join(', ')
+        contribs.length ? contribs.map(x=>escHtml(x.name)+(x.level===3?' ●':x.level===2?' ◐':' ○')).join(', ')
                         : '<span style="font-style:italic">nothing in this recipe delivers it</span>'}</td>
     </tr>`;
   }).join('');
@@ -4138,7 +4472,7 @@ function printFlavourAudit() {
     if (!sug.length) return '';
     return `<div style="margin-bottom:7px;font-size:11px">
       <strong>${pl.label} ${prof.scores[id]===0?'(absent)':'(thin)'}:</strong>
-      ${sug.map(s=>escHtml(s.name)+(s._alsoFixes?' \u2020':'')).join(', ')}
+      ${sug.map(s=>escHtml(s.name)+(s._alsoFixes?' †':'')).join(', ')}
     </div>`;
   }).filter(Boolean).join('');
 
@@ -4166,7 +4500,7 @@ th{padding:7px 8px;font-size:9px;letter-spacing:1px;text-transform:uppercase;fon
   <div>
     <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — FLAVOUR AUDIT</div>
     <div class="title">${escHtml(r.title)}</div>
-    <div style="font-size:11px;color:#333;font-weight:600">${cfg.label} \u00B7 ${v.portions||cfg.portions} portions \u00B7 ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
+    <div style="font-size:11px;color:#333;font-weight:600">${cfg.label} · ${v.portions||cfg.portions} portions · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
   </div>
   <div style="text-align:right">
     <div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;line-height:1">${PILLAR_IDS.filter(id=>prof.scores[id]>=2).length}<span style="font-size:18px">/8</span></div>
@@ -4189,20 +4523,20 @@ ${prof.unmatched.length ? `<div class="box" style="border-style:dashed">
 ${fixes ? `<div class="box">
   <div class="h">Available from the ingredients database</div>
   ${fixes}
-  <div class="note">\u2020 closes more than one gap at once.</div>
+  <div class="note">† closes more than one gap at once.</div>
 </div>` : ''}
 
 <div class="box">
   <div class="h">The eight pillars</div>
   <div style="font-size:10px;line-height:1.7;font-weight:600">
-    <strong>Savoury</strong> umami depth \u00B7 <strong>Sweet</strong> sugars and caramelisation \u00B7
-    <strong>Salty</strong> salt and cured elements \u00B7 <strong>Sour</strong> acidity \u00B7
-    <strong>Bitter</strong> chicory, cocoa, char, tannin \u00B7 <strong>Sensation</strong> mouthfeel, crunch, chew, fat \u00B7
-    <strong>Spice</strong> chilli, pepper, mustard, ginger \u00B7 <strong>Smell</strong> aromatics read while chewing.
+    <strong>Savoury</strong> umami depth · <strong>Sweet</strong> sugars and caramelisation ·
+    <strong>Salty</strong> salt and cured elements · <strong>Sour</strong> acidity ·
+    <strong>Bitter</strong> chicory, cocoa, char, tannin · <strong>Sensation</strong> mouthfeel, crunch, chew, fat ·
+    <strong>Spice</strong> chilli, pepper, mustard, ginger · <strong>Smell</strong> aromatics read while chewing.
   </div>
   <div class="note">
     Scored by strength, not by weight: the strongest contributor sets the score, and three or more sources of one pillar earn a layering bonus.
-    \u25CF dominant \u00B7 \u25D0 moderate \u00B7 \u25CB slight.
+    ● dominant · ◐ moderate · ○ slight.
     This is a development aid. It cannot taste the dish and does not know your intent — a deliberately austere dish may show gaps and be right as it stands.
   </div>
 </div>
@@ -4380,8 +4714,12 @@ function escHtml(s) {
 // BOOT
 // ══════════════════════════════════════════════════════════════════════
 loadState();
+const _added = topUpDefaults();
 migratePillars();
 render();
+if (_added) {
+  setTimeout(() => showToast(_added + " new ingredient" + (_added === 1 ? "" : "s") + " added to your database"), 600);
+}
 updateKeyStatus();
 
 // ── Select all text on focus for all number/text inputs ────────────────
