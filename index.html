@@ -654,16 +654,14 @@ function loadState() {
       else throw new Error("stored ingredients were not a usable list");
     }
   } catch(e) {
-    loadFailures.push("ingredients");
+    loadFailures.push("pantry");
     try { localStorage.setItem("ros_pantry_damaged", localStorage.getItem("ros_pantry") || ""); } catch(e2) {}
   }
 }
 
 // Anything that fails to load must never be silently written over.
 function safeToSave(key, value) {
-  if (key === "recipes" && loadFailures.indexOf("recipes") !== -1) return false;
-  if (key === "pantry" && loadFailures.indexOf("pantry") !== -1) return false;
-  return true;
+  return loadFailures.indexOf(key) === -1;
 }
 
 function saveState() {
@@ -938,7 +936,7 @@ function restoreRescue() {
 // as an empty library.
 function reportLoadFailures() {
   if (!loadFailures.length) return;
-  showToast("Stored " + loadFailures.join(" and ") + " could not be read. The damaged copy has been kept and will not be overwritten.", "error");
+  showToast("Stored " + loadFailures.map(k => k === "pantry" ? "ingredients" : k).join(" and ") + " could not be read. The damaged copy has been kept and will not be overwritten.", "error");
 }
 
 function exportBackup(includeKey) {
@@ -1999,7 +1997,7 @@ function renderPantryItems(q) { renderDBTable(); return ''; }
 
 function showAddIngredient(existing) {
   if (document.getElementById('add-ing-modal')) return;
-  const isEdit = !!existing;
+  const isEdit = !!(existing && existing.id); // pre-filled add is still an add
   const ing = existing || {name:'',category:'Vegetables',purchaseQty:1000,purchaseUnit:'g',purchaseCost:0,yield_pct:100,allergens:[],cal:0,prot:0,carb:0,fat:0};
   const cats = [...new Set(state.pantry.map(p=>p.category))].sort();
   // Working copy of the pillar profile while the modal is open
@@ -2014,7 +2012,7 @@ function showAddIngredient(existing) {
     <div style="background:#fff;border-radius:4px;width:600px;max-width:95vw;max-height:90vh;overflow-y:auto">
       <div style="background:#111;color:#fff;padding:18px 24px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center">
         <div style="font-family:'Playfair Display',serif;font-size:20px">${isEdit?'Edit Ingredient':'Add Ingredient'}</div>
-        <button onclick="document.getElementById('add-ing-modal').remove()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer">&#215;</button>
+        <button onclick="cancelIngredientModal()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer">&#215;</button>
       </div>
 
       <!-- VAT WARNING -->
@@ -2031,7 +2029,7 @@ function showAddIngredient(existing) {
         <button class="btn btn-primary" id="modal-save-btn" onclick="saveIngredientFromModal()" style="flex:1;justify-content:center;font-size:13px;padding:10px">
           ${isEdit ? '💾 Save Changes' : '✚ Add to Database'}
         </button>
-        <button class="btn btn-default" onclick="document.getElementById('add-ing-modal').remove()" style="padding:10px 16px">✕ Cancel</button>
+        <button class="btn btn-default" onclick="cancelIngredientModal()" style="padding:10px 16px">✕ Cancel</button>
       </div>
       <div style="padding:20px">
         <!-- Name & Category -->
@@ -2151,7 +2149,7 @@ function showAddIngredient(existing) {
         <!-- Save button also at bottom for convenience -->
         <div style="display:flex;gap:8px">
           <button class="btn btn-primary" onclick="saveIngredient('${isEdit?ing.id:''}')" style="flex:1;justify-content:center">${isEdit?'💾 Save Changes':'✚ Add to Database'}</button>
-          <button class="btn btn-default" onclick="document.getElementById('add-ing-modal').remove()">✕ Cancel</button>
+          <button class="btn btn-default" onclick="cancelIngredientModal()">✕ Cancel</button>
         </div>
       </div>
     </div>`;
@@ -2321,6 +2319,17 @@ function updateYieldPreview() {
 }
 
 
+function cancelIngredientModal() {
+  const m = document.getElementById('add-ing-modal');
+  if (m) m.remove();
+  const wasPromote = state._promotingSource === 'promote';
+  // Clear the flow markers, or the next ordinary add takes the wrong branch
+  state._promotingIngName = null;
+  state._promotingSource = null;
+  const p = document.getElementById('promote-modal');
+  if (p) { if (wasPromote) p.style.display = 'flex'; else p.remove(); }
+}
+
 function saveIngredientFromModal() {
   const modal = document.getElementById('add-ing-modal');
   const editId = modal ? (modal.dataset.editId || '') : '';
@@ -2358,8 +2367,14 @@ function saveIngredient(editId) {
     state.pantry = state.pantry.map(p => p.id === editId ? item : p);
     showToast('"' + name + '" updated');
   } else {
-    state.pantry.push(item);
-    showToast('"' + name + '" added to database');
+    const clash = state.pantry.find(p => p.name.toLowerCase().trim() === name.toLowerCase().trim());
+    if (clash) {
+      state.pantry = state.pantry.map(p => p === clash ? Object.assign({}, item, { id: clash.id }) : p);
+      showToast('"' + name + '" already existed — updated instead of duplicated');
+    } else {
+      state.pantry.push(item);
+      showToast('"' + name + '" saved \u2192 ' + category + '. Database now holds ' + (state.pantry.length) + ' ingredients.');
+    }
   }
 
   // Sort alphabetically
@@ -2378,13 +2393,11 @@ function saveIngredient(editId) {
       if (old) old.remove();
       setTimeout(() => promoteToCosted_skipConvert(), 150);
     } else if (source === 'costing') {
-      // Re-render so NOT IN DB badges clear and costs update
-      showToast('"' + name + '" added — costs updated');
+      // Re-render so NOT IN DB badges clear and the cost fills in
       render();
       if (state.activeTab === 'costing') setTimeout(() => { state.activeTab = 'costing'; render(); }, 50);
     } else if (source === 'editor') {
-      // From AI recipe right panel — re-render editor so unmatched list updates
-      showToast('"' + name + '" added to database');
+      // Re-render so the readiness strip drops the ingredient from its list
       render();
     } else {
       renderDBTable();
@@ -3895,7 +3908,7 @@ function openAddIngForPromotion(name) {
   state._promotingIngName = name;
   // Auto-detect category from name
   const nameLower = name.toLowerCase();
-  let cat = 'Pantry';
+  let cat = 'Condiments'; // overridden by every branch below
   if (/beef|lamb|chicken|pork|fish|prawn|mussel|salmon|tuna|snoek|ostrich|springbok|duck|veal|venison|meat|poultry|anchov|calamari|hake|kingklip/.test(nameLower)) cat = 'Meat & Poultry';
   else if (/onion|garlic|tomato|mushroom|pepper|carrot|spinach|celery|leek|zucchini|brinjal|squash|butternut|fennel|herb|parsley|coriander|thyme|rosemary|basil|chilli|ginger|bay/.test(nameLower)) cat = 'Spices & Herbs';
   else if (/cream|butter|milk|cheese|yoghurt|egg|amasi/.test(nameLower)) cat = 'Dairy';
