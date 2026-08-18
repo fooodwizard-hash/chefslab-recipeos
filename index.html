@@ -9,7 +9,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden}
-body{font-family:"Inter",sans-serif;font-size:13px;background:#F0EBE3;color:#111;display:flex}
+body{font-family:"Inter",sans-serif;font-size:13px;background:#F0EBE3;color:#000;display:flex}
 
 /* ── Layout ── */
 #sidebar{width:220px;background:#111;color:#F9F6F0;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
@@ -22,17 +22,17 @@ body{font-family:"Inter",sans-serif;font-size:13px;background:#F0EBE3;color:#111
 /* ── Sidebar ── */
 .logo-area{padding:20px 16px 12px;border-bottom:1px solid rgba(255,255,255,0.12)}
 .logo-text{font-family:"Playfair Display",serif;font-size:22px;letter-spacing:-0.5px;color:#fff}
-.logo-sub{font-size:10px;color:#999;letter-spacing:1px;margin-top:3px;font-weight:600}
+.logo-sub{font-size:11px;color:#D8CFC0;letter-spacing:1px;margin-top:3px;font-weight:600}
 .nav-section{padding:8px 0}
-.nav-label{padding:6px 16px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#fff;font-weight:700}
-.nav-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;border-left:2px solid transparent;color:#ccc;font-size:12px;transition:all 0.15s}
+.nav-label{padding:6px 16px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#fff;font-weight:700}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 16px;cursor:pointer;border-left:2px solid transparent;color:#F2EDE4;font-size:12px;transition:all 0.15s}
 .nav-item:hover{color:#fff;background:rgba(255,255,255,0.07)}
 .nav-item.active{background:rgba(196,80,26,0.25);border-left-color:#C4501A;color:#fff;font-weight:600}
-.recipe-item{padding:9px 16px;cursor:pointer;border-left:2px solid transparent;color:#ccc;font-size:11px;line-height:1.4;transition:all 0.15s}
+.recipe-item{padding:9px 16px;cursor:pointer;border-left:2px solid transparent;color:#EDE6DA;font-size:11px;line-height:1.4;transition:all 0.15s}
 .recipe-item:hover{color:#fff;background:rgba(255,255,255,0.05)}
 .recipe-item.active{background:rgba(255,255,255,0.08);border-left-color:#C4501A;color:#fff;font-weight:600}
-.recipe-item .cuisine-mini{font-size:9px;color:#999;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.sidebar-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);font-size:9px;color:#111;letter-spacing:1px;margin-top:auto}
+.recipe-item .cuisine-mini{font-size:10px;color:#C2B8A6;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.sidebar-footer{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:#C2B8A6;letter-spacing:1px;margin-top:auto}
 
 /* ── Buttons ── */
 .btn{padding:7px 14px;border:none;border-radius:3px;font-size:11px;cursor:pointer;font-family:"Inter",sans-serif;letter-spacing:0.3px;display:inline-flex;align-items:center;gap:6px;transition:opacity 0.15s;font-weight:600}
@@ -41,9 +41,9 @@ body{font-family:"Inter",sans-serif;font-size:13px;background:#F0EBE3;color:#111
 .btn-primary:hover{background:#A84415}
 .btn-dark{background:#111;color:#fff}
 .btn-dark:hover{background:#333}
-.btn-default{background:#E8E0D4;color:#111;border:1px solid #ccc}
+.btn-default{background:#E8E0D4;color:#000;border:1px solid #ccc}
 .btn-default:hover{background:#DDD5C8}
-.btn-ghost{background:transparent;color:#333;border:1px solid #999}
+.btn-ghost{background:transparent;color:#000;border:1px solid #999}
 .btn-ghost:hover{background:#f0f0f0}
 .btn-danger{background:#FDE8E8;color:#C4501A;border:1px solid #C4501A}
 .btn-confirm{background:#C4501A;color:#fff}
@@ -51,44 +51,44 @@ body{font-family:"Inter",sans-serif;font-size:13px;background:#F0EBE3;color:#111
 
 /* ── Cards & Forms ── */
 .card{background:#fff;border:1px solid #ccc;border-radius:4px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
-.label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#000;margin-bottom:6px;display:block;font-weight:800}
-input[type=text],input[type=number],input[type=search],select,textarea{width:100%;padding:8px 10px;border:1px solid #bbb;border-radius:3px;font-size:12px;font-family:"Inter",sans-serif;background:#fff;outline:none;box-sizing:border-box;color:#111}
+.label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#000;margin-bottom:6px;display:block;font-weight:800}
+input[type=text],input[type=number],input[type=search],select,textarea{width:100%;padding:8px 10px;border:1px solid #bbb;border-radius:3px;font-size:12px;font-family:"Inter",sans-serif;background:#fff;outline:none;box-sizing:border-box;color:#000}
 input[type=text]:focus,input[type=number]:focus,select:focus,textarea:focus{border-color:#C4501A;box-shadow:0 0 0 2px rgba(196,80,26,0.1)}
-::placeholder{color:#555 !important;opacity:1 !important;font-weight:600}
-::-webkit-input-placeholder{color:#555 !important;font-weight:600}
-::-moz-placeholder{color:#555 !important;font-weight:600}
+::placeholder{color:#000 !important;opacity:1 !important;font-weight:600}
+::-webkit-input-placeholder{color:#000 !important;font-weight:600}
+::-moz-placeholder{color:#000 !important;font-weight:600}
 textarea{resize:vertical;min-height:80px}
-.small-input{padding:5px 8px;font-size:11px;border:1px solid #bbb;border-radius:3px;font-family:"Inter",sans-serif;background:#fff;color:#111;box-sizing:border-box}
+.small-input{padding:5px 8px;font-size:11px;border:1px solid #bbb;border-radius:3px;font-family:"Inter",sans-serif;background:#fff;color:#000;box-sizing:border-box}
 .ing-grid{display:grid;grid-template-columns:1fr 70px 60px 1fr 28px;gap:6px;margin-bottom:6px;align-items:center}
 .ing-grid-hdr{display:grid;grid-template-columns:1fr 70px 60px 1fr 28px;gap:6px;margin-bottom:4px}
-.ing-hdr-cell{font-size:9px;color:#000;text-transform:uppercase;letter-spacing:1px;font-weight:800}
+.ing-hdr-cell{font-size:10px;color:#000;text-transform:uppercase;letter-spacing:1px;font-weight:800}
 
 /* ── Version tabs ── */
 .version-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.version-tab{padding:6px 14px;border-radius:3px;cursor:pointer;font-size:11px;border:1px solid #bbb;background:#E8E0D4;color:#333;font-family:"Inter",sans-serif;font-weight:600;transition:all 0.15s}
+.version-tab{padding:6px 14px;border-radius:3px;cursor:pointer;font-size:11px;border:1px solid #bbb;background:#E8E0D4;color:#000;font-family:"Inter",sans-serif;font-weight:600;transition:all 0.15s}
 .version-tab:hover{background:#DDD5C8}
-.version-tab.active-master{background:#111;color:#fff;border-color:#111}
+.version-tab.active-master{background:#111;color:#fff;border-color:#000}
 .version-tab.active-home{background:#2C4A3E;color:#fff;border-color:#2C4A3E}
 .version-tab.active-restaurant{background:#C4501A;color:#fff;border-color:#C4501A}
-.version-tab.active-banqueting{background:#6B5A45;color:#fff;border-color:#6B5A45}
+.version-tab.active-banqueting{background:#6B5A45;color:#fff;border-color:#463726}
 .version-tab.active-foodtruck{background:#3A5430;color:#fff;border-color:#3A5430}
 
 /* ── DNA ── */
 .dna-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 .dna-item{text-align:center;padding:8px 4px;background:#F5F0E8;border-radius:3px}
 .dna-num{font-family:"Playfair Display",serif;font-size:22px;color:#C4501A;display:block;font-weight:700}
-.dna-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#000;font-weight:800}
-.flavour-tag{font-size:10px;padding:2px 8px;background:#E8E0D4;color:#333;border-radius:2px;display:inline-block;margin:2px;font-weight:600}
+.dna-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#000;font-weight:800}
+.flavour-tag{font-size:11px;padding:2px 8px;background:#E8E0D4;color:#000;border-radius:2px;display:inline-block;margin:2px;font-weight:600}
 
 /* ── Allergen pills ── */
-.allergen-pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:2px;border:1px solid #bbb;background:#F5F0E8;color:#111;font-size:10px;cursor:pointer;margin:2px;font-weight:600;transition:all 0.15s}
+.allergen-pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:2px;border:1px solid #bbb;background:#F5F0E8;color:#000;font-size:11px;cursor:pointer;margin:2px;font-weight:600;transition:all 0.15s}
 .allergen-pill.active{border-color:#C4501A;background:#FDE8E0;color:#C4501A;font-weight:700}
 
 /* ── Chat ── */
 .chat-msg{padding:10px 12px;border-radius:4px;margin-bottom:8px;font-size:12px;line-height:1.6}
-.chat-msg.user{background:#E8E0D4;color:#111;border:1px solid #ccc}
-.chat-msg.assistant{background:#fff;border:1px solid #bbb;color:#111}
-.chat-role{font-size:9px;color:#C4501A;margin-bottom:3px;letter-spacing:1px;font-weight:800}
+.chat-msg.user{background:#E8E0D4;color:#000;border:1px solid #ccc}
+.chat-msg.assistant{background:#fff;border:1px solid #bbb;color:#000}
+.chat-role{font-size:10px;color:#C4501A;margin-bottom:3px;letter-spacing:1px;font-weight:800}
 .chat-box{max-height:200px;overflow-y:auto;margin-bottom:8px}
 
 /* ── Dashboard ── */
@@ -99,14 +99,14 @@ textarea{resize:vertical;min-height:80px}
 .recipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .recipe-card{background:#fff;border:1px solid #ccc;border-radius:4px;padding:16px;cursor:pointer;transition:all 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
 .recipe-card:hover{border-color:#C4501A;box-shadow:0 2px 8px rgba(196,80,26,0.15)}
-.recipe-card-title{font-family:"Playfair Display",serif;font-size:15px;margin-bottom:4px;color:#111;font-weight:700}
-.recipe-card-cuisine{font-size:10px;color:#C4501A;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;font-weight:700}
+.recipe-card-title{font-family:"Playfair Display",serif;font-size:15px;margin-bottom:4px;color:#000;font-weight:700}
+.recipe-card-cuisine{font-size:11px;color:#C4501A;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;font-weight:700}
 .recipe-card-tags{display:flex;gap:4px;flex-wrap:wrap}
-.recipe-card-allergen{margin-top:6px;font-size:9px;color:#C4501A;font-weight:700}
+.recipe-card-allergen{margin-top:6px;font-size:10px;color:#C4501A;font-weight:700}
 
 /* ── Method steps ── */
 .step-row{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
-.step-num{font-family:"Playfair Display",serif;font-size:22px;color:#999;font-weight:700;line-height:1.2;min-width:32px}
+.step-num{font-family:"Playfair Display",serif;font-size:22px;color:#333;font-weight:700;line-height:1.2;min-width:32px}
 .step-body{flex:1}
 .step-meta{display:flex;gap:8px;margin-top:4px}
 
@@ -115,14 +115,14 @@ textarea{resize:vertical;min-height:80px}
 .phase-row{display:flex;gap:8px;margin-bottom:6px}
 
 /* ── Pantry ── */
-.pantry-cat-hdr{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #C4501A;font-weight:700}
+.pantry-cat-hdr{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid #C4501A;font-weight:700}
 .pantry-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:20px}
 .pantry-card{background:#fff;border:1px solid #ccc;border-radius:3px;padding:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
-.pantry-card-name{font-weight:700;font-size:12px;margin-bottom:4px;color:#111}
-.pantry-card-macro{font-size:10px;color:#000;font-weight:700}
-.pantry-card-allergen{font-size:9px;color:#C4501A;margin-top:3px;font-weight:700}
-.pantry-card-cost{font-size:10px;color:#2C4A3E;margin-top:2px;font-weight:700}
-.pantry-card-custom{font-size:9px;color:#bbb;margin-top:2px}
+.pantry-card-name{font-weight:700;font-size:12px;margin-bottom:4px;color:#000}
+.pantry-card-macro{font-size:11px;color:#000;font-weight:700}
+.pantry-card-allergen{font-size:10px;color:#C4501A;margin-top:3px;font-weight:700}
+.pantry-card-cost{font-size:11px;color:#2C4A3E;margin-top:2px;font-weight:700}
+.pantry-card-custom{font-size:10px;color:#000;margin-top:2px}
 
 /* ── Toast ── */
 #toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:4px;font-size:12px;font-weight:600;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:9999;display:none}
@@ -130,22 +130,22 @@ textarea{resize:vertical;min-height:80px}
 #toast.error{background:#C4501A}
 
 /* ── Topbar ── */
-.topbar-title{font-family:"Playfair Display",serif;font-size:16px;color:#111;flex:1;font-weight:700}
+.topbar-title{font-family:"Playfair Display",serif;font-size:16px;color:#000;flex:1;font-weight:700}
 .topbar-actions{display:flex;gap:8px;align-items:center}
 
 /* ── Empty state ── */
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#111;gap:8px}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#000;gap:8px}
 .empty-icon{font-size:40px}
-.empty-text{font-family:"Playfair Display",serif;font-size:18px;color:#333;font-weight:700}
-.empty-sub{font-size:12px;color:#333;font-weight:600}
+.empty-text{font-family:"Playfair Display",serif;font-size:18px;color:#000;font-weight:700}
+.empty-sub{font-size:12px;color:#000;font-weight:600}
 
 /* ── Section divider ── */
 .section-divider{border-top:1px solid #ddd;padding-top:16px;margin-top:0;margin-bottom:16px}
 
 /* ── Generate box ── */
-.generate-box{text-align:center;padding:32px;color:#111}
+.generate-box{text-align:center;padding:32px;color:#000}
 .generate-icon{font-size:32px;margin-bottom:8px}
-.generate-title{font-family:"Playfair Display",serif;font-size:16px;margin-bottom:8px;color:#111;font-weight:700}
+.generate-title{font-family:"Playfair Display",serif;font-size:16px;margin-bottom:8px;color:#000;font-weight:700}
 .generate-sub{font-size:12px;margin-bottom:16px;color:#000;font-weight:600}
 
 
@@ -174,10 +174,10 @@ textarea{resize:vertical;min-height:80px}
   .stats-grid{grid-template-columns:repeat(2,1fr);gap:8px}
   .recipe-grid{grid-template-columns:1fr 1fr}
   .version-tabs{flex-wrap:wrap;gap:4px}
-  .version-tab{font-size:10px;padding:5px 10px}
+  .version-tab{font-size:11px;padding:5px 10px}
   #topbar{padding:0 12px;height:auto;min-height:52px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap;gap:6px}
   .topbar-actions{flex-wrap:wrap;gap:6px}
-  .topbar-actions .btn{font-size:10px;padding:5px 10px}
+  .topbar-actions .btn{font-size:11px;padding:5px 10px}
 }
 
 /* ── Mobile — iPad Mini portrait + phones (768px) ── */
@@ -197,7 +197,7 @@ textarea{resize:vertical;min-height:80px}
   #topbar{padding:0 10px;height:auto;min-height:48px;padding-top:6px;padding-bottom:6px;flex-wrap:wrap;gap:5px;border-bottom:2px solid #1A1A1A}
   .topbar-title{font-size:13px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .topbar-actions{display:flex;flex-wrap:wrap;gap:4px;width:100%}
-  .topbar-actions .btn,.topbar-actions button{font-size:10px;padding:5px 8px}
+  .topbar-actions .btn,.topbar-actions button{font-size:11px;padding:5px 8px}
 
   /* Main workspace */
   #main{width:100%;display:flex;flex-direction:column;overflow:hidden;height:100%}
@@ -223,13 +223,13 @@ textarea{resize:vertical;min-height:80px}
 
   /* Version tabs scroll */
   .version-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;gap:4px}
-  .version-tab{white-space:nowrap;font-size:10px;padding:5px 9px;flex-shrink:0}
+  .version-tab{white-space:nowrap;font-size:11px;padding:5px 9px;flex-shrink:0}
 
   /* DNA */
   .dna-grid{grid-template-columns:1fr 1fr}
 
   /* Allergen pills */
-  .allergen-pill{font-size:9px;padding:2px 6px;margin:1px}
+  .allergen-pill{font-size:10px;padding:2px 6px;margin:1px}
 
   /* Print dropdown — full width on mobile */
   #print-menu{left:0;right:0;min-width:100%}
@@ -260,7 +260,7 @@ textarea{resize:vertical;min-height:80px}
   }
   .small-input{font-size:14px !important;padding:7px !important}
   .btn{min-height:36px;font-size:11px}
-  .btn-sm{min-height:32px;font-size:10px;padding:6px 10px}
+  .btn-sm{min-height:32px;font-size:11px;padding:6px 10px}
 
   /* Step rows on mobile */
   .step-row{gap:8px}
@@ -274,7 +274,7 @@ textarea{resize:vertical;min-height:80px}
   }
   .mobile-nav-btn{
     flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    color:#777;font-size:8px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+    color:#000;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
     border:none;background:none;font-family:'Inter',sans-serif;gap:2px;padding:6px 0;
     transition:color 0.15s
   }
@@ -321,13 +321,13 @@ textarea{resize:vertical;min-height:80px}
   <div class="nav-section" style="flex:1">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:0 16px">
       <div class="nav-label">Recipes</div>
-      <span onclick="createBlankRecipe()" style="color:#333;cursor:pointer;font-size:18px;line-height:1">+</span>
+      <span onclick="createBlankRecipe()" style="color:#000;cursor:pointer;font-size:18px;line-height:1">+</span>
     </div>
-    <div id="recipe-list"><div style="padding:8px 16px;font-size:11px;color:#333">No recipes yet</div></div>
+    <div id="recipe-list"><div style="padding:8px 16px;font-size:11px;color:#000">No recipes yet</div></div>
   </div>
   <div class="sidebar-footer" style="display:flex;justify-content:space-between;align-items:center">
-  <span style="letter-spacing:1px;font-size:9px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; Recipe OS</span>
-  <span id="key-status" onclick="showKeyModal()" style="cursor:pointer;font-size:10px" title="API Key">⚙ API KEY</span>
+  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; Recipe OS</span>
+  <span id="key-status" onclick="showKeyModal()" style="cursor:pointer;font-size:11px" title="API Key">⚙ API KEY</span>
 </div>
 </div>
 
@@ -842,20 +842,20 @@ function showKeyModal() {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;padding:32px;width:480px;max-width:95vw">
       <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px">Anthropic API Key</div>
-      <p style="font-size:12px;color:#333;margin-bottom:20px;line-height:1.6">
+      <p style="font-size:12px;color:#000;margin-bottom:20px;line-height:1.6">
         Chefs Lab uses the Anthropic API for AI recipe generation.<br>
         Get your key at <a href="https://console.anthropic.com" target="_blank" style="color:#C4501A">console.anthropic.com</a> → API Keys → Create Key.
       </p>
-      <label style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333;display:block;margin-bottom:6px">API Key</label>
+      <label style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#000;display:block;margin-bottom:6px">API Key</label>
       <input type="password" id="api-key-input" value="${existing}" placeholder="sk-ant-api03-..." 
         style="width:100%;padding:10px;border:1px solid #E8E0D0;border-radius:3px;font-size:13px;font-family:monospace;margin-bottom:16px;box-sizing:border-box">
       ${originWarning()}
-      <div id="storage-health" style="background:#F5F0E8;border-radius:3px;padding:10px 12px;margin-bottom:12px;font-size:10px;font-weight:600;color:#555;line-height:1.6">
+      <div id="storage-health" style="background:#F5F0E8;border-radius:3px;padding:10px 12px;margin-bottom:12px;font-size:11px;font-weight:600;color:#000;line-height:1.6">
         Checking how this browser is storing your data…
       </div>
       <div style="background:#F5F0E8;border-radius:3px;padding:10px 12px;margin-bottom:12px">
-        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:5px">Backup</div>
-        <div style="font-size:10px;color:#555;font-weight:600;line-height:1.5;margin-bottom:8px">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:5px">Backup</div>
+        <div style="font-size:11px;color:#000;font-weight:600;line-height:1.5;margin-bottom:8px">
           Everything lives in this browser only. If it is ever cleared, a backup file is the only way back.
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -870,7 +870,7 @@ function showKeyModal() {
         <button onclick="submitApiKey()" class="btn btn-primary">Save &amp; Continue</button>
         <button onclick="document.getElementById('key-modal').remove()" class="btn btn-default">✕ Close</button>
       </div>
-      <p style="font-size:10px;color:#333;margin-top:12px;line-height:1.6">
+      <p style="font-size:11px;color:#000;margin-top:12px;line-height:1.6">
         Key is stored only in this browser and sent only to Anthropic.<br>
         <strong>Currently stored:</strong> ${existing ? escHtml(existing.slice(0,14)) + "… (" + existing.length + " characters)" : "nothing yet"}
       </p>
@@ -926,11 +926,11 @@ function checkForRescue() {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;width:440px;max-width:95vw">
       <div style="background:#111;color:#fff;padding:16px 20px;border-radius:4px 4px 0 0">
-        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Recovery</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Recovery</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px">Recipes found</div>
       </div>
       <div style="padding:18px 20px">
-        <div style="font-size:12px;line-height:1.7;color:#333;font-weight:600;margin-bottom:16px">
+        <div style="font-size:12px;line-height:1.7;color:#000;font-weight:600;margin-bottom:16px">
           Your recipe library is empty, but a copy of <strong>${rescue.recipes.length} recipe${rescue.recipes.length===1?'':'s'}</strong>
           saved on <strong>${escHtml(when)}</strong> is still here. Restore it?
         </div>
@@ -1025,11 +1025,11 @@ function pasteRestore() {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;width:520px;max-width:95vw">
       <div style="background:#111;color:#fff;padding:16px 20px;border-radius:4px 4px 0 0">
-        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Restore</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Restore</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px">Paste a backup</div>
       </div>
       <div style="padding:18px 20px">
-        <div style="font-size:11px;color:#333;font-weight:600;line-height:1.6;margin-bottom:10px">
+        <div style="font-size:11px;color:#000;font-weight:600;line-height:1.6;margin-bottom:10px">
           Open your backup file in any text editor, select all, copy, and paste it here.
         </div>
         <textarea id="paste-restore-text" placeholder='{"app":"Chefs Lab — Recipe OS Development", ...}'
@@ -1070,11 +1070,11 @@ function confirmRestore(data) {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;width:460px;max-width:95vw">
       <div style="background:#111;color:#fff;padding:16px 20px;border-radius:4px 4px 0 0">
-        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Restore backup</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:3px">Restore backup</div>
         <div style="font-family:'Playfair Display',serif;font-size:19px">Replace everything in this browser?</div>
       </div>
       <div style="padding:18px 20px">
-        <div style="font-size:12px;line-height:1.7;color:#333;font-weight:600;margin-bottom:14px">
+        <div style="font-size:12px;line-height:1.7;color:#000;font-weight:600;margin-bottom:14px">
           The backup was made on <strong>${escHtml(when)}</strong> and holds
           <strong>${nR} recipe${nR===1?'':'s'}</strong> and <strong>${nP} ingredient${nP===1?'':'s'}</strong>.
           ${data.apiKey ? "It also carries an API key." : ""}
@@ -1116,7 +1116,7 @@ function originWarning() {
   const short = h.split("-")[0] + ".vercel.app";
   return `<div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:10px 12px;font-size:11px;color:#C4501A;font-weight:700;line-height:1.6;margin-bottom:12px">
     ⚠ You are on a deployment-specific address:<br>
-    <span style="font-family:monospace;font-size:10px;word-break:break-all">${escHtml(h)}</span><br>
+    <span style="font-family:monospace;font-size:11px;word-break:break-all">${escHtml(h)}</span><br>
     Browsers store data per exact address, so anything saved here will not appear on your normal one.
     Use <strong style="font-family:monospace">${escHtml(short)}</strong> instead and bookmark it.
   </div>`;
@@ -1155,7 +1155,7 @@ async function renderStorageHealth() {
 
   el.style.color = colour;
   el.innerHTML =
-    '<div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:5px">Storage health</div>' +
+    '<div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:5px">Storage health</div>' +
     '<div style="margin-bottom:5px">Key held in: ' + mark(inLocal) + ' local storage &nbsp; ' + mark(inSession) + ' session &nbsp; ' + mark(inCookie) + ' cookie</div>' +
     '<div style="margin-bottom:5px">' + verdict + '</div>' +
     '<div>' + history + '</div>';
@@ -1365,21 +1365,9 @@ function repairTruncatedJSON(s) {
 
 // Diagnostics go to the browser console (F12), not onto the page.
 // Set window.chefsLabDebug = true in the console to see them on screen.
+// Diagnostics go to the browser console only. Nothing is drawn on the page.
 function showDebug(msg) {
   try { console.log("[Chefs Lab] " + msg); } catch(e) {}
-  if (!window.chefsLabDebug) return;
-  let dbg = document.getElementById("debug-panel");
-  if (!dbg) {
-    dbg = document.createElement("div");
-    dbg.id = "debug-panel";
-    dbg.style.cssText = "position:fixed;bottom:0;left:0;right:0;background:#1A1A1A;color:#00FF88;font-family:monospace;font-size:11px;padding:12px 16px;max-height:200px;overflow-y:auto;z-index:9999;border-top:2px solid #C4501A;white-space:pre-wrap";
-    dbg.innerHTML = '<div style="color:#C4501A;margin-bottom:4px;cursor:pointer" onclick="document.getElementById(\'debug-panel\').remove()">▼ DEBUG (click to close)</div>';
-    document.body.appendChild(dbg);
-  }
-  const line = document.createElement("div");
-  line.textContent = new Date().toLocaleTimeString() + " | " + msg;
-  dbg.appendChild(line);
-  dbg.scrollTop = dbg.scrollHeight;
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -1436,14 +1424,14 @@ function render() {
 function renderSidebar() {
   const list = document.getElementById("recipe-list");
   if (!state.recipes.length) {
-    list.innerHTML = '<div style="padding:8px 16px;font-size:11px;color:#333">No recipes yet</div>';
+    list.innerHTML = '<div style="padding:8px 16px;font-size:11px;color:#000">No recipes yet</div>';
     return;
   }
   list.innerHTML = [...state.recipes].sort((a,b)=>a.title.localeCompare(b.title)).map(r => `
     <div class="recipe-item ${r.id === state.activeRecipeId ? "active" : ""}" onclick="selectRecipe('${r.id}')">
       <div style="display:flex;align-items:center;gap:5px;margin-bottom:2px">
         <span style="flex:1;font-size:11px">${escHtml(r.title)}</span>
-        ${r.type==="ai" ? '<span style="font-size:8px;background:#C4501A;color:#fff;padding:1px 5px;border-radius:2px;flex-shrink:0;font-weight:700">AI</span>' : '<span style="font-size:8px;background:#2C7A4B;color:#fff;padding:1px 5px;border-radius:2px;flex-shrink:0;font-weight:700">COSTED</span>'}
+        ${r.type==="ai" ? '<span style="font-size:10px;background:#C4501A;color:#fff;padding:1px 5px;border-radius:2px;flex-shrink:0;font-weight:700">AI</span>' : '<span style="font-size:10px;background:#2C7A4B;color:#fff;padding:1px 5px;border-radius:2px;flex-shrink:0;font-weight:700">COSTED</span>'}
       </div>
       ${r.cuisine ? `<div class="cuisine-mini">${escHtml(r.cuisine)}</div>` : ""}
     </div>
@@ -1511,7 +1499,7 @@ function renderDashboard() {
   `).join("");
 
   const recipesHtml = state.recipes.length === 0
-    ? '<div style="color:#333;font-size:12px;text-align:center;padding:20px">No recipes yet. Describe one above.</div>'
+    ? '<div style="color:#000;font-size:12px;text-align:center;padding:20px">No recipes yet. Describe one above.</div>'
     : `<div class="recipe-grid">${state.recipes.map(r => `
         <div class="recipe-card" onclick="selectRecipe('${r.id}')">
           <div class="recipe-card-title">${escHtml(r.title)}</div>
@@ -1523,8 +1511,8 @@ function renderDashboard() {
   return `
     <div class="center-pane">
       <div style="margin-bottom:24px">
-        <h1 style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px"><span style="color:#111;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span></h1>
-        <p style="color:#333;font-size:13px;font-weight:600">Recipe OS Development</p>
+        <h1 style="font-family:'Playfair Display',serif;font-size:28px;margin-bottom:6px"><span style="color:#000;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span></h1>
+        <p style="color:#000;font-size:13px;font-weight:600">Recipe OS Development</p>
       </div>
       <div class="stats-grid">
         ${[["📋","Total Recipes",state.recipes.length],["🧬","With DNA",withDNA],["🌿","Ingredients",state.pantry.length],["⚠️","Allergen Scanned",scanned]].map(([icon,label,val])=>`
@@ -1561,7 +1549,7 @@ function filterRecipes() {
   const el = document.getElementById("recipe-results");
   if (!el) return;
   filtered.sort((a,b)=>a.title.localeCompare(b.title));
-  if (!filtered.length) { el.innerHTML = '<div style="color:#333;font-size:12px;text-align:center;padding:20px">No matches.</div>'; return; }
+  if (!filtered.length) { el.innerHTML = '<div style="color:#000;font-size:12px;text-align:center;padding:20px">No matches.</div>'; return; }
   el.innerHTML = `<div class="recipe-grid">${filtered.map(r=>`
     <div class="recipe-card" onclick="selectRecipe('${r.id}')">
       <div class="recipe-card-title">${escHtml(r.title)}</div>
@@ -1588,9 +1576,9 @@ function renderEditor() {
     <div style="padding:10px 0;margin-bottom:4px;border-bottom:2px solid #111">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:11px;font-weight:700;color:#333">AI Recipe</span>
-          <span style="font-size:9px;background:#C4501A;color:#fff;padding:2px 8px;border-radius:2px;font-weight:700;letter-spacing:1px">AI</span>
-          <span style="font-size:10px;color:#666;font-weight:600">Draft — review and edit below before costing</span>
+          <span style="font-size:11px;font-weight:700;color:#000">AI Recipe</span>
+          <span style="font-size:10px;background:#C4501A;color:#fff;padding:2px 8px;border-radius:2px;font-weight:700;letter-spacing:1px">AI</span>
+          <span style="font-size:11px;color:#000;font-weight:600">Draft — review and edit below before costing</span>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="btn btn-default btn-sm" onclick="previewRecipe()" title="Read the recipe as a clean document">👁 Preview</button>
@@ -1625,13 +1613,13 @@ function renderEditor() {
             return `<div style="margin-top:10px;padding-top:10px;border-top:1px solid #ddd">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                 <span class="label" style="margin-bottom:0;color:#C4501A">⚠ Not in Database</span>
-                <button onclick="setView('pantry')" class="btn btn-default" style="font-size:9px;padding:3px 8px">Open DB</button>
+                <button onclick="setView('pantry')" class="btn btn-default" style="font-size:10px;padding:3px 8px">Open DB</button>
               </div>
-              <div style="font-size:10px;color:#333;margin-bottom:8px;font-weight:600">These ingredients won't be costed until added to the database.</div>
+              <div style="font-size:11px;color:#000;margin-bottom:8px;font-weight:600">These ingredients won't be costed until added to the database.</div>
               ${unmatched.map(ing => `
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#FFF0EB;border:1px solid #C4501A;border-radius:2px;margin-bottom:4px">
                   <span style="font-size:11px;font-weight:700;color:#C4501A">${escHtml(ing.name)}</span>
-                  <button onclick="openAddIngForPromotion('${escHtml(ing.name)}')" style="background:#C4501A;color:#fff;border:none;padding:3px 8px;border-radius:2px;font-size:9px;cursor:pointer;font-weight:700;white-space:nowrap">+ Add to DB</button>
+                  <button onclick="openAddIngForPromotion('${escHtml(ing.name)}')" style="background:#C4501A;color:#fff;border:none;padding:3px 8px;border-radius:2px;font-size:10px;cursor:pointer;font-weight:700;white-space:nowrap">+ Add to DB</button>
                 </div>`).join("")}
             </div>`;
           }
@@ -1645,22 +1633,22 @@ function renderEditor() {
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
               ${[["Calories","kcal",Math.round(pp.cal)],["Protein","g",pp.prot.toFixed(1)],["Carbs","g",pp.carb.toFixed(1)],["Fat","g",pp.fat.toFixed(1)]].map(([l,u,val])=>
                 `<div style="background:#F5F0E8;border-radius:3px;padding:6px;text-align:center">
-                  <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#C4501A">${val}<span style="font-size:9px">${u}</span></div>
-                  <div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:#333">${l}</div>
+                  <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:#C4501A">${val}<span style="font-size:10px">${u}</span></div>
+                  <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:700;color:#000">${l}</div>
                 </div>`).join("")}
             </div>
             ${nut.unmatched.length ? `
               <div style="margin-top:8px">
-                <div style="font-size:9px;color:#C4501A;font-weight:700;margin-bottom:4px">⚠ ${nut.unmatched.length} ingredient${nut.unmatched.length>1?"s":""} not in DB — not included in totals</div>
+                <div style="font-size:10px;color:#C4501A;font-weight:700;margin-bottom:4px">⚠ ${nut.unmatched.length} ingredient${nut.unmatched.length>1?"s":""} not in DB — not included in totals</div>
                 ${nut.unmatched.map(name => `
                   <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#FFF0EB;border:1px solid #C4501A;border-radius:2px;margin-bottom:3px">
-                    <span style="font-size:10px;font-weight:700;color:#C4501A">${escHtml(name)}</span>
-                    <button onclick="openAddIngForPromotion('${escHtml(name)}')" style="background:#C4501A;color:#fff;border:none;padding:2px 7px;border-radius:2px;font-size:9px;cursor:pointer;font-weight:700">+ Add</button>
+                    <span style="font-size:11px;font-weight:700;color:#C4501A">${escHtml(name)}</span>
+                    <button onclick="openAddIngForPromotion('${escHtml(name)}')" style="background:#C4501A;color:#fff;border:none;padding:2px 7px;border-radius:2px;font-size:10px;cursor:pointer;font-weight:700">+ Add</button>
                   </div>`).join("")}
               </div>` : ""}
           </div>`;
         })()}
-  ` : `<div style="text-align:center;color:#333;font-size:11px;padding:20px">Generate a recipe to see DNA</div>`;
+  ` : `<div style="text-align:center;color:#000;font-size:11px;padding:20px">Generate a recipe to see DNA</div>`;
 
   const allergenHtml = ALLERGENS.map(a => `
     <span class="allergen-pill ${(r.allergens||[]).includes(a.id)?"active":""}">${(r.allergens||[]).includes(a.id)?"⚠ ":""}${a.label}</span>`).join("");
@@ -1732,7 +1720,7 @@ function renderEditor() {
       <div class="card" style="display:flex;align-items:center;gap:16px;padding:14px">
         <span class="label" style="margin-bottom:0">Portions</span>
         <input type="number" style="width:80px" value="${v.portions||4}" onchange="updateVersionField('portions',Number(this.value))">
-        <span style="font-size:11px;color:#333">Base yield for this version</span>
+        <span style="font-size:11px;color:#000">Base yield for this version</span>
       </div>
 
       <div class="card">
@@ -1806,11 +1794,11 @@ function renderEditor() {
       <div class="section-divider">
         <span class="label">Scale Recipe</span>
         <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="scaleRecipe()">⚖ Scale Portions</button>
-        <div style="font-size:10px;color:#333;margin-top:6px">Recalculates all ingredient quantities to a new portion count.</div>
+        <div style="font-size:11px;color:#000;margin-top:6px">Recalculates all ingredient quantities to a new portion count.</div>
       </div>
       <div class="section-divider">
         <span class="label">Print & Export</span>
-        <div style="font-size:10px;color:#333;margin-bottom:8px">Current version: <strong>${VERSION_CFG[state.activeVersion].label}</strong></div>
+        <div style="font-size:11px;color:#000;margin-bottom:8px">Current version: <strong>${VERSION_CFG[state.activeVersion].label}</strong></div>
         <div style="display:flex;flex-direction:column;gap:6px">
           <button class="btn btn-dark" style="justify-content:center" onclick="exportMagazine()">📰 Magazine PDF</button>
           <button class="btn btn-dark" style="justify-content:center" onclick="exportManual()">📋 Training Manual PDF</button>
@@ -1834,12 +1822,12 @@ function renderAllergens() {
     const recipeCount = state.recipes.filter(r => (r.allergens||[]).includes(a.id)).length;
     return `
       <div style="background:#fff;border:1px solid #E8E0D0;border-radius:4px;padding:16px;position:relative">
-        ${recipeCount > 0 ? `<span style="position:absolute;top:12px;right:12px;background:#C4501A;color:#fff;font-size:9px;padding:2px 8px;border-radius:10px;letter-spacing:1px">${recipeCount} recipe${recipeCount>1?"s":""}</span>` : ""}
+        ${recipeCount > 0 ? `<span style="position:absolute;top:12px;right:12px;background:#C4501A;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;letter-spacing:1px">${recipeCount} recipe${recipeCount>1?"s":""}</span>` : ""}
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
           <span style="font-size:22px">${a.icon}</span>
           <div style="font-weight:600;font-size:13px">${a.label}</div>
         </div>
-        <div style="font-size:11px;color:#111;line-height:1.6">${a.desc}</div>
+        <div style="font-size:11px;color:#000;line-height:1.6">${a.desc}</div>
       </div>`;
   }).join("");
 
@@ -1847,14 +1835,14 @@ function renderAllergens() {
     <div class="center-pane">
       <div style="margin-bottom:24px">
         <h2 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:6px">14 Declarable Allergens</h2>
-        <p style="font-size:12px;color:#333;line-height:1.6">EU & UK Food Information Regulations — all must be declared when used as ingredients.</p>
+        <p style="font-size:12px;color:#000;line-height:1.6">EU & UK Food Information Regulations — all must be declared when used as ingredients.</p>
       </div>
 
       <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:4px;padding:16px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start">
         <span style="font-size:22px;flex-shrink:0">⚠️</span>
         <div>
           <div style="font-weight:600;font-size:12px;color:#C4501A;margin-bottom:4px;letter-spacing:0.5px">HIDDEN ALLERGEN WARNING</div>
-          <div style="font-size:11px;color:#333;line-height:1.7">
+          <div style="font-size:11px;color:#000;line-height:1.7">
             Many common ingredients contain hidden allergens. Always check labels on:
             <strong>prepared sauces, stocks & bouillons, condiments, spice blends, marinades, dressings, curry pastes, miso, soy sauce, Worcestershire sauce, fish sauce, oyster sauce, bread, pastry, and processed meats.</strong>
             <br><br>
@@ -1867,8 +1855,8 @@ function renderAllergens() {
         ${cardsHtml}
       </div>
 
-      <div style="margin-top:24px;padding:16px;background:#F9F6F0;border-radius:4px;font-size:11px;color:#333;line-height:1.7">
-        <strong style="color:#1A1A1A">Allergen Scanning:</strong> Use the Scan button in the Recipe Editor to automatically detect allergens in your ingredients against the pantry database. 
+      <div style="margin-top:24px;padding:16px;background:#F9F6F0;border-radius:4px;font-size:11px;color:#000;line-height:1.7">
+        <strong style="color:#000">Allergen Scanning:</strong> Use the Scan button in the Recipe Editor to automatically detect allergens in your ingredients against the pantry database. 
         Always cross-check manually — the scan only detects allergens for ingredients that exactly match your pantry entries. 
         Custom sauces, spice blends, and unlisted ingredients must be checked manually.
       </div>
@@ -1885,8 +1873,8 @@ function renderPantry() {
     <div class="center-pane">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
         <div>
-          <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:#111">Ingredients Database</h2>
-          <p style="font-size:11px;color:#333;margin-top:2px">${state.pantry.length} ingredients · 13 categories · All prices exclusive of VAT/Tax</p>
+          <h2 style="font-family:'Playfair Display',serif;font-size:22px;color:#000">Ingredients Database</h2>
+          <p style="font-size:11px;color:#000;margin-top:2px">${state.pantry.length} ingredients · 13 categories · All prices exclusive of VAT/Tax</p>
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
           <button class="btn btn-primary btn-sm" onclick="syncFromStorage()" title="Reload ingredients from saved data">⟳ Sync DB</button>
@@ -1924,23 +1912,23 @@ function renderPantry() {
           <table style="width:100%;border-collapse:collapse;min-width:900px">
             <thead>
               <tr style="background:#111;color:#fff">
-                <th onclick="sortDB('name')" style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Name ↕</th>
-                <th onclick="sortDB('category')" style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Category ↕</th>
-                <th style="padding:10px 12px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Pack Size</th>
-                <th onclick="sortDB('purchaseCost')" style="padding:10px 12px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Purchase Cost ↕</th>
-                <th style="padding:10px 12px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Yield %</th>
-                <th onclick="sortDB('yieldCost')" style="padding:10px 12px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;background:#C4501A">Yield Cost/unit ↕</th>
-                <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap" title="Flavour pillars this ingredient delivers">Pillars</th>
-                <th style="padding:10px 12px;text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Allergens</th>
-                <th style="padding:10px 12px;text-align:center;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Actions</th>
+                <th onclick="sortDB('name')" style="padding:10px 12px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Name ↕</th>
+                <th onclick="sortDB('category')" style="padding:10px 12px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Category ↕</th>
+                <th style="padding:10px 12px;text-align:right;font-size:11px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Pack Size</th>
+                <th onclick="sortDB('purchaseCost')" style="padding:10px 12px;text-align:right;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap">Purchase Cost ↕</th>
+                <th style="padding:10px 12px;text-align:right;font-size:11px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Yield %</th>
+                <th onclick="sortDB('yieldCost')" style="padding:10px 12px;text-align:right;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;background:#C4501A">Yield Cost/unit ↕</th>
+                <th style="padding:10px 12px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap" title="Flavour pillars this ingredient delivers">Pillars</th>
+                <th style="padding:10px 12px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Allergens</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap">Actions</th>
               </tr>
             </thead>
             <tbody id="db-tbody">
-              <tr><td colspan="9" style="padding:20px;text-align:center;color:#333">Loading...</td></tr>
+              <tr><td colspan="9" style="padding:20px;text-align:center;color:#000">Loading...</td></tr>
             </tbody>
           </table>
         </div>
-        <div id="db-footer" style="padding:8px 12px;background:#F5F0E8;font-size:10px;color:#333;font-weight:600;border-top:1px solid #ddd"></div>
+        <div id="db-footer" style="padding:8px 12px;background:#F5F0E8;font-size:11px;color:#000;font-weight:600;border-top:1px solid #ddd"></div>
       </div>
     </div>
   `;
@@ -1987,7 +1975,7 @@ function renderDBTable() {
   if (!tbody) return;
 
   if (!items.length) {
-    tbody.innerHTML = '<tr><td colspan="9" style="padding:24px;text-align:center;color:#333;font-weight:600">No ingredients match your filters.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="padding:24px;text-align:center;color:#000;font-weight:600">No ingredients match your filters.</td></tr>';
     if (footer) footer.textContent = '0 results';
     return;
   }
@@ -1999,19 +1987,19 @@ function renderDBTable() {
     const isCustom = String(p.id).startsWith('custom_');
     const rowBg = idx % 2 === 0 ? '#fff' : '#FAFAF8';
     return `<tr style="background:${rowBg};border-bottom:1px solid #eee" onmouseover="this.style.background='#FFF0EB'" onmouseout="this.style.background='${rowBg}'">
-      <td style="padding:8px 12px;font-size:12px;font-weight:700;color:#111">
-        ${escHtml(p.name)}${isCustom ? ' <span style="font-size:9px;background:#E8F0E8;color:#2C4A3E;padding:1px 5px;border-radius:2px;font-weight:700">CUSTOM</span>' : ''}
+      <td style="padding:8px 12px;font-size:12px;font-weight:700;color:#000">
+        ${escHtml(p.name)}${isCustom ? ' <span style="font-size:10px;background:#E8F0E8;color:#2C4A3E;padding:1px 5px;border-radius:2px;font-weight:700">CUSTOM</span>' : ''}
       </td>
-      <td style="padding:8px 12px;font-size:11px;color:#333;font-weight:600">${escHtml(p.category)}</td>
+      <td style="padding:8px 12px;font-size:11px;color:#000;font-weight:600">${escHtml(p.category)}</td>
       <td style="padding:8px 12px;font-size:11px;text-align:right;font-family:monospace;font-weight:700">${formatQty(p.purchaseQty, p.purchaseUnit)}</td>
       <td style="padding:8px 12px;font-size:11px;text-align:right;font-family:monospace;font-weight:700">${(p.purchaseCost||0).toFixed(2)}</td>
       <td style="padding:8px 12px;font-size:11px;text-align:right;font-weight:700;color:${(p.yield_pct||100)<100?'#C4501A':'#333'}">${(p.yield_pct||100)}%</td>
       <td style="padding:8px 12px;font-size:12px;text-align:right;font-family:monospace;font-weight:900;color:#C4501A;background:#FFF8F5">${yieldCostDisplay}</td>
       <td style="padding:8px 10px;white-space:nowrap">${pillarChips(p)}</td>
-      <td style="padding:8px 12px;font-size:10px;color:${allergenList!=='—'?'#C4501A':'#333'};font-weight:700">${allergenList}</td>
+      <td style="padding:8px 12px;font-size:11px;color:${allergenList!=='—'?'#C4501A':'#333'};font-weight:700">${allergenList}</td>
       <td style="padding:8px 12px;text-align:center;white-space:nowrap">
-        <button onclick="editIngredient('${p.id}')" style="background:#111;color:#fff;border:none;padding:4px 10px;border-radius:2px;font-size:10px;cursor:pointer;font-weight:700;margin-right:4px">Edit</button>
-        <button onclick="deleteIngredient('${p.id}')" style="background:#FDE8E8;color:#C4501A;border:1px solid #C4501A;padding:4px 10px;border-radius:2px;font-size:10px;cursor:pointer;font-weight:700">Delete</button>
+        <button onclick="editIngredient('${p.id}')" style="background:#111;color:#fff;border:none;padding:4px 10px;border-radius:2px;font-size:11px;cursor:pointer;font-weight:700;margin-right:4px">Edit</button>
+        <button onclick="deleteIngredient('${p.id}')" style="background:#FDE8E8;color:#C4501A;border:1px solid #C4501A;padding:4px 10px;border-radius:2px;font-size:11px;cursor:pointer;font-weight:700">Delete</button>
       </td>
     </tr>`;
   }).join('');
@@ -2029,7 +2017,7 @@ function pillarChips(ing) {
   const p = getPillars(ing);
   const active = PILLARS.filter(pl => p[pl.id] > 0);
   if (!active.length) {
-    return `<span style="font-size:9px;color:#bbb;font-weight:700;font-style:italic">not profiled</span>`;
+    return `<span style="font-size:10px;color:#000;font-weight:700;font-style:italic">not profiled</span>`;
   }
   return active
     .sort((a,b) => p[b.id] - p[a.id])
@@ -2038,7 +2026,7 @@ function pillarChips(ing) {
       const op = v === 3 ? 1 : v === 2 ? 0.72 : 0.44;
       return `<span title="${pl.label} — ${PILLAR_LEVELS[v]}"
         style="display:inline-block;width:15px;height:15px;line-height:15px;text-align:center;border-radius:2px;
-        background:${pl.colour};opacity:${op};color:#fff;font-size:9px;margin-right:2px">${pl.icon}</span>`;
+        background:${pl.colour};opacity:${op};color:#fff;font-size:10px;margin-right:2px">${pl.icon}</span>`;
     }).join('');
 }
 
@@ -2056,7 +2044,7 @@ function deleteIngredient(id) {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;padding:28px;width:380px;max-width:95vw">
       <div style="font-family:'Playfair Display',serif;font-size:18px;margin-bottom:8px">Delete Ingredient</div>
-      <p style="font-size:12px;color:#333;margin-bottom:20px;line-height:1.6">Remove <strong>${escHtml(ing.name)}</strong> from the database? This cannot be undone.</p>
+      <p style="font-size:12px;color:#000;margin-bottom:20px;line-height:1.6">Remove <strong>${escHtml(ing.name)}</strong> from the database? This cannot be undone.</p>
       <div style="display:flex;gap:8px">
         <button class="btn btn-confirm" onclick="confirmDeleteIngredient('${id}',this)" style="flex:1;justify-content:center">Delete</button>
         <button class="btn btn-default" onclick="this.closest('div[style]').remove()">Cancel</button>
@@ -2101,7 +2089,7 @@ function showAddIngredient(existing) {
         <span style="font-size:20px">⚠️</span>
         <div>
           <div style="font-size:11px;font-weight:800;color:#C4501A;letter-spacing:1px;text-transform:uppercase">All costs must be entered EXCLUSIVE of VAT / Tax</div>
-          <div style="font-size:11px;color:#333;margin-top:2px">Do not include VAT in your purchase cost. Enter the net cost only.</div>
+          <div style="font-size:11px;color:#000;margin-top:2px">Do not include VAT in your purchase cost. Enter the net cost only.</div>
         </div>
       </div>
 
@@ -2134,7 +2122,7 @@ function showAddIngredient(existing) {
 
         <!-- Purchase Details -->
         <div style="background:#F5F0E8;border-radius:3px;padding:14px;margin-bottom:14px">
-          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#333;font-weight:800;margin-bottom:10px">Purchase Details (ex VAT)</div>
+          <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#000;font-weight:800;margin-bottom:10px">Purchase Details (ex VAT)</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
             <div>
               <span class="label">Purchase Quantity *</span>
@@ -2155,17 +2143,17 @@ function showAddIngredient(existing) {
 
         <!-- Yield -->
         <div style="background:#F0F7F0;border-radius:3px;padding:14px;margin-bottom:14px;border:1px solid #2C4A3E">
-          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#2C4A3E;font-weight:800;margin-bottom:10px">Yield Calculation</div>
+          <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#2C4A3E;font-weight:800;margin-bottom:10px">Yield Calculation</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end">
             <div>
               <span class="label">Yield % (default 100%)</span>
               <input type="number" id="ni-yield" value="${ing.yield_pct||100}" min="1" max="100" step="0.1" oninput="updateYieldPreview()">
-              <div style="font-size:10px;color:#333;margin-top:4px">e.g. Anchovies 80% after draining</div>
+              <div style="font-size:11px;color:#000;margin-top:4px">e.g. Anchovies 80% after draining</div>
             </div>
             <div id="yield-preview" style="grid-column:span 2;background:#fff;border-radius:3px;padding:12px;border:1px solid #2C4A3E">
-              <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#2C4A3E;font-weight:800;margin-bottom:6px">Yield Cost (used in recipe costing)</div>
+              <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#2C4A3E;font-weight:800;margin-bottom:6px">Yield Cost (used in recipe costing)</div>
               <div id="yield-cost-display" style="font-family:'Playfair Display',serif;font-size:26px;color:#C4501A;font-weight:700">—</div>
-              <div id="yield-cost-label" style="font-size:10px;color:#333;font-weight:600;margin-top:2px">per 100 units</div>
+              <div id="yield-cost-label" style="font-size:11px;color:#000;font-weight:600;margin-top:2px">per 100 units</div>
             </div>
           </div>
         </div>
@@ -2181,19 +2169,19 @@ function showAddIngredient(existing) {
         <!-- Flavour Pillars -->
         <div style="background:#FAF7F2;border:1px solid #D8CFC0;border-radius:3px;padding:14px;margin-bottom:14px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;gap:6px">
-            <span style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B4423;font-weight:800">Flavour Pillars</span>
+            <span style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6B4423;font-weight:800">Flavour Pillars</span>
             <span style="display:flex;gap:10px;align-items:center">
               <button type="button" id="ai-fill-btn" onclick="aiFillIngredient()"
                 title="Ask Claude for the pillar profile, nutrition and allergens"
-                style="background:#6B4423;border:none;color:#fff;font-size:10px;font-weight:800;cursor:pointer;padding:4px 9px;border-radius:2px">✨ AI fill</button>
-              <button type="button" onclick="clearPillars()" style="background:none;border:none;color:#C4501A;font-size:10px;font-weight:700;cursor:pointer;padding:0">Clear all</button>
+                style="background:#6B4423;border:none;color:#fff;font-size:11px;font-weight:800;cursor:pointer;padding:4px 9px;border-radius:2px">✨ AI fill</button>
+              <button type="button" onclick="clearPillars()" style="background:none;border:none;color:#C4501A;font-size:11px;font-weight:700;cursor:pointer;padding:0">Clear all</button>
             </span>
           </div>
-          <div style="font-size:10px;color:#555;margin-bottom:8px;font-weight:600;line-height:1.5">
+          <div style="font-size:11px;color:#000;margin-bottom:8px;font-weight:600;line-height:1.5">
             How strongly does this ingredient deliver each pillar? Judge it as you would actually use it, not by weight.
             <em>AI fill</em> suggests pillars, nutrition, allergens and yield from the name — always worth checking.
           </div>
-          <div id="ai-fill-status" style="display:none;font-size:10px;font-weight:700;line-height:1.5;
+          <div id="ai-fill-status" style="display:none;font-size:11px;font-weight:700;line-height:1.5;
             background:#fff;border:1px solid #D8CFC0;border-radius:2px;padding:6px 8px;margin-bottom:8px"></div>
           <div id="pillar-editor">
             ${PILLARS.map(pl => {
@@ -2201,13 +2189,13 @@ function showAddIngredient(existing) {
               return `<div style="display:grid;grid-template-columns:112px 1fr;gap:8px;align-items:center;margin-bottom:5px">
                 <div style="display:flex;align-items:center;gap:5px" title="${pl.note}">
                   <span style="color:${pl.colour};font-size:12px">${pl.icon}</span>
-                  <span style="font-size:11px;font-weight:700;color:#333">${pl.label}</span>
+                  <span style="font-size:11px;font-weight:700;color:#000">${pl.label}</span>
                 </div>
                 <div style="display:flex;gap:3px">
                   ${[0,1,2,3].map(n => `<button type="button" data-pillar="${pl.id}" data-val="${n}"
                     onclick="setPillar('${pl.id}',${n})"
                     title="${PILLAR_LEVELS[n]}"
-                    style="flex:1;padding:5px 2px;font-size:10px;font-weight:700;cursor:pointer;border-radius:2px;
+                    style="flex:1;padding:5px 2px;font-size:11px;font-weight:700;cursor:pointer;border-radius:2px;
                       border:1px solid ${val===n ? pl.colour : '#ddd'};
                       background:${val===n ? pl.colour : '#fff'};
                       color:${val===n ? '#fff' : '#888'}">${n===0?'—':n}</button>`).join('')}
@@ -2215,7 +2203,7 @@ function showAddIngredient(existing) {
               </div>`;
             }).join('')}
           </div>
-          <div style="font-size:9px;color:#777;margin-top:6px;font-weight:600">— none · 1 slight · 2 moderate · 3 dominant</div>
+          <div style="font-size:10px;color:#000;margin-top:6px;font-weight:600">— none · 1 slight · 2 moderate · 3 dominant</div>
         </div>
 
         <!-- Nutrition -->
@@ -2956,7 +2944,7 @@ function showPrintPreview() {
   modal.innerHTML = `
     <div style="background:#111;color:#fff;padding:12px 18px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
       <div style="min-width:0">
-        <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A">Preview</div>
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A">Preview</div>
         <div style="font-family:'Playfair Display',serif;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(_previewTitle)}</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -3031,7 +3019,7 @@ function printAllRecipes() {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;padding:32px;width:440px;max-width:95vw">
       <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px">Print Recipe Collection</div>
-      <p style="font-size:12px;color:#333;margin-bottom:24px;line-height:1.6">
+      <p style="font-size:12px;color:#000;margin-bottom:24px;line-height:1.6">
         Select which menu version to print. Only recipes with that version generated will be included.
       </p>
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
@@ -3045,12 +3033,12 @@ function printAllRecipes() {
                 <span style="font-size:20px">${cfg.icon}</span>
                 <div>
                   <div style="font-weight:600;font-size:13px">${cfg.label}</div>
-                  <div style="font-size:10px;color:#333">${cfg.portions} portions base yield</div>
+                  <div style="font-size:11px;color:#000">${cfg.portions} portions base yield</div>
                 </div>
               </div>
               <div style="text-align:right">
                 <div style="font-family:'Playfair Display',serif;font-size:20px;color:#C4501A">${count}</div>
-                <div style="font-size:9px;color:#333;text-transform:uppercase;letter-spacing:1px">recipe${count!==1?'s':''}</div>
+                <div style="font-size:10px;color:#000;text-transform:uppercase;letter-spacing:1px">recipe${count!==1?'s':''}</div>
               </div>
             </div>`;
         }).join("")}
@@ -3143,39 +3131,39 @@ function executePrintAll(versionKey) {
 body{font-family:'Inter',sans-serif;color:#000;background:white}
 .cover{width:210mm;padding:20mm;margin:0 auto;background:white;min-height:60px}
 .recipe-page{width:210mm;min-height:297mm;padding:20mm;margin:0 auto;background:white}
-.eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:8px}
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:8px}
 h1{font-family:'Playfair Display',serif;font-size:36px;line-height:1.1;margin-bottom:10px}
-.tag{display:inline-block;background:#C4501A;color:white;padding:2px 10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
-.desc{font-size:12px;color:#111;line-height:1.7;border-left:3px solid #C4501A;padding-left:14px;margin-bottom:20px;font-style:italic}
+.tag{display:inline-block;background:#C4501A;color:white;padding:2px 10px;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.desc{font-size:12px;color:#000;line-height:1.7;border-left:3px solid #C4501A;padding-left:14px;margin-bottom:20px;font-style:italic}
 .meta-row{display:flex;gap:24px;margin-bottom:16px;padding:10px 14px;background:#F9F6F0;border-radius:3px}
 .meta-item{display:flex;flex-direction:column;gap:2px}
-.meta-label{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#333}
+.meta-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#000}
 .meta-val{font-size:12px;font-weight:600}
 .two-col{display:grid;grid-template-columns:1fr 1.6fr;gap:32px;margin-bottom:20px}
 h2{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #E8E0D0}
-.portions-note{font-size:10px;color:#333;font-family:'Inter',sans-serif;font-weight:300}
+.portions-note{font-size:11px;color:#000;font-family:'Inter',sans-serif;font-weight:300}
 .ing{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #ccc;font-size:11px;color:#000}
 .qty{font-family:monospace;color:#C4501A;font-weight:600}
-.prep-note{color:#444}
+.prep-note{color:#000}
 .step{display:flex;gap:12px;margin-bottom:12px}
 .snum{font-family:'Playfair Display',serif;font-size:22px;color:#E8E0D0;font-weight:700;line-height:1;min-width:28px}
 .sbody{font-size:11px;line-height:1.7;color:#000}
-.smeta{font-size:9px;color:#C4501A;margin-top:3px}
+.smeta{font-size:10px;color:#C4501A;margin-top:3px}
 .plating{background:#F5F0E8;padding:14px;margin-bottom:14px;font-size:11px}
 .plating strong{display:block;font-family:'Playfair Display',serif;font-size:13px;margin-bottom:6px;font-weight:400}
-.plating p{color:#111;line-height:1.7;font-style:italic}
+.plating p{color:#000;line-height:1.7;font-style:italic}
 .schedule{margin-bottom:14px}
-.schedule-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#333;margin-bottom:6px}
-.phase-row{display:grid;grid-template-columns:130px 70px 1fr;gap:8px;padding:4px 0;border-bottom:1px solid #F0EBE3;font-size:10px}
+.schedule-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#000;margin-bottom:6px}
+.phase-row{display:grid;grid-template-columns:130px 70px 1fr;gap:8px;padding:4px 0;border-bottom:1px solid #F0EBE3;font-size:11px}
 .phase-name{font-weight:600}
 .phase-time{color:#C4501A}
-.phase-tasks{color:#222}
+.phase-tasks{color:#000}
 .dna-row{display:flex;border:1px solid #E8E0D0;margin-bottom:14px}
 .dna-cell{flex:1;text-align:center;padding:6px 4px;border-right:1px solid #E8E0D0}
 .dna-cell:last-child{border-right:none}
 .dna-sc{font-family:'Playfair Display',serif;font-size:14px;color:#C4501A}
-.dna-lb{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#444;margin-top:2px}
-.footer{margin-top:20px;padding-top:10px;border-top:1px solid #E8E0D0;display:flex;justify-content:space-between;font-size:9px;color:#333}
+.dna-lb{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#000;margin-top:2px}
+.footer{margin-top:20px;padding-top:10px;border-top:1px solid #E8E0D0;display:flex;justify-content:space-between;font-size:10px;color:#000}
 @media print{
   body{background:white !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   *{color:#000 !important;font-weight:700 !important}
@@ -3195,12 +3183,12 @@ h2{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:10px;paddin
 <div class="cover" style="border-bottom:3px solid #1A1A1A;margin-bottom:0">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <div>
-      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:4px"><span style="color:#000;font-family:'Playfair Display',serif;font-weight:700">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif;font-weight:700">Lab</span> — Recipe Collection</div>
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#000;margin-bottom:4px"><span style="color:#000;font-family:'Playfair Display',serif;font-weight:700">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif;font-weight:700">Lab</span> — Recipe Collection</div>
       <div style="font-family:'Playfair Display',serif;font-size:28px">${cfg.icon} ${cfg.label} Menu</div>
     </div>
-    <div style="text-align:right;font-size:11px;color:#333;line-height:1.8">
+    <div style="text-align:right;font-size:11px;color:#000;line-height:1.8">
       <div style="font-family:'Playfair Display',serif;font-size:36px;color:#C4501A;line-height:1">${recipes.length}</div>
-      <div style="font-size:9px;text-transform:uppercase;letter-spacing:2px">Recipe${recipes.length!==1?'s':''}</div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:2px">Recipe${recipes.length!==1?'s':''}</div>
       <div style="margin-top:4px">${new Date().toLocaleDateString("en-ZA",{day:"numeric",month:"long",year:"numeric"})}</div>
     </div>
   </div>
@@ -3221,10 +3209,10 @@ function buildMagazineHTML(r, versionKey) {
 <style>
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;color:#000}
 .page{width:210mm;min-height:297mm;padding:20mm;margin:0 auto;background:white}
-.eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:8px;font-weight:700}
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:8px;font-weight:700}
 h1{font-family:'Playfair Display',serif;font-size:42px;line-height:1.1;margin-bottom:12px}
-.tag{display:inline-block;background:#C4501A;color:white;padding:3px 10px;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
-.desc{font-size:14px;color:#222;line-height:1.7;border-left:3px solid #C4501A;padding-left:16px;margin-bottom:32px;font-style:italic}
+.tag{display:inline-block;background:#C4501A;color:white;padding:3px 10px;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+.desc{font-size:14px;color:#000;line-height:1.7;border-left:3px solid #C4501A;padding-left:16px;margin-bottom:32px;font-style:italic}
 .two-col{display:grid;grid-template-columns:1fr 1.6fr;gap:40px;margin-bottom:32px}
 h2{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #E8E0D0}
 .ing{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #ccc;font-size:12px;color:#000}
@@ -3232,9 +3220,9 @@ h2{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:16px;paddin
 .step{display:flex;gap:16px;margin-bottom:16px}
 .snum{font-family:'Playfair Display',serif;font-size:28px;color:#E8E0D0;font-weight:700;line-height:1;min-width:32px}
 .sbody{font-size:12px;line-height:1.7;color:#000}
-.smeta{font-size:10px;color:#111;margin-top:4px}
+.smeta{font-size:11px;color:#000;margin-top:4px}
 .plating{background:#F5F0E8;padding:20px;margin-bottom:24px}
-.footer{margin-top:40px;padding-top:16px;border-top:1px solid #E8E0D0;display:flex;justify-content:space-between;font-size:9px;color:#333}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid #E8E0D0;display:flex;justify-content:space-between;font-size:10px;color:#000}
 @media print{
   body{background:white !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   *{color:#000 !important;font-weight:700 !important}
@@ -3251,11 +3239,11 @@ ${r.cuisine ? `<div class="tag">${r.cuisine}</div>` : ""}
 ${r.description ? `<div class="desc">${r.description}</div>` : ""}
 ${pillarPrintLine(v)}
 <div class="two-col">
-<div><h2>Ingredients <span style="font-size:11px;color:#333;font-weight:300">for ${v?.portions||4} portions</span></h2>
-${(v?.ingredients||[]).map(i=>`<div class="ing"><span>${i.name}${i.note?` <em style="color:#333">(${i.note})</em>`:""}</span><span class="qty">${i.quantity}${i.unit}</span></div>`).join("")}</div>
+<div><h2>Ingredients <span style="font-size:11px;color:#000;font-weight:300">for ${v?.portions||4} portions</span></h2>
+${(v?.ingredients||[]).map(i=>`<div class="ing"><span>${i.name}${i.note?` <em style="color:#000">(${i.note})</em>`:""}</span><span class="qty">${i.quantity}${i.unit}</span></div>`).join("")}</div>
 <div><h2>Method</h2>${(v?.method||[]).map(s=>`<div class="step"><div class="snum">${String(s.step).padStart(2,"0")}</div><div class="sbody">${s.action}${s.time||s.temp?`<div class="smeta">${[s.time,s.temp].filter(Boolean).join(" · ")}</div>`:""}</div></div>`).join("")}</div>
 </div>
-${v?.platingNotes?`<div class="plating"><h3 style="font-family:'Playfair Display',serif;font-size:14px;margin-bottom:8px">Plating</h3><p style="font-size:12px;line-height:1.7;color:#111;font-style:italic">${v.platingNotes}</p></div>`:""}
+${v?.platingNotes?`<div class="plating"><h3 style="font-family:'Playfair Display',serif;font-size:14px;margin-bottom:8px">Plating</h3><p style="font-size:12px;line-height:1.7;color:#000;font-style:italic">${v.platingNotes}</p></div>`:""}
 <div class="footer"><span>${r.title}</span><span>${new Date().toLocaleDateString("en-ZA",{day:"numeric",month:"long",year:"numeric"})}</span><span>${vl} · ${v?.portions||4} portions</span></div>
 </div></body></html>`;
 }
@@ -3269,18 +3257,18 @@ function buildManualHTML(r, versionKey) {
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;font-size:11px;color:#000}
 .page{width:210mm;padding:15mm;margin:0 auto}
 .hdr{background:#1A1A1A;color:white;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
-.hdr h1{font-size:18px;font-weight:700}.hdr-meta{font-size:10px;color:#333;text-align:right}
-.badge{background:#C4501A;color:white;padding:2px 8px;font-size:9px;letter-spacing:2px;text-transform:uppercase}
-.sec{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333;background:#F5F0E8;padding:6px 12px;border-left:3px solid #C4501A;margin:20px 0 10px}
+.hdr h1{font-size:18px;font-weight:700}.hdr-meta{font-size:11px;color:#000;text-align:right}
+.badge{background:#C4501A;color:white;padding:2px 8px;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.sec{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#000;background:#F5F0E8;padding:6px 12px;border-left:3px solid #C4501A;margin:20px 0 10px}
 table{width:100%;border-collapse:collapse}
-th{background:#F5F0E8;font-size:9px;text-transform:uppercase;letter-spacing:1px;padding:6px 8px;text-align:left;color:#333}
-td{padding:5px 8px;border-bottom:1px solid #ccc;font-size:10px;color:#000}
+th{background:#F5F0E8;font-size:10px;text-transform:uppercase;letter-spacing:1px;padding:6px 8px;text-align:left;color:#000}
+td{padding:5px 8px;border-bottom:1px solid #ccc;font-size:11px;color:#000}
 .qty{font-weight:900;color:#000}
-.ap{background:#FFF0EB;color:#C4501A;border:1px solid #C4501A;padding:1px 6px;font-size:8px;border-radius:2px;margin:1px;display:inline-block}
+.ap{background:#FFF0EB;color:#C4501A;border:1px solid #C4501A;padding:1px 6px;font-size:10px;border-radius:2px;margin:1px;display:inline-block}
 .step-r{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #F0EBE3}
 .sn{font-weight:700;color:#C4501A;min-width:24px;font-size:13px}
 .sig{margin-top:30px;border-top:2px solid #1A1A1A;padding-top:12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
-.sl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#333}
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#000}
 .sline{border-bottom:1px solid #1A1A1A;margin-top:24px;margin-bottom:4px}
 @media print{
   .page{padding:10mm}
@@ -3297,7 +3285,7 @@ td{padding:5px 8px;border-bottom:1px solid #ccc;font-size:10px;color:#000}
 }
 </style></head><body><div class="page">
 <div class="hdr">
-  <div><div style="font-size:9px;letter-spacing:3px;color:#333;margin-bottom:4px"><span style="color:#000;font-family:'Playfair Display',serif;font-weight:700">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif;font-weight:700">Lab</span> — Training Manual</div>
+  <div><div style="font-size:10px;letter-spacing:3px;color:#000;margin-bottom:4px"><span style="color:#000;font-family:'Playfair Display',serif;font-weight:700">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif;font-weight:700">Lab</span> — Training Manual</div>
   <h1>${r.title}</h1>${r.cuisine?`<div style="margin-top:4px"><span class="badge">${r.cuisine}</span></div>`:""}</div>
   <div class="hdr-meta"><div>${vl}</div><div>${v?.portions||4} portions</div><div>${new Date().toLocaleDateString("en-ZA")}</div>${r.dna?.skillLevel?`<div>${r.dna.skillLevel}</div>`:""}</div>
 </div>
@@ -3307,13 +3295,13 @@ ${pillarPrintLine(v)}
 ${(v?.ingredients||[]).map(ing=>{
   const pi=findInPantry(ing.name);
   const al=pi?.allergens||[];
-  return`<tr><td>${ing.name}</td><td class="qty">${ing.quantity}</td><td>${ing.unit}</td><td style="color:#111;font-weight:600">${ing.note||"—"}</td><td>${al.length?al.map(a=>`<span class="ap">${a}</span>`).join(""):"—"}</td></tr>`;
+  return`<tr><td>${ing.name}</td><td class="qty">${ing.quantity}</td><td>${ing.unit}</td><td style="color:#000;font-weight:600">${ing.note||"—"}</td><td>${al.length?al.map(a=>`<span class="ap">${a}</span>`).join(""):"—"}</td></tr>`;
 }).join("")}
 </table>
 <div class="sec">Method</div>
-${(v?.method||[]).map(s=>`<div class="step-r"><div class="sn">${s.step}</div><div style="flex:1;line-height:1.6">${s.action}${s.time||s.temp?`<div style="font-size:9px;color:#333;margin-top:3px">${[s.time&&"⏱ "+s.time,s.temp&&"🌡 "+s.temp].filter(Boolean).join("  ")}</div>`:""}</div></div>`).join("")}
+${(v?.method||[]).map(s=>`<div class="step-r"><div class="sn">${s.step}</div><div style="flex:1;line-height:1.6">${s.action}${s.time||s.temp?`<div style="font-size:10px;color:#000;margin-top:3px">${[s.time&&"⏱ "+s.time,s.temp&&"🌡 "+s.temp].filter(Boolean).join("  ")}</div>`:""}</div></div>`).join("")}
 ${v?.productionSchedule?.length?`<div class="sec">Production Schedule</div><table><tr><th>Phase</th><th>Time</th><th>Tasks</th></tr>${v.productionSchedule.map(ph=>`<tr><td style="font-weight:600">${ph.phase}</td><td style="color:#C4501A">${ph.timeAllocation||""}</td><td>${(ph.tasks||[]).join(" · ")}</td></tr>`).join("")}</table>`:""}
-${v?.platingNotes?`<div class="sec">Plating & Presentation</div><div style="background:#FFF0EB;border:1px solid #C4501A;padding:10px 14px;line-height:1.7;color:#333">${v.platingNotes}</div>`:""}
+${v?.platingNotes?`<div class="sec">Plating & Presentation</div><div style="background:#FFF0EB;border:1px solid #C4501A;padding:10px 14px;line-height:1.7;color:#000">${v.platingNotes}</div>`:""}
 ${r.allergens&&r.allergens.length?`<div class="sec">Allergen Declaration</div><div style="background:#FFF0EB;padding:10px 14px;font-size:11px;color:#C4501A;font-weight:600">⚠ Contains: ${r.allergens.join(", ")}</div>`:""}
 <div class="sig">
   <div><div class="sline"></div><div class="sl">Chef / Developer</div></div>
@@ -3334,14 +3322,14 @@ function printEditSheet() {
       <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px">${ing.name}</td>
       <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px;color:#C4501A;font-weight:600;font-family:monospace">${ing.quantity}</td>
       <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px">${ing.unit}</td>
-      <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px;color:#333">${ing.note || ""}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px;color:#000">${ing.note || ""}</td>
       <td style="padding:6px 8px;border:1px solid #ddd;min-width:120px">&nbsp;</td>
     </tr>`).join("");
 
   // Add 5 blank rows for new ingredients
   const blankIngRows = Array(5).fill(0).map((_, i) => `
     <tr>
-      <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px;color:#ccc">${(v?.ingredients||[]).length + i + 1}</td>
+      <td style="padding:6px 8px;border:1px solid #ddd;font-size:11px;color:#000">${(v?.ingredients||[]).length + i + 1}</td>
       <td style="padding:6px 8px;border:1px solid #ddd">&nbsp;</td>
       <td style="padding:6px 8px;border:1px solid #ddd">&nbsp;</td>
       <td style="padding:6px 8px;border:1px solid #ddd">&nbsp;</td>
@@ -3353,8 +3341,8 @@ function printEditSheet() {
     <div style="display:grid;grid-template-columns:32px 1fr 80px 80px 140px;gap:0;border-bottom:1px solid #eee;padding:8px 0;align-items:start">
       <div style="font-size:18px;font-family:'Playfair Display',serif;color:#ddd;font-weight:700;line-height:1">${String(s.step).padStart(2,"0")}</div>
       <div style="font-size:11px;line-height:1.6;padding-right:12px">${s.action}</div>
-      <div style="font-size:10px;color:#C4501A">${s.time || ""}</div>
-      <div style="font-size:10px;color:#333">${s.temp || ""}</div>
+      <div style="font-size:11px;color:#C4501A">${s.time || ""}</div>
+      <div style="font-size:11px;color:#000">${s.temp || ""}</div>
       <div style="border:1px solid #ddd;border-radius:2px;min-height:40px;background:#FAFAF8"></div>
     </div>`).join("");
 
@@ -3372,11 +3360,11 @@ function printEditSheet() {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Inter:wght@300;400;600&display=swap">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Inter',sans-serif;color:#1A1A1A;background:white}
+  body{font-family:'Inter',sans-serif;color:#000;background:white}
   .page{width:210mm;padding:15mm;margin:0 auto}
-  .edit-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#C4501A;background:#FFF0EB;padding:1px 6px;border-radius:2px;display:inline-block;margin-bottom:4px}
-  .edit-field{border:none;border-bottom:1px solid #ddd;width:100%;padding:4px 0;font-size:13px;font-family:'Inter',sans-serif;background:transparent;color:#1A1A1A;margin-bottom:12px}
-  .section-hdr{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333;background:#F5F0E8;padding:5px 10px;border-left:3px solid #C4501A;margin:16px 0 10px}
+  .edit-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#C4501A;background:#FFF0EB;padding:1px 6px;border-radius:2px;display:inline-block;margin-bottom:4px}
+  .edit-field{border:none;border-bottom:1px solid #ddd;width:100%;padding:4px 0;font-size:13px;font-family:'Inter',sans-serif;background:transparent;color:#000;margin-bottom:12px}
+  .section-hdr{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#000;background:#F5F0E8;padding:5px 10px;border-left:3px solid #C4501A;margin:16px 0 10px}
   .notes-box{border:1px solid #ddd;border-radius:3px;min-height:60px;background:#FAFAF8;padding:8px;margin-bottom:12px}
   @media print{
   .page{padding:10mm}
@@ -3395,10 +3383,10 @@ function printEditSheet() {
   <!-- Header -->
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #1A1A1A">
     <div>
-      <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#333;margin-bottom:4px"><span style="color:#000;font-family:'Playfair Display',serif;font-weight:700">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif;font-weight:700">Lab</span> — Edit Sheet</div>
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#000;margin-bottom:4px"><span style="color:#000;font-family:'Playfair Display',serif;font-weight:700">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif;font-weight:700">Lab</span> — Edit Sheet</div>
       <div style="font-family:'Playfair Display',serif;font-size:22px">${r.title}</div>
     </div>
-    <div style="text-align:right;font-size:10px;color:#333;line-height:1.8">
+    <div style="text-align:right;font-size:11px;color:#000;line-height:1.8">
       <div>Version: <strong>${vl}</strong></div>
       <div>Portions: <strong>${v?.portions || 4}</strong></div>
       <div>${new Date().toLocaleDateString("en-ZA",{day:"numeric",month:"long",year:"numeric"})}</div>
@@ -3422,39 +3410,39 @@ function printEditSheet() {
   </div>
   <div style="margin-bottom:16px">
     <div class="edit-label">Description</div>
-    <div style="border:1px solid #ddd;border-radius:2px;padding:8px;font-size:11px;color:#111;line-height:1.6;min-height:36px;background:#FAFAF8">${r.description || ""}</div>
+    <div style="border:1px solid #ddd;border-radius:2px;padding:8px;font-size:11px;color:#000;line-height:1.6;min-height:36px;background:#FAFAF8">${r.description || ""}</div>
   </div>
 
   <!-- Ingredients table -->
   <div class="section-hdr">Ingredients</div>
   <table style="width:100%;border-collapse:collapse;margin-bottom:4px">
     <tr style="background:#F5F0E8">
-      <th style="padding:5px 8px;border:1px solid #ddd;font-size:9px;text-align:left;color:#333;text-transform:uppercase;letter-spacing:1px;width:28px">#</th>
-      <th style="padding:5px 8px;border:1px solid #ddd;font-size:9px;text-align:left;color:#333;text-transform:uppercase;letter-spacing:1px">Ingredient</th>
-      <th style="padding:5px 8px;border:1px solid #ddd;font-size:9px;text-align:left;color:#333;text-transform:uppercase;letter-spacing:1px;width:60px">Qty</th>
-      <th style="padding:5px 8px;border:1px solid #ddd;font-size:9px;text-align:left;color:#333;text-transform:uppercase;letter-spacing:1px;width:50px">Unit</th>
-      <th style="padding:5px 8px;border:1px solid #ddd;font-size:9px;text-align:left;color:#333;text-transform:uppercase;letter-spacing:1px">Prep Note</th>
-      <th style="padding:5px 8px;border:1px solid #ddd;font-size:9px;text-align:left;color:#333;text-transform:uppercase;letter-spacing:1px;width:120px">Edit / Note</th>
+      <th style="padding:5px 8px;border:1px solid #ddd;font-size:10px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:1px;width:28px">#</th>
+      <th style="padding:5px 8px;border:1px solid #ddd;font-size:10px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:1px">Ingredient</th>
+      <th style="padding:5px 8px;border:1px solid #ddd;font-size:10px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:1px;width:60px">Qty</th>
+      <th style="padding:5px 8px;border:1px solid #ddd;font-size:10px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:1px;width:50px">Unit</th>
+      <th style="padding:5px 8px;border:1px solid #ddd;font-size:10px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:1px">Prep Note</th>
+      <th style="padding:5px 8px;border:1px solid #ddd;font-size:10px;text-align:left;color:#000;text-transform:uppercase;letter-spacing:1px;width:120px">Edit / Note</th>
     </tr>
     ${ingsRows}
     ${blankIngRows}
   </table>
-  <div style="font-size:9px;color:#333;margin-bottom:16px">↑ Use the Edit/Note column to mark changes. Blank rows for new ingredients.</div>
+  <div style="font-size:10px;color:#000;margin-bottom:16px">↑ Use the Edit/Note column to mark changes. Blank rows for new ingredients.</div>
 
   <!-- Method -->
   <div class="section-hdr">Method</div>
   <div style="display:grid;grid-template-columns:32px 1fr 80px 80px 140px;gap:0;margin-bottom:6px">
-    ${["","Step","Time","Temp","Edit / Note"].map(h=>`<div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#333;padding:4px 0">${h}</div>`).join("")}
+    ${["","Step","Time","Temp","Edit / Note"].map(h=>`<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#000;padding:4px 0">${h}</div>`).join("")}
   </div>
   ${methodRows}
   ${blankMethodRows}
-  <div style="font-size:9px;color:#333;margin-top:4px;margin-bottom:16px">↑ Use Edit/Note column to mark changes. Blank rows for new steps.</div>
+  <div style="font-size:10px;color:#000;margin-top:4px;margin-bottom:16px">↑ Use Edit/Note column to mark changes. Blank rows for new steps.</div>
 
   <!-- Plating notes -->
   <div class="section-hdr">Plating & Presentation</div>
-  <div style="border:1px solid #ddd;border-radius:2px;padding:10px;font-size:11px;color:#111;line-height:1.7;min-height:48px;background:#FAFAF8;margin-bottom:8px">${v?.platingNotes || ""}</div>
+  <div style="border:1px solid #ddd;border-radius:2px;padding:10px;font-size:11px;color:#000;line-height:1.7;min-height:48px;background:#FAFAF8;margin-bottom:8px">${v?.platingNotes || ""}</div>
   <div style="border:1px dashed #C4501A;border-radius:2px;padding:8px;min-height:40px;background:#FFF8F5;margin-bottom:16px">
-    <div style="font-size:9px;color:#C4501A;margin-bottom:4px">EDITS TO PLATING:</div>
+    <div style="font-size:10px;color:#C4501A;margin-bottom:4px">EDITS TO PLATING:</div>
   </div>
 
   <!-- Sign off -->
@@ -3462,7 +3450,7 @@ function printEditSheet() {
     ${["Edited by","Checked by","Approved by","Date"].map(l=>`
       <div>
         <div style="border-bottom:1px solid #1A1A1A;margin-bottom:4px;min-height:28px"></div>
-        <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#333">${l}</div>
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#000">${l}</div>
       </div>`).join("")}
   </div>
 
@@ -3488,7 +3476,7 @@ function scaleRecipe() {
   modal.innerHTML = `
     <div style="background:#fff;border-radius:4px;padding:32px;width:400px;max-width:95vw">
       <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px">Scale Recipe</div>
-      <p style="font-size:12px;color:#333;margin-bottom:24px;line-height:1.6">
+      <p style="font-size:12px;color:#000;margin-bottom:24px;line-height:1.6">
         Current version: <strong>${VERSION_CFG[state.activeVersion].label}</strong> — <strong>${v.portions} portions</strong><br>
         Enter the new portion count and all ingredient quantities will recalculate automatically.
       </p>
@@ -3498,7 +3486,7 @@ function scaleRecipe() {
       </div>
       <div id="scale-preview" style="background:#F5F0E8;border-radius:3px;padding:12px;margin-bottom:20px;max-height:200px;overflow-y:auto;font-size:11px;line-height:1.8">
         ${v.ingredients.slice(0,8).map(i => `<div style="display:flex;justify-content:space-between"><span>${i.name}</span><span style="font-family:monospace;font-weight:700;color:#C4501A">${i.quantity}${i.unit}</span></div>`).join("")}
-        ${v.ingredients.length > 8 ? `<div style="color:#333;margin-top:4px">+ ${v.ingredients.length - 8} more ingredients</div>` : ""}
+        ${v.ingredients.length > 8 ? `<div style="color:#000;margin-top:4px">+ ${v.ingredients.length - 8} more ingredients</div>` : ""}
       </div>
       <div style="display:flex;gap:8px">
         <button class="btn btn-primary" onclick="applyScale(${v.portions})" style="flex:1;justify-content:center">Apply Scale</button>
@@ -3521,7 +3509,7 @@ function scaleRecipe() {
         <span>${i.name}</span>
         <span style="font-family:monospace;font-weight:700;color:${changed?'#C4501A':'#333'}">${newQty}${i.unit}</span>
       </div>`;
-    }).join("") + (v.ingredients.length > 8 ? `<div style="color:#333;margin-top:4px">+ ${v.ingredients.length - 8} more ingredients</div>` : "");
+    }).join("") + (v.ingredients.length > 8 ? `<div style="color:#000;margin-top:4px">+ ${v.ingredients.length - 8} more ingredients</div>` : "");
   });
 }
 
@@ -3557,11 +3545,11 @@ function showHelp() {
 
   const sectionsHtml = guide.sections.map(([title, points]) => `
     <div style="margin-bottom:20px">
-      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#111;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #C4501A">${title}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#000;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #C4501A">${title}</div>
       ${points.map(p => `
         <div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start">
           <span style="color:#C4501A;font-weight:700;flex-shrink:0;margin-top:1px">&#8594;</span>
-          <span style="font-size:12px;line-height:1.7;color:#111">${p}</span>
+          <span style="font-size:12px;line-height:1.7;color:#000">${p}</span>
         </div>`).join("")}
     </div>`).join("");
 
@@ -3572,14 +3560,14 @@ function showHelp() {
     <div style="background:#fff;border-radius:4px;width:640px;max-width:95vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,0.3)">
       <div style="background:#111;color:#fff;padding:20px 24px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
         <div>
-          <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">HOW TO USE</div>
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">HOW TO USE</div>
           <div style="font-family:'Playfair Display',serif;font-size:22px">${guide.title}</div>
         </div>
         <button onclick="document.getElementById('help-modal').remove()" style="background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1;padding:4px">&#215;</button>
       </div>
       <div style="overflow-y:auto;padding:24px;flex:1">${sectionsHtml}</div>
       <div style="padding:16px 24px;border-top:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:#F5F0E8;border-radius:0 0 4px 4px">
-        <span style="font-size:11px;color:#333;font-weight:600">Chefs Lab Help &#183; ${guide.sections.length} sections</span>
+        <span style="font-size:11px;color:#000;font-weight:600">Chefs Lab Help &#183; ${guide.sections.length} sections</span>
         <button class="btn btn-primary" onclick="document.getElementById('help-modal').remove()">Got it</button>
       </div>
     </div>`;
@@ -3895,13 +3883,13 @@ function promoteToCosted() {
       <div style="background:#fff;border-radius:4px;width:520px;max-width:95vw">
         <div style="background:#111;color:#fff;padding:18px 24px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center">
           <div>
-            <div style="font-size:9px;letter-spacing:3px;color:#C4501A;margin-bottom:4px">NON-METRIC UNITS DETECTED</div>
+            <div style="font-size:10px;letter-spacing:3px;color:#C4501A;margin-bottom:4px">NON-METRIC UNITS DETECTED</div>
             <div style="font-family:'Playfair Display',serif;font-size:20px">${escHtml(r.title)}</div>
           </div>
           <button onclick="document.getElementById('unit-convert-modal').remove()" style="background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1;padding:4px">&#215;</button>
         </div>
         <div style="padding:20px">
-          <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:12px 14px;margin-bottom:16px;font-size:11px;color:#333;line-height:1.7">
+          <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:12px 14px;margin-bottom:16px;font-size:11px;color:#000;line-height:1.7">
             <strong style="color:#C4501A">⚠ ${nonMetric.length} ingredient${nonMetric.length>1?'s use':'uses'} non-metric units.</strong>
             The Ingredients Database uses metric (g, ml, kg, lt, each). These must be converted before costing will work correctly.
           </div>
@@ -3924,7 +3912,7 @@ function promoteToCosted() {
               Promote Anyway
             </button>
           </div>
-          <div style="font-size:10px;color:#555;margin-top:8px;font-weight:600">You can also edit ingredient units manually in the Recipe tab before promoting.</div>
+          <div style="font-size:11px;color:#000;margin-top:8px;font-weight:600">You can also edit ingredient units manually in the Recipe tab before promoting.</div>
         </div>
       </div>`;
     document.body.appendChild(modal);
@@ -3958,7 +3946,7 @@ function promoteToCosted_skipConvert() {
       <div style="background:#fff;border-radius:4px;width:520px;max-width:95vw;max-height:85vh;overflow-y:auto">
         <div style="background:#111;color:#fff;padding:18px 24px;border-radius:4px 4px 0 0;display:flex;justify-content:space-between;align-items:center">
           <div>
-            <div style="font-size:9px;letter-spacing:3px;color:#C4501A;margin-bottom:4px">PROMOTING TO COSTED RECIPE</div>
+            <div style="font-size:10px;letter-spacing:3px;color:#C4501A;margin-bottom:4px">PROMOTING TO COSTED RECIPE</div>
             <div style="font-family:'Playfair Display',serif;font-size:20px">${escHtml(r.title)}</div>
           </div>
           <button onclick="document.getElementById('promote-modal').remove()" style="background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1;padding:4px;flex-shrink:0">&#215;</button>
@@ -3966,12 +3954,12 @@ function promoteToCosted_skipConvert() {
         <div style="padding:20px">
           <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:14px;margin-bottom:16px">
             <div style="font-size:11px;font-weight:800;color:#C4501A;margin-bottom:8px">⚠ ${unmatched.length} ingredient${unmatched.length>1?'s':''} not found in the Ingredients Database</div>
-            <div style="font-size:11px;color:#333;margin-bottom:10px;line-height:1.6">These ingredients must be added to the database before the recipe can be fully costed. You can promote now and cost later, or add the ingredients first.</div>
+            <div style="font-size:11px;color:#000;margin-bottom:10px;line-height:1.6">These ingredients must be added to the database before the recipe can be fully costed. You can promote now and cost later, or add the ingredients first.</div>
             <div style="display:flex;flex-direction:column;gap:4px">
               ${unmatched.map(name => `
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:#fff;border:1px solid #C4501A;border-radius:2px">
                   <span style="font-size:12px;font-weight:700">${escHtml(name)}</span>
-                  <button onclick="openAddIngForPromotion('${escHtml(name)}')" style="background:#C4501A;color:#fff;border:none;padding:4px 10px;border-radius:2px;font-size:10px;cursor:pointer;font-weight:700">+ Add to DB</button>
+                  <button onclick="openAddIngForPromotion('${escHtml(name)}')" style="background:#C4501A;color:#fff;border:none;padding:4px 10px;border-radius:2px;font-size:11px;cursor:pointer;font-weight:700">+ Add to DB</button>
                 </div>`).join("")}
             </div>
           </div>
@@ -4043,7 +4031,7 @@ function confirmPromote() {
 
 function renderCostingTab(r, versionKey) {
   const v = r.versions[versionKey];
-  if (!v) return `<div style="padding:32px;text-align:center;color:#333;font-weight:600">No ${VERSION_CFG[versionKey].label} version yet. Generate it first in the Recipe tab.</div>`;
+  if (!v) return `<div style="padding:32px;text-align:center;color:#000;font-weight:600">No ${VERSION_CFG[versionKey].label} version yet. Generate it first in the Recipe tab.</div>`;
 
   const costing = v.costing || { targetFoodCostPct: 32, actualSellingPrice: 0 };
   const result = calcVersionCost(v);
@@ -4074,18 +4062,18 @@ function renderCostingTab(r, versionKey) {
     return `
       <tr style="background:${idx%2===0?'#fff':'#FAFAF8'};border-bottom:1px solid #eee">
         <td style="padding:7px 10px;font-size:12px;font-weight:700;color:${matched?'#111':'#C4501A'}">
-          ${escHtml(ing.name)}${!matched?` <span style="font-size:9px;background:#FDE8E0;color:#C4501A;padding:1px 5px;border-radius:2px;font-weight:700">NOT IN DB</span>`:''}
+          ${escHtml(ing.name)}${!matched?` <span style="font-size:10px;background:#FDE8E0;color:#C4501A;padding:1px 5px;border-radius:2px;font-weight:700">NOT IN DB</span>`:''}
         </td>
         <td style="padding:7px 10px;font-size:12px;text-align:right;font-family:monospace;font-weight:700">${formatQty(ing.quantity, ing.unit||'g')}</td>
-        <td style="padding:7px 10px;font-size:11px;text-align:center;color:#333;font-weight:600">${ing.unit||'g'}</td>
-        <td style="padding:7px 10px;font-size:11px;text-align:right;font-family:monospace;color:#333;font-weight:600">${dbItem?(dbItem.purchaseCost||0).toFixed(2):'—'}</td>
-        <td style="padding:7px 10px;font-size:11px;text-align:center;color:#333;font-weight:600">${dbItem?formatQty(dbItem.purchaseQty,dbItem.purchaseUnit):'—'}</td>
+        <td style="padding:7px 10px;font-size:11px;text-align:center;color:#000;font-weight:600">${ing.unit||'g'}</td>
+        <td style="padding:7px 10px;font-size:11px;text-align:right;font-family:monospace;color:#000;font-weight:600">${dbItem?(dbItem.purchaseCost||0).toFixed(2):'—'}</td>
+        <td style="padding:7px 10px;font-size:11px;text-align:center;color:#000;font-weight:600">${dbItem?formatQty(dbItem.purchaseQty,dbItem.purchaseUnit):'—'}</td>
         <td style="padding:5px 6px;text-align:center;background:${overridden?'#FFF8F0':'transparent'}">
           ${dbItem ? `<div style="display:flex;align-items:center;justify-content:center;gap:2px">
             <input type="number" min="1" max="100" step="1" value="${effYield}" title="${overridden?'Overridden for this recipe — clear to use database value ('+(dbItem.yield_pct||100)+'%)':'Database yield. Change it to override for this recipe only.'}"
               data-fk="yield-${idx}" onchange="updateIng(${idx},'yieldOverride',this.value)"
               style="width:46px;padding:3px 2px;text-align:center;font-size:11px;font-weight:700;border:1px solid ${overridden?'#C4501A':'#ddd'};border-radius:2px;color:${effYield<100?'#C4501A':'#333'};background:#fff">
-            <span style="font-size:10px;font-weight:700;color:#666">%</span>
+            <span style="font-size:11px;font-weight:700;color:#000">%</span>
             ${overridden?`<button onclick="updateIng(${idx},'yieldOverride','')" title="Reset to database yield" style="background:none;border:none;cursor:pointer;color:#C4501A;font-size:12px;padding:0 2px;line-height:1">↺</button>`:''}
           </div>` : '—'}
         </td>
@@ -4093,8 +4081,8 @@ function renderCostingTab(r, versionKey) {
         <td style="padding:5px 6px;text-align:right;background:${manualCost?'#FFF8F0':mismatch?'#FFECE4':recipeCost!==null?'#F0F7F0':'#FFF0EB'}">
           ${mismatch && !manualCost ? `
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-              <span style="font-size:9px;font-weight:800;color:#C4501A;letter-spacing:0.5px">ENTER COST</span>
-              <span style="font-size:9px;color:#8B5E00;font-weight:700">${escHtml(String(ing.quantity))} ${escHtml(ing.unit||'g')} from something priced per ${escHtml(dbItem.purchaseUnit)}</span>
+              <span style="font-size:10px;font-weight:800;color:#C4501A;letter-spacing:0.5px">ENTER COST</span>
+              <span style="font-size:10px;color:#8B5E00;font-weight:700">${escHtml(String(ing.quantity))} ${escHtml(ing.unit||'g')} from something priced per ${escHtml(dbItem.purchaseUnit)}</span>
               <input type="number" min="0" step="0.01" placeholder="cost"
                 data-fk="cost-${idx}" onchange="updateIng(${idx},'costOverride',this.value)"
                 style="width:76px;padding:3px;text-align:right;font-size:11px;font-weight:800;font-family:monospace;border:1px solid #C4501A;border-radius:2px;background:#fff">
@@ -4112,7 +4100,7 @@ function renderCostingTab(r, versionKey) {
             </div>`}
         </td>
         <td style="padding:7px 10px;font-size:12px;text-align:right;font-family:monospace;font-weight:900;color:${pctColor};background:#F9F6F0">${pctOfRecipe!==null?pctOfRecipe.toFixed(1)+'%':'—'}</td>
-        ${!matched?`<td style="padding:7px 10px"><button onclick="openAddIngForPromotion('${escHtml(ing.name)}')" style="background:#C4501A;color:#fff;border:none;padding:3px 8px;border-radius:2px;font-size:9px;cursor:pointer;font-weight:700;white-space:nowrap">+ Add to DB</button></td>`:'<td></td>'}
+        ${!matched?`<td style="padding:7px 10px"><button onclick="openAddIngForPromotion('${escHtml(ing.name)}')" style="background:#C4501A;color:#fff;border:none;padding:3px 8px;border-radius:2px;font-size:10px;cursor:pointer;font-weight:700;white-space:nowrap">+ Add to DB</button></td>`:'<td></td>'}
       </tr>`;
   }).join("");;
 
@@ -4134,17 +4122,17 @@ function renderCostingTab(r, versionKey) {
       <div id="costing-summary-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
         <div style="background:#fff;border:1px solid #ccc;border-radius:4px;padding:14px;text-align:center">
           <div class="label">Total Recipe Cost</div>
-          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#111">${totalCost.toFixed(2)}</div>
-          <div style="font-size:10px;color:#333;font-weight:600">${portions} portions</div>
+          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#000">${totalCost.toFixed(2)}</div>
+          <div style="font-size:11px;color:#000;font-weight:600">${portions} portions</div>
         </div>
         <div style="background:#fff;border:1px solid #ccc;border-radius:4px;padding:14px;text-align:center">
           <div class="label">Cost per Portion</div>
-          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#111">${costPerPortion.toFixed(2)}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#000">${costPerPortion.toFixed(2)}</div>
         </div>
         <div style="background:#fff;border:1px solid #ccc;border-radius:4px;padding:14px;text-align:center">
           <div class="label">Ideal Selling Price</div>
           <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#2C7A4B">${idealSP.toFixed(2)}</div>
-          <div style="font-size:10px;color:#333;font-weight:600">at ${targetPct}% food cost</div>
+          <div style="font-size:11px;color:#000;font-weight:600">at ${targetPct}% food cost</div>
         </div>
       </div>
 
@@ -4170,15 +4158,15 @@ function renderCostingTab(r, versionKey) {
         <div style="background:#fff;border:2px solid ${fcColor};border-radius:4px;padding:14px;text-align:center">
           <div class="label">Actual Food Cost %</div>
           <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:${fcColor}">${actualSP>0?actualFCPct.toFixed(1)+'%':'—'}</div>
-          <div style="font-size:10px;font-weight:700;color:${fcColor}">${actualSP>0?(actualFCPct>targetPct?'▲ OVER budget':'▼ UNDER budget'):''}</div>
+          <div style="font-size:11px;font-weight:700;color:${fcColor}">${actualSP>0?(actualFCPct>targetPct?'▲ OVER budget':'▼ UNDER budget'):''}</div>
         </div>
         <div style="background:#fff;border:1px solid #ccc;border-radius:4px;padding:14px;text-align:center">
           <div class="label">Margin per Portion</div>
-          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#111">${actualSP>0?marginPerPortion.toFixed(2):'—'}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#000">${actualSP>0?marginPerPortion.toFixed(2):'—'}</div>
         </div>
         <div style="background:#fff;border:1px solid #ccc;border-radius:4px;padding:14px;text-align:center">
           <div class="label">Total Margin (${portions} portions)</div>
-          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#111">${actualSP>0?(marginPerPortion*portions).toFixed(2):'—'}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#000">${actualSP>0?(marginPerPortion*portions).toFixed(2):'—'}</div>
         </div>
       </div>
 
@@ -4187,15 +4175,15 @@ function renderCostingTab(r, versionKey) {
         <table style="width:100%;border-collapse:collapse;min-width:800px">
           <thead>
             <tr style="background:#111;color:#fff">
-              <th style="padding:9px 10px;text-align:left;font-size:9px;letter-spacing:2px;text-transform:uppercase">Ingredient</th>
-              <th style="padding:9px 10px;text-align:right;font-size:9px;letter-spacing:2px;text-transform:uppercase">Recipe Qty</th>
-              <th style="padding:9px 10px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase">Unit</th>
-              <th style="padding:9px 10px;text-align:right;font-size:9px;letter-spacing:2px;text-transform:uppercase">Purchase Cost</th>
-              <th style="padding:9px 10px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase">Pack Size</th>
-              <th style="padding:9px 10px;text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase">Yield %</th>
-              <th style="padding:9px 10px;text-align:right;font-size:9px;letter-spacing:2px;text-transform:uppercase">Yield Cost/100</th>
-              <th style="padding:9px 10px;text-align:right;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:#C4501A">Recipe Cost</th>
-              <th style="padding:9px 10px;text-align:right;font-size:9px;letter-spacing:2px;text-transform:uppercase;background:#C4501A">% of Recipe</th>
+              <th style="padding:9px 10px;text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase">Ingredient</th>
+              <th style="padding:9px 10px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase">Recipe Qty</th>
+              <th style="padding:9px 10px;text-align:center;font-size:10px;letter-spacing:2px;text-transform:uppercase">Unit</th>
+              <th style="padding:9px 10px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase">Purchase Cost</th>
+              <th style="padding:9px 10px;text-align:center;font-size:10px;letter-spacing:2px;text-transform:uppercase">Pack Size</th>
+              <th style="padding:9px 10px;text-align:center;font-size:10px;letter-spacing:2px;text-transform:uppercase">Yield %</th>
+              <th style="padding:9px 10px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase">Yield Cost/100</th>
+              <th style="padding:9px 10px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:#C4501A">Recipe Cost</th>
+              <th style="padding:9px 10px;text-align:right;font-size:10px;letter-spacing:2px;text-transform:uppercase;background:#C4501A">% of Recipe</th>
               <th style="padding:9px 10px;width:80px"></th>
             </tr>
           </thead>
@@ -4203,7 +4191,7 @@ function renderCostingTab(r, versionKey) {
           <tfoot>
             <tr style="background:#F5F0E8;border-top:2px solid #111">
               <td colspan="8" style="padding:10px;font-size:11px;font-weight:800;text-align:right;text-transform:uppercase;letter-spacing:1px">Total Recipe Cost</td>
-              <td style="padding:10px;font-size:16px;font-family:'Playfair Display',serif;font-weight:900;text-align:right;color:#111">${totalCost.toFixed(2)}</td>
+              <td style="padding:10px;font-size:16px;font-family:'Playfair Display',serif;font-weight:900;text-align:right;color:#000">${totalCost.toFixed(2)}</td>
               <td></td>
             </tr>
             <tr style="background:#F5F0E8">
@@ -4215,7 +4203,7 @@ function renderCostingTab(r, versionKey) {
         </table>
       </div>
 
-      <div style="margin-top:10px;font-size:10px;color:#555;font-weight:600">
+      <div style="margin-top:10px;font-size:11px;color:#000;font-weight:600">
         * All costs exclusive of VAT/Tax · Yield costs pulled live from Ingredients Database · Last calculated: ${new Date().toLocaleTimeString()}
       </div>
     </div>`;
@@ -4249,27 +4237,27 @@ function printCostingCard() {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600;700;800&display=swap">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;color:#000;background:white;font-size:11px}
+body{font-family:'Inter',sans-serif;color:#000;background:white;font-size:11px;font-weight:500}
 .page{width:210mm;padding:12mm;margin:0 auto}
 .main-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:14px;padding-bottom:8px;border-bottom:3px solid #000}
 .header-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #000;margin-bottom:14px}
 .hdr-cell{padding:6px 10px;border-right:1px solid #000;border-bottom:1px solid #000}
 .hdr-cell:nth-child(2n){border-right:none}
 .hdr-cell:nth-last-child(-n+2){border-bottom:none}
-.hdr-label{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#000;margin-bottom:2px}
+.hdr-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#000;margin-bottom:2px}
 .hdr-value{font-size:13px;font-weight:700;color:#000}
 .summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .sum-card{border:1px solid #000;padding:8px;text-align:center}
-.sum-label{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:4px}
+.sum-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:4px}
 .sum-value{font-family:'Playfair Display',serif;font-size:20px;font-weight:700}
-.sum-sub{font-size:9px;font-weight:600;margin-top:2px}
+.sum-sub{font-size:10px;font-weight:600;margin-top:2px}
 .fc-over{border:2px solid #000}
 table{width:100%;border-collapse:collapse;margin-bottom:8px}
 thead tr{background:#000 !important;color:#fff !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
-th{padding:7px 8px;font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
+th{padding:7px 8px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
 th.r{text-align:right}
 th.c{text-align:center}
-td{padding:6px 8px;border-bottom:1px solid #ddd;font-size:10px;font-weight:700}
+td{padding:6px 8px;border-bottom:1px solid #ddd;font-size:11px;font-weight:700}
 td.r{text-align:right;font-family:monospace;font-weight:800}
 td.c{text-align:center}
 .unmatched{color:#000;font-style:italic}
@@ -4277,8 +4265,8 @@ tfoot tr{background:#eee}
 tfoot td{font-weight:800;border-top:2px solid #000}
 .sig-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px;padding-top:12px;border-top:2px solid #000}
 .sig-item .sig-line{border-bottom:1px solid #000;margin-bottom:4px;height:24px}
-.sig-label{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800}
-.note{font-size:9px;color:#333;margin-top:6px;font-weight:600}
+.sig-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800}
+.note{font-size:10px;color:#000;margin-top:6px;font-weight:600}
 @media print{
   body{background:white !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
   thead tr{background:#000 !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
@@ -4379,7 +4367,7 @@ function showUnitCheck() {
         <button onclick="document.getElementById('unit-check-modal').remove()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer;padding:4px">&#215;</button>
       </div>
       <div style="padding:16px">
-        <div style="font-size:11px;color:#333;margin-bottom:12px;font-weight:600">
+        <div style="font-size:11px;color:#000;margin-bottom:12px;font-weight:600">
           ${nonMetric.length} non-metric unit${nonMetric.length>1?'s':''} found. Auto-convert or edit manually in the recipe.
         </div>
         ${nonMetric.map(ing => {
@@ -4510,7 +4498,7 @@ function renderPillarAudit(r) {
       <span style="display:flex;gap:2px">
         ${[1,2,3].map(n => `<span style="width:11px;height:6px;border-radius:1px;background:${sc>=n?pl.colour:'#e2ddd5'}"></span>`).join('')}
       </span>
-      <span style="font-size:10px;color:${sc===0?'#B03030':'#777'};font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+      <span style="font-size:11px;color:${sc===0?'#B03030':'#777'};font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
         title="${contribs.map(x=>escHtml(x.name)).join(', ')}">
         ${sc === 0 ? "— missing" : top + more}
       </span>
@@ -4524,13 +4512,13 @@ function renderPillarAudit(r) {
     const sug = pillarSuggestions(id, v, 5, needs);
     if (!sug.length) return "";
     return `<div style="margin-bottom:7px">
-      <div style="font-size:10px;font-weight:800;color:${pl.colour};margin-bottom:3px">
+      <div style="font-size:11px;font-weight:800;color:${pl.colour};margin-bottom:3px">
         ${pl.icon} ${pl.label} ${prof.scores[id]===0 ? "— missing" : "— only slight"}
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:3px">
         ${sug.map(s => `<button onclick="addSuggestedIngredient('${escHtml(s.name).replace(/'/g,"\\'")}')"
           title="Add ${escHtml(s.name)} to this recipe"
-          style="background:${s._alsoFixes ? pl.colour : '#fff'};border:1px solid ${pl.colour};color:${s._alsoFixes ? '#fff' : pl.colour};font-size:10px;font-weight:700;
+          style="background:${s._alsoFixes ? pl.colour : '#fff'};border:1px solid ${pl.colour};color:${s._alsoFixes ? '#fff' : pl.colour};font-size:11px;font-weight:700;
           padding:3px 7px;border-radius:2px;cursor:pointer">+ ${escHtml(s.name)}${s._alsoFixes ? ' ·' + (s._alsoFixes+1) : ''}</button>`).join('')}
       </div>
     </div>`;
@@ -4540,7 +4528,7 @@ function renderPillarAudit(r) {
     <div class="section-divider">
       <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px">
         <span class="label" style="margin-bottom:0">Flavour Audit</span>
-        <span style="font-size:9px;color:#888;font-weight:700">${prof.matched}/${prof.total} matched</span>
+        <span style="font-size:10px;color:#000;font-weight:700">${prof.matched}/${prof.total} matched</span>
       </div>
 
       <canvas id="pillar-canvas" width="190" height="190" style="display:block;margin:6px auto 4px"></canvas>
@@ -4556,18 +4544,18 @@ function renderPillarAudit(r) {
         ${escHtml(verdict.text)}
       </div>
 
-      ${prof.unmatched.length ? `<div style="font-size:10px;color:#C4501A;font-weight:700;margin-bottom:8px">
+      ${prof.unmatched.length ? `<div style="font-size:11px;color:#C4501A;font-weight:700;margin-bottom:8px">
         ⚠ Audit is partial — ${prof.unmatched.length} ingredient${prof.unmatched.length>1?'s are':' is'} not in your database and could not be read.
       </div>` : ''}
 
       <div style="margin-bottom:8px">${rows}</div>
 
       ${fixes ? `<div style="background:#FAF7F2;border:1px solid #D8CFC0;border-radius:3px;padding:9px 10px">
-        <div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:6px">
+        <div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:6px">
           From your database
         </div>
         ${fixes}
-        <div style="font-size:9px;color:#8B7355;font-weight:600;margin-top:4px;line-height:1.4">
+        <div style="font-size:10px;color:#5C4A2E;font-weight:600;margin-top:4px;line-height:1.4">
           Filled chips close more than one gap — the number shows how many.
         </div>
       </div>` : ''}
@@ -4601,7 +4589,7 @@ function renderReadiness(r) {
     </div>`;
   }
 
-  const chip = (label, colour) => `<span style="display:inline-block;background:${colour};color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:2px;margin-right:5px">${label}</span>`;
+  const chip = (label, colour) => `<span style="display:inline-block;background:${colour};color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:2px;margin-right:5px">${label}</span>`;
 
   return `<div style="margin-top:8px;background:#FFF8F0;border:1px solid #C4501A;border-radius:3px;padding:8px 10px">
     <div style="font-size:11px;font-weight:800;color:#C4501A;margin-bottom:5px">Before costing, check the following:</div>
@@ -4611,24 +4599,24 @@ function renderReadiness(r) {
       ${notInDb.length ? chip(notInDb.length + " not in database", "#C4501A") : ""}
       ${(() => { const g = PILLAR_IDS.filter(id => calcPillarProfile(v).scores[id] === 0).length;
                  return g ? chip(g + " flavour gap" + (g>1?"s":""), "#6B4423") : ""; })()}
-      ${nonMetric.length ? `<button class="btn btn-default" style="font-size:10px;padding:3px 8px" onclick="showUnitCheck()">Fix units</button>` : ""}
-      ${notInDb.length ? `<button class="btn btn-default" style="font-size:10px;padding:3px 8px" onclick="setView('pantry')">Open database</button>` : ""}
-      ${noQty.length ? `<button class="btn btn-default" style="font-size:10px;padding:3px 8px" onclick="state.activeTab='recipe';render()">Show recipe</button>` : ""}
+      ${nonMetric.length ? `<button class="btn btn-default" style="font-size:11px;padding:3px 8px" onclick="showUnitCheck()">Fix units</button>` : ""}
+      ${notInDb.length ? `<button class="btn btn-default" style="font-size:11px;padding:3px 8px" onclick="setView('pantry')">Open database</button>` : ""}
+      ${noQty.length ? `<button class="btn btn-default" style="font-size:11px;padding:3px 8px" onclick="state.activeTab='recipe';render()">Show recipe</button>` : ""}
     </div>
-    ${noQty.length ? `<div style="font-size:10px;color:#8B1A1A;margin-top:6px;font-weight:700">
+    ${noQty.length ? `<div style="font-size:11px;color:#8B1A1A;margin-top:6px;font-weight:700">
       No quantity set: ${noQty.map(i=>escHtml(i.name||"(unnamed)")).join(", ")}
     </div>` : ""}
 
-    ${nonMetric.length ? `<div style="font-size:10px;color:#8B5E00;margin-top:6px;font-weight:700">
+    ${nonMetric.length ? `<div style="font-size:11px;color:#8B5E00;margin-top:6px;font-weight:700">
       Non-metric: ${nonMetric.map(i=>escHtml(i.name)+" ("+escHtml(String(i.quantity))+" "+escHtml(i.unit||"")+")").join(", ")}
     </div>` : ""}
 
     ${notInDb.length ? `<div style="margin-top:7px">
-      <div style="font-size:10px;color:#C4501A;font-weight:800;margin-bottom:4px">Not in your database — these will not be costed:</div>
+      <div style="font-size:11px;color:#C4501A;font-weight:800;margin-bottom:4px">Not in your database — these will not be costed:</div>
       <div style="display:flex;flex-wrap:wrap;gap:4px">
         ${notInDb.map(i => `<button onclick="openAddIngForPromotion('${escHtml(i.name).replace(/'/g,"\\'")}')"
           title="Add ${escHtml(i.name)} to the Ingredients Database"
-          style="background:#fff;border:1px solid #C4501A;color:#C4501A;font-size:10px;font-weight:700;
+          style="background:#fff;border:1px solid #C4501A;color:#C4501A;font-size:11px;font-weight:700;
           padding:3px 8px;border-radius:2px;cursor:pointer">+ ${escHtml(i.name)}</button>`).join("")}
       </div>
       ${(() => {
@@ -4636,7 +4624,7 @@ function renderReadiness(r) {
           const near = closestPantryNames(i.name, 2);
           return near.length ? escHtml(i.name) + " — you already stock " + near.map(escHtml).join(" or ") : null;
         }).filter(Boolean);
-        return hints.length ? `<div style="font-size:10px;color:#666;font-weight:600;margin-top:5px;line-height:1.5">
+        return hints.length ? `<div style="font-size:11px;color:#000;font-weight:600;margin-top:5px;line-height:1.5">
           ${hints.join("<br>")}<br><span style="font-style:italic">If one of those is what you meant, rename the ingredient in the recipe instead of adding a duplicate.</span>
         </div>` : "";
       })()}
@@ -4693,16 +4681,16 @@ function printPurchasingList() {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600;700;800&display=swap">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;color:#000;font-size:11px}
+body{font-family:'Inter',sans-serif;color:#000;font-size:11px;font-weight:500}
 .page{width:210mm;padding:12mm;margin:0 auto}
 .title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:4px}
-.sub{font-size:11px;color:#333;font-weight:600;margin-bottom:16px}
+.sub{font-size:11px;color:#000;font-weight:600;margin-bottom:16px}
 .meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;border:1px solid #000;padding:12px}
-.meta-label{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:3px}
+.meta-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:3px}
 .meta-value{font-size:14px;font-weight:700}
 table{width:100%;border-collapse:collapse;margin-bottom:12px}
 thead tr{background:#111;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-th{padding:8px 10px;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
+th{padding:8px 10px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
 th.r{text-align:right}
 td{padding:7px 10px;border-bottom:1px solid #ddd;font-size:11px;font-weight:600}
 td.r{text-align:right;font-family:monospace;font-weight:700}
@@ -4710,23 +4698,23 @@ td.missing{color:#C4501A;font-style:italic}
 tfoot tr{background:#eee;-webkit-print-color-adjust:exact}
 tfoot td{font-weight:800;border-top:2px solid #000;padding:10px}
 .check-col{width:40px;text-align:center;font-size:14px}
-.warn{background:#FFF0EB;border:1px solid #C4501A;padding:8px 12px;font-size:10px;color:#C4501A;font-weight:700;margin-bottom:12px;border-radius:2px}
+.warn{background:#FFF0EB;border:1px solid #C4501A;padding:8px 12px;font-size:11px;color:#C4501A;font-weight:700;margin-bottom:12px;border-radius:2px}
 .sig{margin-top:20px;border-top:2px solid #000;padding-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.sl{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#333}
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#000}
 .sline{border-bottom:1px solid #000;height:24px;margin-bottom:4px}
 @media print{*{color:#000 !important}thead tr{background:#111 !important}tfoot tr{background:#eee !important}thead th{color:#fff !important}}
 </style></head><body><div class="page">
 
 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:3px solid #000;padding-bottom:12px">
   <div>
-    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — PURCHASING LIST</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — PURCHASING LIST</div>
     <div class="title">${escHtml(r.title)}</div>
     <div class="sub">${escHtml(cfg.label)} · ${portions} portions · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
   </div>
   <div style="text-align:right;font-family:'Playfair Display',serif">
-    <div style="font-size:9px;color:#333;font-weight:600;text-transform:uppercase;letter-spacing:1px">Total Cost</div>
+    <div style="font-size:10px;color:#000;font-weight:600;text-transform:uppercase;letter-spacing:1px">Total Cost</div>
     <div style="font-size:32px;font-weight:700;color:#C4501A">${totalCost.toFixed(2)}</div>
-    <div style="font-size:10px;color:#333;font-weight:600">${(totalCost/portions).toFixed(2)} per portion</div>
+    <div style="font-size:11px;color:#000;font-weight:600">${(totalCost/portions).toFixed(2)} per portion</div>
   </div>
 </div>
 
@@ -4792,7 +4780,7 @@ ${uncosted > 0 ? `<div class="warn">⚠ ${uncosted} ingredient${uncosted>1?'s':'
   </tfoot>
 </table>
 
-<div style="font-size:9px;color:#333;margin-bottom:16px;font-weight:600">
+<div style="font-size:10px;color:#000;margin-bottom:16px;font-weight:600">
   ☐ = tick when purchased · All costs exclusive of VAT/Tax · Prices from Ingredients Database
 </div>
 
@@ -4830,11 +4818,11 @@ function printRecipeIndex() {
     const pProf = v ? calcPillarProfile(v) : null;
     const pillarsPresent = pProf ? PILLAR_IDS.filter(id => pProf.scores[id] >= 2).length : 0;
     return `<tr style="background:${idx%2===0?'#fff':'#f5f5f5'};border-bottom:1px solid #ddd">
-      <td style="padding:6px 8px;font-size:11px;font-weight:700">${idx+1}</td>
-      <td style="padding:6px 8px;font-size:11px;font-weight:700">${escHtml(r.title)}</td>
-      <td style="padding:6px 8px;font-size:10px;color:#333">${escHtml(r.cuisine||'—')}</td>
+      <td style="padding:6px 8px;font-size:10px;font-weight:700">${idx+1}</td>
+      <td style="padding:6px 8px;font-size:10px;font-weight:700">${escHtml(r.title)}</td>
+      <td style="padding:6px 8px;font-size:11px;color:#000">${escHtml(r.cuisine||'—')}</td>
       <td style="padding:6px 8px;text-align:center">
-        <span style="font-size:8px;padding:1px 5px;border-radius:2px;font-weight:800;background:${isCosted?'#2C7A4B':'#C4501A'};color:#fff">${isCosted?'COSTED':'AI'}</span>
+        <span style="font-size:10px;padding:1px 5px;border-radius:2px;font-weight:800;background:${isCosted?'#2C7A4B':'#C4501A'};color:#fff">${isCosted?'COSTED':'AI'}</span>
       </td>
       <td style="padding:6px 8px;text-align:right;font-family:monospace;font-size:11px;font-weight:700">${portions}</td>
       <td style="padding:6px 8px;text-align:right;font-family:monospace;font-size:11px;font-weight:700">${isCosted&&cpp>0?cpp.toFixed(2):'—'}</td>
@@ -4842,7 +4830,7 @@ function printRecipeIndex() {
       <td style="padding:6px 8px;text-align:right;font-family:monospace;font-size:11px;font-weight:800;color:${actualFC>targetPct&&actualFC>0?'#C4501A':'#2C7A4B'}">${actualFC>0?actualFC.toFixed(1)+'%':'—'}</td>
       <td style="padding:6px 8px;text-align:right;font-family:monospace;font-size:11px;font-weight:700">${margin>0?margin.toFixed(2):'—'}</td>
       <td style="padding:6px 8px;text-align:right;font-family:monospace;font-size:11px;font-weight:800;color:${pillarsPresent<5?'#C4501A':'#000'}">${v?pillarsPresent+'/8':'—'}</td>
-      <td style="padding:6px 8px;font-size:9px;color:#333">${allergens.length>30?allergens.slice(0,30)+'…':allergens}</td>
+      <td style="padding:6px 8px;font-size:10px;color:#000">${allergens.length>30?allergens.slice(0,30)+'…':allergens}</td>
     </tr>`;
   }).join('');
 
@@ -4850,22 +4838,22 @@ function printRecipeIndex() {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600;700;800&display=swap">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;color:#000;font-size:10px}
+body{font-family:'Inter',sans-serif;color:#000;font-size:11px}
 .page{width:297mm;padding:12mm;margin:0 auto}
 .title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700}
 table{width:100%;border-collapse:collapse}
 thead tr{background:#111;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-th{padding:8px 8px;font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
+th{padding:8px 8px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
 th.r{text-align:right}
 @media print{*{color:#000 !important}thead tr{background:#111 !important}thead th{color:#fff !important}body{background:white}}
 </style></head><body><div class="page">
 
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;border-bottom:3px solid #000;padding-bottom:10px">
   <div>
-    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — RECIPE INDEX</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — RECIPE INDEX</div>
     <div class="title">Recipe Library</div>
   </div>
-  <div style="text-align:right;font-size:10px;color:#333;font-weight:600">
+  <div style="text-align:right;font-size:11px;color:#000;font-weight:600">
     <div>${sorted.length} recipes · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
     <div>${sorted.filter(r=>r.type==='costed').length} costed · ${sorted.filter(r=>r.type==='ai').length} AI</div>
   </div>
@@ -4890,7 +4878,7 @@ th.r{text-align:right}
   <tbody>${rows}</tbody>
 </table>
 
-<div style="margin-top:10px;font-size:9px;color:#333;font-weight:600">
+<div style="margin-top:10px;font-size:10px;color:#000;font-weight:600">
   * Costs shown for Master version · All prices exclusive of VAT/Tax · Food Cost % shown in red if over budget
 </div>
 </div></body></html>`;
@@ -4935,8 +4923,8 @@ function pillarPrintLine(version) {
   if (!prof.ready) return "";
   const present = PILLARS.filter(p => prof.scores[p.id] >= 2);
   const gaps = PILLARS.filter(p => prof.scores[p.id] === 0);
-  return `<div style="border:1px solid #000;padding:8px 11px;margin:10px 0;font-size:10px;line-height:1.6">
-    <span style="font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:9px">Flavour pillars</span>
+  return `<div style="border:1px solid #000;padding:8px 11px;margin:10px 0;font-size:11px;line-height:1.6">
+    <span style="font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:10px">Flavour pillars</span>
     &nbsp; ${present.map(p=>escHtml(p.label)).join(' · ') || 'none registered'}
     ${gaps.length ? `<br><span style="font-weight:700">Absent:</span> ${gaps.map(p=>escHtml(p.label)).join(', ')}` : `<br><span style="font-weight:700">All eight pillars covered.</span>`}
   </div>`;
@@ -4962,8 +4950,8 @@ function printFlavourAudit() {
           ${[1,2,3].map(n=>`<span style="display:inline-block;width:26px;height:9px;border:1px solid #000;background:${sc>=n?'#000':'#fff'}"></span>`).join('')}
         </span>
       </td>
-      <td style="padding:7px 8px;font-size:10px;font-weight:800;width:70px;text-transform:uppercase">${sc===0?'ABSENT':sc===1?'THIN':'PRESENT'}</td>
-      <td style="padding:7px 8px;font-size:10px;font-weight:600">${
+      <td style="padding:7px 8px;font-size:11px;font-weight:800;width:70px;text-transform:uppercase">${sc===0?'ABSENT':sc===1?'THIN':'PRESENT'}</td>
+      <td style="padding:7px 8px;font-size:11px;font-weight:600">${
         contribs.length ? contribs.map(x=>escHtml(x.name)+(x.level===3?' ●':x.level===2?' ◐':' ○')).join(', ')
                         : '<span style="font-style:italic">nothing in this recipe delivers it</span>'}</td>
     </tr>`;
@@ -4983,31 +4971,31 @@ function printFlavourAudit() {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600;700;800&display=swap">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;color:#000;font-size:11px}
+body{font-family:'Inter',sans-serif;color:#000;font-size:11px;font-weight:500}
 .page{width:210mm;padding:12mm;margin:0 auto}
 .title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:3px}
 table{width:100%;border-collapse:collapse;margin-bottom:14px}
 thead tr{background:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-th{padding:7px 8px;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
+th{padding:7px 8px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
 .verdict{border:2px solid #000;padding:11px 13px;font-size:12px;line-height:1.6;font-weight:700;margin-bottom:14px}
 .box{border:1px solid #000;padding:11px 13px;margin-bottom:12px}
-.h{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:7px}
-.note{font-size:9px;color:#333;font-weight:600;line-height:1.6;margin-top:4px}
+.h{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:7px}
+.note{font-size:10px;color:#000;font-weight:600;line-height:1.6;margin-top:4px}
 .sig{margin-top:18px;border-top:2px solid #000;padding-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.sl{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800}
+.sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800}
 .sline{border-bottom:1px solid #000;height:24px;margin-bottom:4px}
 @media print{*{color:#000 !important}thead tr{background:#111 !important}thead th{color:#fff !important}}
 </style></head><body><div class="page">
 
 <div style="border-bottom:3px solid #000;padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-end">
   <div>
-    <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — FLAVOUR AUDIT</div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — FLAVOUR AUDIT</div>
     <div class="title">${escHtml(r.title)}</div>
-    <div style="font-size:11px;color:#333;font-weight:600">${cfg.label} · ${v.portions||cfg.portions} portions · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
+    <div style="font-size:11px;color:#000;font-weight:600">${cfg.label} · ${v.portions||cfg.portions} portions · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
   </div>
   <div style="text-align:right">
     <div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;line-height:1">${PILLAR_IDS.filter(id=>prof.scores[id]>=2).length}<span style="font-size:18px">/8</span></div>
-    <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;font-weight:800">Pillars present</div>
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800">Pillars present</div>
   </div>
 </div>
 
@@ -5031,7 +5019,7 @@ ${fixes ? `<div class="box">
 
 <div class="box">
   <div class="h">The eight pillars</div>
-  <div style="font-size:10px;line-height:1.7;font-weight:600">
+  <div style="font-size:11px;line-height:1.7;font-weight:600">
     <strong>Savoury</strong> umami depth · <strong>Sweet</strong> sugars and caramelisation ·
     <strong>Salty</strong> salt and cured elements · <strong>Sour</strong> acidity ·
     <strong>Bitter</strong> chicory, cocoa, char, tannin · <strong>Sensation</strong> mouthfeel, crunch, chew, fat ·
@@ -5080,7 +5068,7 @@ function printNutritionSummary() {
     const dbItem = findInPantry(ing.name);
     if (!dbItem) return `<tr style="background:${idx%2===0?'#fff':'#f9f9f9'}">
       <td style="padding:6px 8px;font-size:11px;color:#C4501A;font-style:italic">${escHtml(ing.name)} ⚠ not in DB</td>
-      <td colspan="5" style="padding:6px 8px;font-size:10px;color:#C4501A">Add to Ingredients Database to include in nutritional calculation</td>
+      <td colspan="5" style="padding:6px 8px;font-size:11px;color:#C4501A">Add to Ingredients Database to include in nutritional calculation</td>
     </tr>`;
     const unit = (ing.unit||'g').toLowerCase();
     let qty = ing.quantity;
@@ -5104,18 +5092,18 @@ function printNutritionSummary() {
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;600;700;800&display=swap">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;color:#000;font-size:11px}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;color:#000;font-size:11px;font-weight:500}
 .page{width:210mm;padding:12mm;margin:0 auto}
 .title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:4px}
 .nut-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .nut-card{border:1px solid #000;padding:12px;text-align:center}
 .nut-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#C4501A}
-.nut-lbl{font-size:8px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#333;margin-top:3px}
-.nut-sub{font-size:10px;color:#555;font-weight:600;margin-top:2px}
+.nut-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:#000;margin-top:3px}
+.nut-sub{font-size:11px;color:#000;font-weight:600;margin-top:2px}
 .macro-bar{height:16px;display:flex;border-radius:2px;overflow:hidden;margin-bottom:6px}
 table{width:100%;border-collapse:collapse;margin-bottom:12px}
 thead tr{background:#111;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-th{padding:7px 8px;font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
+th{padding:7px 8px;font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:800;text-align:left;color:#fff !important}
 th.r{text-align:right}
 tfoot tr{background:#eee;-webkit-print-color-adjust:exact}
 tfoot td{font-weight:800;border-top:2px solid #000;padding:8px}
@@ -5124,13 +5112,13 @@ td.r{text-align:right;font-family:monospace}
 </style></head><body><div class="page">
 
 <div style="border-bottom:3px solid #000;padding-bottom:10px;margin-bottom:16px">
-  <div style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — NUTRITIONAL SUMMARY</div>
+  <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C4501A;margin-bottom:4px">CHEFS LAB — NUTRITIONAL SUMMARY</div>
   <div class="title">${escHtml(r.title)}</div>
-  <div style="font-size:11px;color:#333;font-weight:600">${cfg.label} · ${portions} portions · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
+  <div style="font-size:11px;color:#000;font-weight:600">${cfg.label} · ${portions} portions · ${new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long',year:'numeric'})}</div>
 </div>
 
 <div style="margin-bottom:16px">
-  <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:#333;margin-bottom:8px">PER PORTION</div>
+  <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:#000;margin-bottom:8px">PER PORTION</div>
   <div class="nut-grid">
     <div class="nut-card"><div class="nut-val">${Math.round(perPortion.cal)}</div><div class="nut-lbl">Calories</div><div class="nut-sub">kcal</div></div>
     <div class="nut-card"><div class="nut-val">${perPortion.prot.toFixed(1)}g</div><div class="nut-lbl">Protein</div><div class="nut-sub">${Math.round(calFromProt/totalMacroCal*100)}% of cals</div></div>
@@ -5139,13 +5127,13 @@ td.r{text-align:right;font-family:monospace}
   </div>
 
   <div style="margin-bottom:12px">
-    <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Macronutrient Ratio (per portion)</div>
+    <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Macronutrient Ratio (per portion)</div>
     <div class="macro-bar">
-      <div style="width:${Math.round(calFromProt/totalMacroCal*100)}%;background:#2C7A4B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800">P</div>
-      <div style="width:${Math.round(calFromCarb/totalMacroCal*100)}%;background:#C4501A;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800">C</div>
-      <div style="width:${Math.round(calFromFat/totalMacroCal*100)}%;background:#8B5E00;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800">F</div>
+      <div style="width:${Math.round(calFromProt/totalMacroCal*100)}%;background:#2C7A4B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">P</div>
+      <div style="width:${Math.round(calFromCarb/totalMacroCal*100)}%;background:#C4501A;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">C</div>
+      <div style="width:${Math.round(calFromFat/totalMacroCal*100)}%;background:#8B5E00;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800">F</div>
     </div>
-    <div style="display:flex;gap:16px;font-size:9px;font-weight:600">
+    <div style="display:flex;gap:16px;font-size:10px;font-weight:600">
       <span style="color:#2C7A4B">■ Protein ${Math.round(calFromProt/totalMacroCal*100)}%</span>
       <span style="color:#C4501A">■ Carbs ${Math.round(calFromCarb/totalMacroCal*100)}%</span>
       <span style="color:#8B5E00">■ Fat ${Math.round(calFromFat/totalMacroCal*100)}%</span>
@@ -5161,14 +5149,14 @@ td.r{text-align:right;font-family:monospace}
   <tbody>${ingRows}</tbody>
   <tfoot>
     <tr>
-      <td colspan="2" style="text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:1px">TOTAL (whole recipe)</td>
+      <td colspan="2" style="text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:1px">TOTAL (whole recipe)</td>
       <td class="r">${Math.round(nut.totalCal)}</td>
       <td class="r">${nut.totalProt.toFixed(1)}g</td>
       <td class="r">${nut.totalCarb.toFixed(1)}g</td>
       <td class="r">${nut.totalFat.toFixed(1)}g</td>
     </tr>
     <tr>
-      <td colspan="2" style="text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:1px">PER PORTION (÷${portions})</td>
+      <td colspan="2" style="text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:1px">PER PORTION (÷${portions})</td>
       <td class="r" style="font-size:13px">${Math.round(perPortion.cal)}</td>
       <td class="r" style="font-size:13px">${perPortion.prot.toFixed(1)}g</td>
       <td class="r" style="font-size:13px">${perPortion.carb.toFixed(1)}g</td>
@@ -5177,8 +5165,8 @@ td.r{text-align:right;font-family:monospace}
   </tfoot>
 </table>
 
-${nut.unmatched.length ? `<div style="font-size:10px;color:#C4501A;font-weight:700;margin-bottom:8px">⚠ Not included (not in database): ${nut.unmatched.join(', ')}</div>` : ''}
-<div style="font-size:9px;color:#333;font-weight:600">Nutritional data sourced from Ingredients Database · Values are estimates · ${nut.matched} of ${(v.ingredients||[]).length} ingredients matched</div>
+${nut.unmatched.length ? `<div style="font-size:11px;color:#C4501A;font-weight:700;margin-bottom:8px">⚠ Not included (not in database): ${nut.unmatched.join(', ')}</div>` : ''}
+<div style="font-size:10px;color:#000;font-weight:600">Nutritional data sourced from Ingredients Database · Values are estimates · ${nut.matched} of ${(v.ingredients||[]).length} ingredients matched</div>
 </div></body></html>`;
 
   openAndPrint(html, r.title + " — Nutritional Summary");
@@ -5216,6 +5204,14 @@ function escHtml(s) {
 // ══════════════════════════════════════════════════════════════════════
 // BOOT
 // ══════════════════════════════════════════════════════════════════════
+// A previous build painted a debug panel on the page. Clear it on load.
+(function removeLegacyDebugPanel() {
+  try {
+    const old = document.getElementById("debug-panel");
+    if (old) old.remove();
+  } catch(e) {}
+})();
+
 state._heartbeat = storageHeartbeat();
 requestPersistentStorage();
 loadState();
