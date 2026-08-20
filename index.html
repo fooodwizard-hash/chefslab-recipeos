@@ -326,7 +326,7 @@ textarea{resize:vertical;min-height:80px}
     <div id="recipe-list"><div style="padding:8px 16px;font-size:11px;color:#000">No recipes yet</div></div>
   </div>
   <div class="sidebar-footer" style="display:flex;justify-content:space-between;align-items:center">
-  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; Recipe OS</span>
+  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v14 · F9AFBF</span>
   <span id="key-status" onclick="showKeyModal()" style="cursor:pointer;font-size:11px" title="API Key">⚙ API KEY</span>
 </div>
 </div>
@@ -392,6 +392,11 @@ const ALLERGENS = [
   { id: "molluscs",    label: "Molluscs",                  icon: "🦑", desc: "Includes squid, mussels, scallops, oysters and snails. Often found in fish sauces, relishes, fermented condiments." },
 ];
 const ALLERGEN_IDS = ALLERGENS.map(a => a.id);
+
+// Build stamp — shown in the sidebar and the key window so the copy in
+// front of you can always be identified.
+const BUILD_ID = "v14 · F9AFBF";
+const BUILD_DATE = "20 Aug 2026, 12:41";
 
 // Yield cost calculation
 // ══════════════════════════════════════════════════════════════════════
@@ -1156,6 +1161,7 @@ async function renderStorageHealth() {
   el.style.color = colour;
   el.innerHTML =
     '<div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#6B4423;margin-bottom:5px">Storage health</div>' +
+    '<div style="margin-bottom:5px">Build <strong>' + BUILD_ID + '</strong> \u00B7 ' + BUILD_DATE + '</div>' +
     '<div style="margin-bottom:5px">Key held in: ' + mark(inLocal) + ' local storage &nbsp; ' + mark(inSession) + ' session &nbsp; ' + mark(inCookie) + ' cookie</div>' +
     '<div style="margin-bottom:5px">' + verdict + '</div>' +
     '<div>' + history + '</div>';
