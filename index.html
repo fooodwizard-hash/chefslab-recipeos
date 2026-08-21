@@ -326,7 +326,7 @@ textarea{resize:vertical;min-height:80px}
     <div id="recipe-list"><div style="padding:8px 16px;font-size:11px;color:#000">No recipes yet</div></div>
   </div>
   <div class="sidebar-footer" style="display:flex;justify-content:space-between;align-items:center">
-  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v15 · 171AAC</span>
+  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v16 · 821DA7</span>
   <span id="key-status" onclick="showKeyModal()" style="cursor:pointer;font-size:11px" title="API Key">⚙ API KEY</span>
 </div>
 </div>
@@ -395,8 +395,8 @@ const ALLERGEN_IDS = ALLERGENS.map(a => a.id);
 
 // Build stamp — shown in the sidebar and the key window so the copy in
 // front of you can always be identified.
-const BUILD_ID = "v15 · 171AAC";
-const BUILD_DATE = "21 Aug 2026, 06:50";
+const BUILD_ID = "v16 · 821DA7";
+const BUILD_DATE = "21 Aug 2026, 07:03";
 
 // Yield cost calculation
 // ══════════════════════════════════════════════════════════════════════
@@ -1474,6 +1474,34 @@ function selectRecipe(id) {
 // RENDER ENGINE
 // ══════════════════════════════════════════════════════════════════════
 function render() {
+  try {
+    renderInner();
+  } catch(e) {
+    // A fault while drawing must never leave the topbar showing one view and
+    // the body another. Say so plainly and offer a way back.
+    console.error("Chefs Lab render failed:", e);
+    const ws = document.getElementById("workspace");
+    if (ws) {
+      ws.innerHTML = `<div style="padding:40px;max-width:560px;margin:0 auto">
+        <div style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:10px">This screen could not be drawn</div>
+        <div style="font-size:12px;color:#000;line-height:1.7;font-weight:600;margin-bottom:16px">
+          Your work is saved — this is a display fault, not lost data.
+          The details are in the browser console (F12) if you want to send them on.
+        </div>
+        <div style="background:#FFF0EB;border:1px solid #C4501A;border-radius:3px;padding:10px 12px;font-family:monospace;font-size:11px;color:#C4501A;margin-bottom:16px;word-break:break-word">
+          ${escHtml(String(e && e.message || e))}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="setView('dashboard')">Back to dashboard</button>
+          <button class="btn btn-default" onclick="exportBackup(true)">↓ Back up first</button>
+          <button class="btn btn-default" onclick="location.reload()">Reload</button>
+        </div>
+      </div>`;
+    }
+  }
+}
+
+function renderInner() {
   renderSidebar();
   renderTopbar();
   const ws = document.getElementById("workspace");
@@ -2730,10 +2758,17 @@ async function aiCreate() {
     setView("editor");
   } catch(e) {
     state.aiChat.push({role:"assistant", content:"Error: " + e.message});
-    render();
+  } finally {
+    // Must clear even if something above threw, or the button stays on
+    // "Creating…" for ever.
+    state.aiLoading = false;
+    try { render(); }
+    catch(err) {
+      console.error("Chefs Lab render failed:", err);
+      showToast("The recipe was saved but the screen could not draw it. Reloading…", "error");
+      setTimeout(() => location.reload(), 1200);
+    }
   }
-  state.aiLoading = false;
-  render();
 }
 
 // Hands Claude a precise brief: these exact pillars are missing, these
@@ -4764,7 +4799,9 @@ function renderReadiness(r) {
   const v = r.versions[state.activeVersion];
   if (!v || !(v.ingredients||[]).length) return "";
   const nonMetric = detectNonMetricUnits(v.ingredients||[]);
-  const notInDb = (v.ingredients||[]).filter(ing => !findInPantry(ing.name));
+  const notInDb = (v.ingredients||[])
+    .map((ing, idx) => ({ ing, idx }))
+    .filter(x => !findInPantry(x.ing.name));
   const noQty = (v.ingredients||[]).filter(ing => !ing.quantity || ing.quantity <= 0);
 
   if (!nonMetric.length && !notInDb.length && !noQty.length) {
