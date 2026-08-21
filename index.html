@@ -65,8 +65,8 @@ textarea{resize:vertical;min-height:80px}
 
 /* ── Version tabs ── */
 .version-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
-.version-tab{padding:6px 14px;border-radius:3px;cursor:pointer;font-size:11px;border:1px solid #bbb;background:#E8E0D4;color:#000;font-family:"Inter",sans-serif;font-weight:600;transition:all 0.15s}
-.version-tab:hover{background:#DDD5C8}
+.version-tab{padding:7px 14px;border-radius:3px;cursor:pointer;font-size:12px;border:1px solid #A89880;background:#fff;color:#000;font-family:"Inter",sans-serif;font-weight:700;transition:all 0.15s}
+.version-tab:hover{background:#F0E8DC;border-color:#C4501A}
 .version-tab.active-master{background:#111;color:#fff;border-color:#000}
 .version-tab.active-home{background:#2C4A3E;color:#fff;border-color:#2C4A3E}
 .version-tab.active-restaurant{background:#C4501A;color:#fff;border-color:#C4501A}
@@ -326,7 +326,7 @@ textarea{resize:vertical;min-height:80px}
     <div id="recipe-list"><div style="padding:8px 16px;font-size:11px;color:#000">No recipes yet</div></div>
   </div>
   <div class="sidebar-footer" style="display:flex;justify-content:space-between;align-items:center">
-  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v16 · 821DA7</span>
+  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v18 · CD0120</span>
   <span id="key-status" onclick="showKeyModal()" style="cursor:pointer;font-size:11px" title="API Key">⚙ API KEY</span>
 </div>
 </div>
@@ -395,8 +395,8 @@ const ALLERGEN_IDS = ALLERGENS.map(a => a.id);
 
 // Build stamp — shown in the sidebar and the key window so the copy in
 // front of you can always be identified.
-const BUILD_ID = "v16 · 821DA7";
-const BUILD_DATE = "21 Aug 2026, 07:03";
+const BUILD_ID = "v18 · CD0120";
+const BUILD_DATE = "21 Aug 2026, 14:27";
 
 // Yield cost calculation
 // ══════════════════════════════════════════════════════════════════════
@@ -561,17 +561,32 @@ function closestPantryNames(name, limit) {
 }
 
 function formatQty(qty, unit) {
-  if (unit === 'each') return qty % 1 === 0 ? qty + ' each' : qty.toFixed(2) + ' each';
-  if (unit === 'g' || unit === 'kg') {
-    if (qty >= 1000) return (qty/1000).toFixed(2) + ' kg';
-    return qty.toFixed(qty % 1 === 0 ? 0 : 2) + ' g';
+  // An AI reply can omit a quantity entirely. Never let that take the screen
+  // down — show a dash and let the readiness strip flag it.
+  const raw = Number(qty);
+  if (qty === null || qty === undefined || qty === "" || !isFinite(raw)) {
+    return "— " + (unit || "");
   }
-  if (unit === 'ml' || unit === 'lt') {
-    if (qty >= 1000) return (qty/1000).toFixed(2) + ' lt';
-    return qty.toFixed(qty % 1 === 0 ? 0 : 2) + ' ml';
+  const u = (unit || "g").toLowerCase();
+
+  if (u === 'each') return raw % 1 === 0 ? raw + ' each' : raw.toFixed(2) + ' each';
+
+  // Convert to the base unit first, then choose the readable one. Without this
+  // 0.5 kg was printed as "0.50 g".
+  if (u === 'g' || u === 'kg') {
+    const g = u === 'kg' ? raw * 1000 : raw;
+    if (Math.abs(g) >= 1000) return (g / 1000).toFixed(2) + ' kg';
+    return g.toFixed(g % 1 === 0 ? 0 : 2) + ' g';
   }
-  return qty + ' ' + unit;
+  if (u === 'ml' || u === 'lt' || u === 'l') {
+    const ml = (u === 'lt' || u === 'l') ? raw * 1000 : raw;
+    if (Math.abs(ml) >= 1000) return (ml / 1000).toFixed(2) + ' lt';
+    return ml.toFixed(ml % 1 === 0 ? 0 : 2) + ' ml';
+  }
+  return raw + ' ' + (unit || "");
 }
+
+
 
 function yieldCostPer100(ing) {
   const c = calcYieldCost(ing);
@@ -1750,11 +1765,24 @@ function renderEditor() {
   const allergenHtml = ALLERGENS.map(a => `
     <span class="allergen-pill ${(r.allergens||[]).includes(a.id)?"active":""}">${(r.allergens||[]).includes(a.id)?"⚠ ":""}${a.label}</span>`).join("");
 
-  const versionTabsHtml = Object.entries(VERSION_CFG).map(([key,cfg])=>`
+  const versionTabsHtml = Object.entries(VERSION_CFG).map(([key,cfg])=>{
+    const exists = !!r.versions[key];
+    const active = state.activeVersion === key;
+    const portions = exists ? (r.versions[key].portions || cfg.portions) : cfg.portions;
+    return `
     <div style="display:flex;align-items:center;gap:4px">
-      <button class="version-tab ${state.activeVersion===key?"active-"+key:""}" onclick="setVersion('${key}')">${cfg.icon} ${cfg.label}</button>
-      ${key!=="master"&&!r.versions[key]?`<button class="btn btn-ghost btn-sm" onclick="generateVersion('${key}')" ${state.aiLoading?"disabled":""}>${state.aiLoading?"…":"✦"}</button>`:""}
-    </div>`).join("");
+      <button class="version-tab ${active?"active-"+key:""}"
+        onclick="setVersion('${key}')"
+        title="${exists ? cfg.label + " — " + portions + " portions" : "Not created yet"}"
+        style="${exists?"":"opacity:0.55;border-style:dashed"}">
+        ${cfg.icon} ${cfg.label}${exists?` <span style="opacity:0.75;font-weight:700">${portions}</span>`:``}
+      </button>
+      ${key!=="master" && !exists ? `<button class="btn btn-ghost btn-sm"
+        onclick="generateVersion('${key}')" ${state.aiLoading?"disabled":""}
+        title="Generate a ${cfg.label} version from the master recipe"
+        style="font-size:11px;padding:5px 9px">${state.aiLoading?"…":"✦ Create"}</button>` : ""}
+    </div>`;
+  }).join("");
 
   let contentHtml = "";
   if (!v) {
@@ -1812,7 +1840,13 @@ function renderEditor() {
         <textarea placeholder="Brief editorial description…" onchange="updateRecipe(state.activeRecipeId,{description:this.value})">${escHtml(r.description||"")}</textarea>
       </div>
 
-      <div class="version-tabs">${versionTabsHtml}</div>
+      <div style="background:#F5F0E8;border:1px solid #D8CFC0;border-radius:4px;padding:12px 14px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+          <span class="label" style="margin-bottom:0">Versions — currently editing <strong style="color:#C4501A">${VERSION_CFG[state.activeVersion].label}</strong></span>
+          <span style="font-size:11px;color:#000;font-weight:600">Each version has its own quantities, method and costing. ✦ generates one from the master.</span>
+        </div>
+        <div class="version-tabs">${versionTabsHtml}</div>
+      </div>
 
       <div class="card" style="display:flex;align-items:center;gap:16px;padding:14px">
         <span class="label" style="margin-bottom:0">Portions</span>
