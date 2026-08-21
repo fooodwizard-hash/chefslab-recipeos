@@ -326,7 +326,7 @@ textarea{resize:vertical;min-height:80px}
     <div id="recipe-list"><div style="padding:8px 16px;font-size:11px;color:#000">No recipes yet</div></div>
   </div>
   <div class="sidebar-footer" style="display:flex;justify-content:space-between;align-items:center">
-  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v14 · F9AFBF</span>
+  <span style="letter-spacing:1px;font-size:10px"><span style="color:#F9F6F0;font-family:'Playfair Display',serif">Chefs </span><span style="color:#C4501A;font-family:'Playfair Display',serif">Lab</span> &nbsp;·&nbsp; v15 · 171AAC</span>
   <span id="key-status" onclick="showKeyModal()" style="cursor:pointer;font-size:11px" title="API Key">⚙ API KEY</span>
 </div>
 </div>
@@ -395,8 +395,8 @@ const ALLERGEN_IDS = ALLERGENS.map(a => a.id);
 
 // Build stamp — shown in the sidebar and the key window so the copy in
 // front of you can always be identified.
-const BUILD_ID = "v14 · F9AFBF";
-const BUILD_DATE = "20 Aug 2026, 12:41";
+const BUILD_ID = "v15 · 171AAC";
+const BUILD_DATE = "21 Aug 2026, 06:50";
 
 // Yield cost calculation
 // ══════════════════════════════════════════════════════════════════════
@@ -1312,6 +1312,14 @@ function parseModelJSON(text, stopReason) {
     try { return JSON.parse(slice); } catch(e) {}
   }
 
+  // Structurally complete but still refused: almost always a raw control
+  // character or a stray quote inside a string value. Clean and retry.
+  if (first !== -1 && last > first) {
+    const slice = s.slice(first, last + 1);
+    const sanitised = sanitiseJSONString(slice);
+    try { return JSON.parse(sanitised); } catch(e) {}
+  }
+
   // Cut off mid-object — close whatever is still open and salvage it
   if (first !== -1) {
     const repaired = repairTruncatedJSON(s.slice(first));
@@ -1324,16 +1332,65 @@ function parseModelJSON(text, stopReason) {
     }
   }
 
-  const why = stopReason === "max_tokens"
-    ? "The reply was cut off before it finished — the recipe was too long for one response. Try again, or ask for something a little simpler."
-    : "The reply was not valid JSON.";
+  // Report the exact spot the parser objected to — far more use than the ends
+  let where = "";
+  try { JSON.parse(s); }
+  catch(e) {
+    const m = String(e.message).match(/position (\d+)/);
+    if (m) {
+      const pos = Number(m[1]);
+      where = "\n\nThe fault is at character " + pos + ":\n…" +
+              s.slice(Math.max(0, pos - 90), pos) + " ⟨HERE⟩ " +
+              s.slice(pos, pos + 90) + "…";
+    } else {
+      where = "\n\n" + e.message;
+    }
+  }
 
-  throw new Error(why + "\n\nStart of reply: " + s.slice(0, 200) +
-                  "\n\nEnd of reply: " + s.slice(-200));
+  const why = stopReason === "max_tokens"
+    ? "The reply was cut off before it finished — the recipe was too long for one response. Try again, or ask for something simpler."
+    : "The reply could not be read. Try generating again — this is usually a one-off.";
+
+  throw new Error(why + where);
 }
 
 // Walk the string tracking strings, escapes and nesting, then close
 // everything still open. Drops any half-written final property.
+// Models occasionally emit a real newline or tab inside a quoted value, or an
+// unescaped quote such as a 3" ring mould. Both make the whole reply invalid.
+// Walk it and escape anything illegal inside strings.
+function sanitiseJSONString(s) {
+  let out = "";
+  let inString = false, escaped = false;
+
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    const code = s.charCodeAt(i);
+
+    if (escaped) { out += ch; escaped = false; continue; }
+    if (ch === "\\") { out += ch; escaped = true; continue; }
+
+    if (ch === '"') {
+      if (!inString) { inString = true; out += ch; continue; }
+      // Closing quote only if what follows is JSON punctuation
+      const rest = s.slice(i + 1);
+      const next = rest.match(/^\s*([,:}\]]|$)/);
+      if (next) { inString = false; out += ch; }
+      else { out += '\\"'; }        // a quote inside the text
+      continue;
+    }
+
+    if (inString && code < 0x20) {
+      // Raw control characters are illegal inside a JSON string
+      out += ch === "\n" ? "\\n" : ch === "\t" ? "\\t" : ch === "\r" ? "\\r" : " ";
+      continue;
+    }
+
+    out += ch;
+  }
+  return out;
+}
+
 function repairTruncatedJSON(s) {
   const stack = [];
   let inString = false, escaped = false;
@@ -2651,6 +2708,7 @@ async function aiCreate() {
       'Savoury, Sweet, Salty, Sour, Bitter, Sensation (texture contrast and mouthfeel), Spice (chilli, pepper, mustard, ginger heat), Smell (aromatics read while chewing).\n' +
       'A dish without acidity tastes flat. A dish of one texture tires the palate. Give the dish a source for as many pillars as it honestly allows — never force one that does not belong.\n' +
       'Keep description under 40 words, plating notes under 30, and each method action under 25. Be a chef writing a spec, not prose.\n' +
+      'Write every value as one continuous line. No line breaks inside a value. Do not use double quote marks inside any text — write 3cm, not 3\" — and use plain apostrophes.\n' +
       'Return ONLY this JSON structure (no markdown, no extra text):\n' +
       '{"title":"","cuisine":"","description":"","ingredients":[{"name":"","quantity":100,"unit":"g","note":""}],"method":[{"step":1,"action":"","time":"","temp":""}],"productionSchedule":[{"phase":"Mise en Place","tasks":["task1"],"timeAllocation":"30 min"}],"platingNotes":"","dna":{"cuisineTag":"","flavourProfile":["flavour1"],"flavourScore":7,"nutritionScore":7,"skillScore":5,"sustainabilityScore":6,"costScore":7,"dietaryTags":[],"skillLevel":"Intermediate","bulkSuitable":false}}'
     );
